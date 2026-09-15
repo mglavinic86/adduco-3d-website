@@ -35,8 +35,13 @@ export default function CinematicFilm({
     let target = "";
     let previous = journeyProgress();
     let eased = previous;
+    // Keep the opening pose while its first movie is being prepared. Scroll
+    // during loading remains a destination, not a frame to reveal abruptly.
+    let openingPending =
+      previous === 0 && (!location.hash || location.hash === "#vizija");
     let lastTick = 0;
     let direction = 1;
+    if (openingPending) onFrame(0);
 
     function schedule() {
       if (!disposed && !frame) frame = requestAnimationFrame(update);
@@ -56,6 +61,19 @@ export default function CinematicFilm({
         if (shown) films.get(shown)?.video.classList.remove("ready");
         film.video.classList.add("ready");
         shown = target;
+        if (openingPending) {
+          // Browsers can color-manage video differently from still images.
+          // Blend the identical pose once, then let scroll move the camera.
+          film.video.classList.add("opening");
+          const reveal = () => {
+            if (disposed || film.request.signal.aborted) return;
+            film.video.classList.remove("opening");
+            openingPending = false;
+            lastTick = 0;
+            schedule();
+          };
+          film.video.addEventListener("animationend", reveal, { once: true });
+        }
         const orientation = film.video.dataset.orientation;
         retain(
           [...films.keys()].filter((key) => key.startsWith(`${orientation}:`)),
@@ -195,9 +213,13 @@ export default function CinematicFilm({
       // Start a fresh gesture gently; time spent idle is not animation time.
       const elapsed = lastTick && now - lastTick < 80 ? now - lastTick : 16;
       lastTick = now;
-      eased += (destination - eased) * (1 - Math.exp(-elapsed / 100));
-      if (Math.abs(destination - eased) < 0.001) eased = destination;
-      else schedule();
+      if (!openingPending) {
+        eased += (destination - eased) * (1 - Math.exp(-elapsed / 100));
+        if (Math.abs(destination - eased) < 0.001) {
+          eased = destination;
+          lastTick = 0;
+        } else schedule();
+      }
       const progress = eased;
       const index = Math.min(2, Math.floor(progress));
       const position = progress - index;

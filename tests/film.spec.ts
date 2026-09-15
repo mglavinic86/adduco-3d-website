@@ -121,9 +121,9 @@ test("keeps a decoded frame while a later move loads and keeps contact usable if
     "data-segment",
     "2",
   );
-  await expect(
-    page.locator('.journey-dock a[href="#preciznost"]'),
-  ).not.toHaveAttribute("aria-current");
+  // The preceding movie already reaches the shared Visokogradnja anchor.
+  // Its caption may be active; the decoded image must remain fully visible.
+  await expect(page.locator("video.ready")).toHaveCSS("opacity", "1");
   release();
   await expect(
     page.getByRole("button", { name: "Pokreni animaciju" }),

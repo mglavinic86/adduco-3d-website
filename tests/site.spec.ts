@@ -108,7 +108,7 @@ test("touch tablet automatically follows the portrait film without playback cont
   await page.locator('.journey-dock a[href="#vizija"]').click();
   await expect(page.locator(".world-stills img.active")).toHaveAttribute(
     "src",
-    /chapter-0.webp$/,
+    /chapter-v2-0.webp$/,
   );
   await page.locator('.journey-dock a[href="#projekt"]').click();
   await expect

@@ -195,6 +195,17 @@ svg {
   opacity: 1;
   z-index: 1;
 }
+.world-film.opening.ready {
+  animation: reveal-opening 180ms ease-out both;
+}
+@keyframes reveal-opening {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 .world-wash {
   z-index: 2;
   background:

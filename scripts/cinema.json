@@ -699,6 +699,20 @@
           131268,
           171160
         ]
+      },
+      "openingOverride": {
+        "source": "Decoded frame 0 of delivered portrait movie 101cffe5-1d38-4e93-a7c4-f9ea9906451c and landscape movie cda8f06c-dde6-403b-833e-55ff012cccb8",
+        "archiveId": "a85d08c8-437a-4b36-80e0-ef2138bed1ad",
+        "webpQuality": 90,
+        "avifCrf": 24,
+        "avifCpuUsed": 6,
+        "files": {
+          "chapter-mobile-v2-0.webp": 191870,
+          "chapter-portrait-v2-0.webp": 257264,
+          "chapter-mobile-v2-0.avif": 169123,
+          "chapter-v2-0.webp": 220070,
+          "chapter-tablet-v2-0.webp": 118512
+        }
       }
     },
     "portraitOverride": {
@@ -729,6 +743,7 @@
     "cache": "Retain up to three prepared moves per orientation; release old orientation after replacement frame is decoded",
     "prefetch": "Next directional move after 30% progress; first move only on entry",
     "reducedMotion": "Composed stills; also used for data saving, explicit fallback or video failure",
-    "seekPosition": "Midpoint of quantized 24fps frame interval to avoid boundary rounding selecting a previous frame"
+    "seekPosition": "Midpoint of quantized 24fps frame interval to avoid boundary rounding selecting a previous frame",
+    "opening": "Hold opening pose and caption while first film prepares; 180ms same-pose opacity handoff, then smooth toward pending native scroll destination."
   }
 }

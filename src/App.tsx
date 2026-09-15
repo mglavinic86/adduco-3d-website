@@ -65,6 +65,8 @@ const chapters = [
     caption: "Visokogradnja, niskogradnja i betonski radovi.",
   },
 ];
+const stillFrame = (index: number) => (index === 0 ? "v2-0" : String(index));
+
 function Experience({
   still,
   active,
@@ -91,22 +93,22 @@ function Experience({
                 <source
                   type="image/avif"
                   media="(max-width: 767px) and (max-aspect-ratio: 9/10)"
-                  srcSet={`/assets/chapter-mobile-${i}.avif`}
+                  srcSet={`/assets/chapter-mobile-${stillFrame(i)}.avif`}
                 />
                 <source
                   media="(max-width: 767px) and (max-aspect-ratio: 9/10)"
-                  srcSet={`/assets/chapter-mobile-${i}.webp`}
+                  srcSet={`/assets/chapter-mobile-${stillFrame(i)}.webp`}
                 />
                 <source
                   media="(max-aspect-ratio: 9/10)"
-                  srcSet={`/assets/chapter-portrait-${i}.webp`}
+                  srcSet={`/assets/chapter-portrait-${stillFrame(i)}.webp`}
                 />
                 <source
                   media="(max-width: 1023px)"
-                  srcSet={`/assets/chapter-tablet-${i}.webp`}
+                  srcSet={`/assets/chapter-tablet-${stillFrame(i)}.webp`}
                 />
                 <img
-                  src={`/assets/chapter-${i}.webp`}
+                  src={`/assets/chapter-${stillFrame(i)}.webp`}
                   alt=""
                   width="1600"
                   height="900"

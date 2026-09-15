@@ -34,3 +34,5 @@ Current film provenance:
 ## Excluded entity
 ADDUCO d.o.o. in Velika Gorica, OIB 63670984387, and the adduco9.webnode.hr/Njuškalo listing belong to a different company. Do not merge their contact details, brand, or projects.
 - Continuity follow-up: portrait movies 1/2 now use the prior delivered movie's decoded endpoint as their opening, easing into the existing native footage over six frames. Higgsfield-processed media: aedc2d52-8b81-447b-a1aa-80ecfed238f5 and 67be2888-d406-4319-a39a-e820337e39ee. No new generated scenery or changes to the company identity.
+
+- Opening correction: five initial still variants now derive from decoded frame 0 of the delivered landscape/portrait movies, rather than the generation reference anchors. Higgsfield archive a85d08c8-437a-4b36-80e0-ef2138bed1ad; versioned filenames replace the old five opening stills. Movies and later anchors are unchanged.

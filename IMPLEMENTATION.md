@@ -1,5 +1,10 @@
 # Vertical implementation slices
 
+## Opening handoff follow-up
+
+- OP1 — AFK, complete: reproduce the opening still/video discontinuity and replace all opening poster variants with the matching delivered movie's decoded first frame. Regression through browser image comparison.
+- OP2 — AFK, implementation and local QA complete; depends on OP1: reproduce scrolling before initial loading completes, keep the opening pose until decoded, then ease toward the pending destination. Validate no-range recovery, direct navigation, both scroll directions and no mobile playback control before the existing private Sites publication.
+
 ## Mobile smoothness pass — approved 15 September 2026
 
 - SM1 — AFK, complete. Automatic native-scroll motion on phone/touch tablet, no mobile play/pause control, reduced-motion and failure access retained. Browser regression failed before the change, then passed.
