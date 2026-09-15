@@ -1,55 +1,54 @@
 # Local acceptance report
 
-Verified 15 September 2026 against the production preview at http://127.0.0.1:5184/. Selected direction: Crveni monolit. Public launch is outside this delivery.
+Verified 15 September 2026 against the production preview at http://127.0.0.1:5184/. Selected direction: a continuous cinematic journey through dark contemporary construction. The user authorized updating the existing owner-private Sites deployment.
 
 ## Checks
 
 | Check | Result |
 | --- | --- |
-| `npm test` | 3 behavior tests passed |
-| `npm run typecheck` | Passed; also included in production build |
-| `npm run lint` | Passed |
-| `npm run build` | Passed; essential content pre-rendered |
-| `npm run test:e2e` | 10 Chrome tests passed after the narrow-window fix, final run 22.8 seconds |
+| Component behavior | 4 tests passed |
+| Chrome behavior | 13 tests passed, including a regression for deferred still loading and reverse navigation |
+| TypeScript, ESLint and production build | Passed |
 | Responsive browser review | 390, 768 and 1440px; no horizontal overflow |
-| Automated accessibility | Axe WCAG 2 A/AA and 2.1 AA: no violations at all three widths |
-| Browser diagnostics | No recorded JavaScript or console errors |
-| Design artifact audit | Passed; sole contract is DESIGN.md |
+| Accessibility | Axe WCAG 2 A/AA and 2.1 AA: no violations in the entry and contact views at all three widths |
+| Rendering | Actual canvas changes through forward/reverse camera travel; no console or JavaScript errors in the journey regression |
+| No JavaScript / unavailable WebGL / reduced motion | Essential content and direct contact remain usable |
+| PDF | Real one-page Croatian PDF; updated faithful logo, selectable text and visible diacritics |
+| Design artifact audit | Passed; DESIGN.md is the sole visual contract |
 
-Behavioral coverage includes direct navigation, mobile menu/Escape, keyboard skip link, all four chapters forward/backward, native wheel scrolling, reduced motion, unavailable WebGL, repeated still/3D mode changes, inline form errors, reviewable email draft, CTA destinations and real PDF download. Tablet defaults to stills without requesting the GLB. Without JavaScript, essential text/navigation/contact remain available and the interactive form is hidden.
+The four former white content bands have been replaced by fixed captions that fade during camera travel. About, services, preparation, sourced projects and contact open in a native modal over the scene. Escape, the close action, browser Back, direct fragments and return to the same camera position are covered. Focus returns to the opener, or the mobile menu button when its link has been hidden. The underlying captions disappear while reading so they do not show through the form.
 
-Visual review covers the four desktop sculpture compositions, mobile/tablet first folds, contact layouts and the one-page Croatian PDF. The header uses the refined horizontal logo; mobile uses a compact visible contact action. Original supplied artwork remains untouched. Screenshots and rejected generation drafts are outside the repository, under `/tmp/adduco-qa/`.
+The inquiry validates Croatian inline errors and prepares a reviewable mailto draft; it never sends or stores a message. All internal targets and the ungated PDF download are checked. Without JavaScript the semantic business content is visible and the interactive form is hidden.
+
+## Asset evidence
+
+Higgsfield 3D Jutsu project `4b8b4f3c-d1ea-4cec-aa5c-402de6054dd6`, final committed revision **9**, operation `adduco-lifting-camera-finish-01`. Its rendered camera and exported geometry were inspected. The export contains **183 construction parts**, **13 semantic portal fragments**, and **zero classical/fluted columns**. Concrete frames, walls, slabs, casting details, rebar and lifting hardware replace antique architecture and planted circular islands.
+
+The original 6,239,560-byte export is delivered as a 658,396-byte WebP/Meshopt GLB. Seven source-sampled red materials map to the thirteen original emblem triangles. Original supplied logo remains untouched; header and PDF derivatives preserve its actual shapes and shade differences. The web renderer adds the Higgsfield-generated concrete albedo, derived surface maps, evening sky, and textured wet reflections. Generator/source links are in CONTENT-SOURCES.md.
+
+Twelve UI-free desktop/tablet/mobile stills use the same final geometry and website camera. Only the first still loads initially; later images load on demand and the previous image remains while a new one loads. Returning to an already loaded frame is tested. Stills are approximately 64–102KB each. Screenshots and working renders remain outside the repository under `/tmp/adduco-qa/`.
 
 ## Performance
 
-Local Lighthouse 13.4.1 / Chrome 153 laboratory measurements, not field Core Web Vitals. Mobile uses a 412×823 emulated screen, 4× CPU slowdown, 150ms RTT and 1.64Mbps throughput. Desktop uses 1350×940, 1× CPU, 40ms RTT and 10.24Mbps. Real devices, servers and networks will differ.
+Local Lighthouse 13.4.1 / Chrome 153 lab measurements, not field Core Web Vitals. Mobile: 412×823, 4× CPU, 150ms RTT, 1.64Mbps. Desktop: 1350×940, 1× CPU, 40ms RTT, 10.24Mbps. Devices, GPUs, hosting and networks will differ.
 
 | Metric | Mobile | Desktop |
 | --- | ---: | ---: |
-| Performance | 96/100 | 100/100 |
+| Performance | 98/100 | 100/100 |
 | Accessibility | 100/100 | 100/100 |
 | Best practices | 100/100 | 100/100 |
-| First contentful paint | 1.81s | 0.45s |
-| Largest contentful paint | 2.56s | 0.55s |
+| First contentful paint | 1.51s | 0.37s |
+| Largest contentful paint | 2.26s | 0.51s |
 | Total blocking time | 0ms | 16.5ms |
-| Cumulative layout shift | 0 | 0.000024 |
+| Cumulative layout shift | 0 | 0.0000015 |
 
-Mobile LCP is slightly above the 2.5-second good threshold in this run; no claim of passing field CWV is made. INP requires interaction/field measurement and was not measured by Lighthouse. SEO is 66/100 because local review deliberately blocks indexing with robots directives; this must be changed with production metadata when launch is approved.
+The initial construction pass measured 92 mobile / 75 desktop. Deferred still loading reduced mobile LCP from 3.23s to 2.26s. An unlit sky dome and asynchronous preparation of the reflection shader variants removed the first-frame compilation stall, reducing desktop blocking time from 644ms to 16.5ms. GPU uploads and geometry batches still yield between tasks; DPR is capped, quality adapts, and idle/hidden views stop rendering. Three.js remains a deferred 652KB raw / 165KB gzip chunk, causing Vite's normal chunk-size advisory.
 
-The desktop startup baseline was 72/100 with 1,032ms blocking time. Yielding between model preparation batches and texture uploads, followed by asynchronous shader compilation, reduced that stall without changing scene geometry. The original 10.6MB GLB is delivered as a 1.56MB WebP/Meshopt derivative. Still images range from 39–80KB. Three.js remains a deferred 647KB raw / 163KB gzip chunk, producing Vite's size warning; narrow/reduced-motion visitors do not load it by default.
-
-Raw reports: `/tmp/adduco-qa/lighthouse-mobile-final.json` (05:03:50 UTC), `/tmp/adduco-qa/lighthouse-desktop-optimized.json` (05:08:37 UTC). Mobile was measured before the final scene-only scheduling optimization; its default still path is unchanged. Responsive accessibility/console evidence is in `/tmp/adduco-qa/final-checks.json`; final reviewed screenshots use `release-*.png`.
+Raw reports: `/tmp/adduco-qa/lighthouse-construction-mobile-final.json` (08:58:32 UTC), `/tmp/adduco-qa/lighthouse-construction-desktop-final.json` (08:59:51 UTC). The later cache-return behavior fix does not alter initial loading. Fallback captures were refreshed after sky preparation changed. INP was not measured. SEO is 69 because this owner-private preview intentionally blocks indexing; no public-launch SEO claim is made.
 
 ## Delivery boundaries
 
-### Hosted animation follow-up
-
-The reported animation failure was reproduced in the user's 1013×941 in-app browser: the old `<1024px` width rule selected still mode even on a desktop. Manually enabling the scene on Sites produced a ready canvas with no logged errors, confirming the hosted assets and renderer worked. Desktop windows from 768px now start 3D; the tablet shortcut additionally requires a coarse pointer. Phones, reduced motion, limited device memory and save-data still receive the lighter default. The button now states its action: “Pokreni 3D” or “Zaustavi 3D”.
-
-A new regression first failed at the user's exact viewport, then passed after the fix. It verifies automatic 3D startup, a changing rendered scene after chapter navigation, explicit pause across a resize and restarting 3D. The tablet test now emulates touch input. All 3 component tests, 10 browser tests, typecheck, lint and build pass. Scene geometry and the mobile/default desktop performance paths are unchanged; the Lighthouse measurements above are from the original run, not a new measurement of this fix.
-
-- Local preview remains on port 5184. The implementation is also published privately through Sites with its required source repository; no public audience has been enabled.
-- Approved real project photography and final owner review of project captions/creative copy remain pending.
-- The form validates and prepares a mailto draft. It does not send or store submissions. Automatic delivery, recipient confirmation and production privacy/domain configuration remain pending.
-- Higgsfield revision 4 is the editable geometric source. The garden is conceptual artwork and is not presented as completed-project photography.
-- Intentional repository files: source, behavior tests, configuration/lockfile, one design contract, project/content/QA documentation, editable asset/PDF generators, optimized public assets and the supplied original logo. Build output, test output and dependencies are ignored; generated drafts and screenshots are not shipped.
+- Desktop windows from 768px start 3D automatically. Phones, coarse-pointer tablets below 1024px, reduced-motion/save-data and limited-memory devices use the lighter still presentation, with an explicit “Pokreni 3D” control.
+- Business scope now includes user-confirmed visokogradnja. Project photography and final public-launch copy/recipient approval remain pending.
+- The environment is conceptual artwork, not photography of completed Adduco projects. Generated surface textures are not measured material scans.
+- Source, tests, configuration, project/content/QA documentation, editable asset/PDF generators, optimized assets and the supplied logo are intentional repository files. Build output, dependencies, test output and drafts are not shipped as source.

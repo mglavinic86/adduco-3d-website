@@ -1,5 +1,11 @@
 # Vertical implementation slices
 
+## Filmska šetnja slices
+- F1 — Complete. AFK, no blockers: accessible business panels, direct URLs and return to the same scene. Test opening/closing before implementation.
+- F2 — Complete. AFK, F1 satisfied: continuous camera/overlay timeline, native scroll, reverse navigation, mobile/reduced-motion treatment. Browser behavior tests first.
+- F3 — Complete. AFK, no blockers: Higgsfield face-specific reds, faithful supplied logo and same-camera fallback images. Visual asset proof.
+- F4 — Implementation and QA complete. AFK, F1–F3 satisfied: responsive/browser/keyboard checks and build validation. Publish through the existing owner-private Sites release workflow.
+
 ## Current redesign — Crveni monolit
 User selected the Higgsfield concept on 15 September 2026. Existing behavior criteria below remain in force.
 - R1 — Complete. AFK, no blockers: Higgsfield horizontal logo, red/black/white hero, textured sculpture and direct contact.

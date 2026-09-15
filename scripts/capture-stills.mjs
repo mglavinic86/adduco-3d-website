@@ -5,8 +5,11 @@
  */
 import { chromium } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
-const [url = "http://127.0.0.1:5184", destination = "/tmp/adduco-qa/stills"] =
-  process.argv.slice(2);
+const [
+  url = "http://127.0.0.1:5184",
+  destination = "/tmp/adduco-qa/stills",
+  onlyChapter,
+] = process.argv.slice(2);
 await mkdir(destination, { recursive: true });
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 try {
@@ -23,7 +26,7 @@ try {
     await page.locator("canvas.ready").waitFor({ timeout: 30000 });
     await page.addStyleTag({
       content:
-        "header,main,.journey-dock,.skip,.world-wash{visibility:hidden!important}",
+        "header,main,.journey-dock,.journey-meta,.skip,.world-wash{visibility:hidden!important}",
     });
     for (const [index, id] of [
       "vizija",
@@ -31,6 +34,7 @@ try {
       "preciznost",
       "projekt",
     ].entries()) {
+      if (onlyChapter && onlyChapter !== id) continue;
       await page.evaluate(
         (id) =>
           scrollTo({

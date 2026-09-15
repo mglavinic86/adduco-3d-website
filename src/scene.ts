@@ -5,10 +5,10 @@ import { Reflector } from "three/examples/jsm/objects/Reflector.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import gsap from "gsap";
+import { journeyProgress } from "./journey";
 
-const ids = ["vizija", "povjerenje", "preciznost", "projekt"];
-const sculptureX = [3.8, -2, 3.2, -0.5];
-const yieldToBrowser = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+const yieldToBrowser = () =>
+  new Promise<void>((resolve) => setTimeout(resolve, 0));
 export async function mountGarden(
   host: HTMLDivElement,
   onFail: () => void,
@@ -25,8 +25,8 @@ export async function mountGarden(
     return () => {};
   }
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color("#e2e6ea");
-  scene.fog = new THREE.Fog("#e2e6ea", 20, 39);
+  scene.background = new THREE.Color("#111e2b");
+  scene.fog = new THREE.Fog("#111e2b", 23, 68);
   const camera = new THREE.PerspectiveCamera(
     44,
     innerWidth / innerHeight,
@@ -38,7 +38,7 @@ export async function mountGarden(
   renderer.setSize(innerWidth, innerHeight);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.95;
+  renderer.toneMappingExposure = 0.85;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.domElement.setAttribute("aria-hidden", "true");
@@ -47,11 +47,11 @@ export async function mountGarden(
   const room = new RoomEnvironment();
   const environment = pmrem.fromScene(room, 0.04);
   scene.environment = environment.texture;
-  scene.environmentIntensity = 0.55;
+  scene.environmentIntensity = 0.5;
   room.dispose();
   pmrem.dispose();
-  scene.add(new THREE.HemisphereLight("#f1f5ff", "#50565f", 1.1));
-  const sun = new THREE.DirectionalLight("#ffffff", 3.5);
+  scene.add(new THREE.HemisphereLight("#8babd6", "#12161e", 0.6));
+  const sun = new THREE.DirectionalLight("#fff3e9", 2.4);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
   sun.shadow.camera.left = -18;
@@ -63,9 +63,12 @@ export async function mountGarden(
   sun.shadow.bias = -0.0002;
   sun.shadow.normalBias = 0.03;
   scene.add(sun, sun.target);
+  const rim = new THREE.DirectionalLight("#7aa9e5", 2.0);
+  scene.add(rim, rim.target);
   const geometries: THREE.BufferGeometry[] = [];
   const materials = new Set<THREE.Material>();
   const textures = new Set<THREE.Texture>();
+  let skyDome: THREE.Mesh | undefined;
   const fragments: {
     mesh: THREE.Mesh;
     index: number;
@@ -76,7 +79,7 @@ export async function mountGarden(
   let timer: ReturnType<typeof setTimeout> | undefined;
   let tween: gsap.core.Tween | undefined;
   const water = new Reflector(new THREE.PlaneGeometry(220, 230), {
-    color: 0x969fa8,
+    color: 0x647181,
     textureWidth: 768,
     textureHeight: 768,
     clipBias: 0.001,
@@ -102,13 +105,67 @@ export async function mountGarden(
     )
     .replace(
       "vec4( blendOverlay( base.rgb, color ), 1.0 )",
-      "vec4(mix(blendOverlay(base.rgb,color),vec3(.48,.52,.57),.16),1.0)",
+      "vec4(mix(blendOverlay(base.rgb,color),vec3(.012,.024,.04),.22),1.0)",
     );
   scene.add(water);
   const model = new GLTFLoader();
   model.setMeshoptDecoder(MeshoptDecoder);
   try {
-    const gltf = await model.loadAsync("/assets/adduco-garden.glb");
+    const [gltf, sky, surfaceMaps] = await Promise.all([
+      model.loadAsync("/assets/adduco-garden.glb"),
+      new THREE.TextureLoader()
+        .loadAsync("/assets/adduco-evening-sky.webp")
+        .catch(() => null),
+      Promise.all(
+        [
+          "construction-concrete",
+          "construction-normal",
+          "construction-roughness",
+        ].map((name) =>
+          new THREE.TextureLoader().loadAsync(`/assets/${name}.webp`),
+        ),
+      ).catch(() => null),
+    ]);
+    if (sky) {
+      sky.colorSpace = THREE.SRGBColorSpace;
+      const geometry = new THREE.SphereGeometry(100, 32, 20);
+      const material = new THREE.MeshBasicMaterial({
+        map: sky,
+        color: new THREE.Color().setScalar(0.65),
+        side: THREE.BackSide,
+        fog: false,
+        toneMapped: false,
+        depthWrite: false,
+      });
+      skyDome = new THREE.Mesh(geometry, material);
+      skyDome.renderOrder = -1;
+      scene.add(skyDome);
+      geometries.push(geometry);
+      materials.add(material);
+      textures.add(sky);
+    }
+    if (surfaceMaps) {
+      surfaceMaps[0].colorSpace = THREE.SRGBColorSpace;
+      for (const texture of surfaceMaps) {
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(1.4, 1.4);
+        texture.anisotropy = Math.min(
+          8,
+          renderer.capabilities.getMaxAnisotropy(),
+        );
+        textures.add(texture);
+      }
+      waterMaterial.uniforms.uGroundMap = { value: surfaceMaps[0] };
+      waterMaterial.fragmentShader = waterMaterial.fragmentShader
+        .replace(
+          "uniform float uTime;",
+          "uniform float uTime;\n uniform sampler2D uGroundMap;",
+        )
+        .replace(
+          "vec4(mix(blendOverlay(base.rgb,color),vec3(.012,.024,.04),.22),1.0)",
+          "vec4(mix(texture2D(uGroundMap,vWorld.xz*.22).rgb*.11,blendOverlay(base.rgb,color),.22+.25*smoothstep(-.4,.6,sin(vWorld.x*.45)*sin(vWorld.z*.27)+sin(vWorld.x*.19+vWorld.z*.34)*.4)),1.0)",
+        );
+    }
     gltf.scene.updateMatrixWorld(true);
     const batches = new Map<
       string,
@@ -132,6 +189,19 @@ export async function mountGarden(
       if (o.name.startsWith("Reflective")) {
         o.geometry.dispose();
         continue;
+      }
+      if (
+        surfaceMaps &&
+        /concrete|Construction wet foundation/i.test(mat.name)
+      ) {
+        for (const old of [mat.map, mat.normalMap, mat.roughnessMap])
+          if (old) textures.add(old);
+        mat.map = surfaceMaps[0];
+        mat.normalMap = surfaceMaps[1];
+        mat.roughnessMap = surfaceMaps[2];
+        mat.color.set("#9398a0");
+        mat.normalScale.set(0.2, 0.2);
+        mat.roughness = mat.name.includes("wet") ? 0.3 : 1;
       }
       const geom = o.geometry.index
         ? o.geometry.toNonIndexed()
@@ -226,50 +296,58 @@ export async function mountGarden(
   let slowFrames = 0;
   let measuredFrames = 0;
   let reducedQuality = false;
-  let bounds: { top: number; height: number }[] = [];
-  function measure() {
-    bounds = ids.map((id) => {
-      const el = document.getElementById(id)!;
-      return { top: el.offsetTop, height: el.offsetHeight };
-    });
-  }
-  function getProgress() {
-    const y = scrollY;
-    for (let i = 0; i < 3; i++) {
-      const end = bounds[i].top + bounds[i].height * 0.35;
-      const next = bounds[i + 1].top;
-      if (y < end)
-        return i + Math.max(0, (y - bounds[i].top) / bounds[i].height) * 0.055;
-      if (y < next) {
-        const t = THREE.MathUtils.clamp((y - end) / (next - end), 0, 1);
-        return i + 0.02 + 0.98 * (t * t * (3 - 2 * t));
-      }
-    }
-    return (
-      3 +
-      THREE.MathUtils.clamp((y - bounds[3].top) / bounds[3].height, 0, 1) * 0.12
-    );
-  }
+  const cameraPath = new THREE.CatmullRomCurve3(
+    [
+      [-1.8, 2.8, 13.5],
+      [-2, 2.65, 6],
+      [-1.5, 2.6, -2],
+      [2.3, 2.8, -11.5],
+      [3.5, 2.7, -18],
+      [3.8, 2.8, -29],
+      [0, 2.8, -36],
+      [-1.8, 2.65, -42],
+      [-2.6, 2.7, -54],
+      [3, 2.8, -61],
+    ].map((p) => new THREE.Vector3(...p)),
+    false,
+    "catmullrom",
+    0.35,
+  );
+  const lookPath = new THREE.CatmullRomCurve3(
+    [
+      [0.2, 2.4, 0],
+      [2, 2.6, -2],
+      [-4, 2.4, -22],
+      [-5.6, 2.4, -25],
+      [-3.5, 2.5, -26.5],
+      [1, 2.4, -47],
+      [-0.4, 2.4, -50],
+      [1, 2.6, -51.2],
+      [-1.5, 2.4, -70],
+      [-4.1, 2.4, -75],
+    ].map((p) => new THREE.Vector3(...p)),
+    false,
+    "catmullrom",
+    0.35,
+  );
+  const look = new THREE.Vector3();
   function cameraPose(progress: number) {
-    const p = Math.min(progress, 3);
-    const index = Math.min(Math.floor(p), 2);
-    const t = p - index;
-    const x = THREE.MathUtils.lerp(sculptureX[index], sculptureX[index + 1], t);
-    const portrait = camera.aspect < 1.1;
-    const narrow = camera.aspect < 0.65;
-    camera.position.set(
-      0.25 * Math.sin(p * Math.PI),
-      2.15,
-      (narrow ? 18 : portrait ? 16 : 12) - 25 * progress,
-    );
-    camera.lookAt(
-      x - (portrait ? 0 : 3.6),
-      narrow ? 6 : portrait ? 5.1 : 2.4,
-      -25 * progress,
-    );
-    sun.position.set(-12, 18, 5 - 25 * progress);
-    sun.target.position.set(0, 0, -25 * progress);
-    const assembly = THREE.MathUtils.smoothstep(progress, 2.7, 3.03);
+    const p = Math.max(0, Math.min(progress, 3));
+    cameraPath.getPoint(p / 3, camera.position);
+    lookPath.getPoint(p / 3, look);
+    if (camera.aspect < 1.1) {
+      camera.position.z += camera.aspect < 0.65 ? 8 : 5;
+      camera.position.x *= 0.5;
+      look.x += 3.6;
+      look.y = 0.25;
+    }
+    camera.lookAt(look);
+    skyDome?.position.copy(camera.position);
+    sun.position.set(-12, 18, 5 - 25 * p);
+    sun.target.position.set(0, 0, -25 * p);
+    rim.position.set(10, 9, -10 - 25 * p);
+    rim.target.position.set(0, 2, -25 * p);
+    const assembly = THREE.MathUtils.smoothstep(progress, 2.7, 3);
     fragments.forEach(({ mesh, index: i, origin }) => {
       const amount = 1 - assembly;
       mesh.position.set(
@@ -280,15 +358,14 @@ export async function mountGarden(
       mesh.rotation.z = amount * (i % 2 ? 0.04 : -0.03);
     });
   }
-  function exposed() {
-    return bounds.some(
-      (b) =>
-        scrollY + innerHeight > b.top + 70 && scrollY < b.top + b.height - 60,
-    );
-  }
   function draw(now: number) {
     frame = 0;
-    if (disposed || document.hidden || !exposed()) return;
+    if (
+      disposed ||
+      document.hidden ||
+      Boolean(document.querySelector("dialog[open]"))
+    )
+      return;
     const start = performance.now();
     cameraPose(state.progress);
     waterMaterial.uniforms.uTime.value = now * 0.001;
@@ -317,7 +394,7 @@ export async function mountGarden(
     draw(now);
   }
   function scroll() {
-    desired = getProgress();
+    desired = journeyProgress();
     tween?.kill();
     tween = gsap.to(state, {
       progress: desired,
@@ -337,7 +414,6 @@ export async function mountGarden(
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight);
-    measure();
     scroll();
   }
   function visibility() {
@@ -352,14 +428,17 @@ export async function mountGarden(
     e.preventDefault();
     onFail();
   }
-  measure();
-  desired = getProgress();
+  desired = journeyProgress();
   state.progress = desired;
   cameraPose(desired);
   // Let drivers with parallel shader compilation prepare the scene asynchronously.
   await renderer.compileAsync(scene, camera);
-  measure();
-  desired = getProgress();
+  // Reflections render into a linear target and need their own shader variants.
+  // Prepare these before the first visible frame to avoid synchronous compilation.
+  renderer.setRenderTarget(water.getRenderTarget());
+  await renderer.compileAsync(scene, camera);
+  renderer.setRenderTarget(null);
+  desired = journeyProgress();
   state.progress = desired;
   cameraPose(desired);
   wake();

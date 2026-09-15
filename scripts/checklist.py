@@ -14,7 +14,7 @@ c.setTitle('Kontrolna lista za pripremu razgovora o građevinskom projektu');c.s
 ink=HexColor('#121315');muted=HexColor('#55585c');red=HexColor('#d60716');paper=HexColor('#ffffff')
 c.setFillColor(paper);c.rect(0,0,596,842,fill=1,stroke=0)
 def text(x,y,txt,size=11,color=ink):c.setFillColor(color);c.setFont('Body',size);c.drawString(x,y,txt)
-logo=Image.open('public/assets/adduco-logo.webp');c.drawImage(ImageReader(logo),44,790,width=155,height=32);text(388,792,'PRIPREMA ZA RAZGOVOR',8,red)
+logo=Image.open('public/assets/adduco-logo.webp');c.drawImage(ImageReader(logo),44,790,width=155,height=32,mask='auto');text(388,792,'PRIPREMA ZA RAZGOVOR',8,red)
 c.setStrokeColor(HexColor('#d3d5d6'));c.line(44,763,551,763)
 text(44,723,'Vaš projekt počinje',30);text(44,687,'jasnim pitanjima.',30,red)
 text(44,657,'Kontrolna lista za pripremu razgovora o građevinskom projektu',11)

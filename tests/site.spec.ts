@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 test("tablet starts in the lighter presentation without requesting a 3D model", async ({
   browser,
 }) => {
@@ -8,16 +9,28 @@ test("tablet starts in the lighter presentation without requesting a 3D model", 
   });
   const page = await context.newPage();
   const models: string[] = [];
+  const stills: string[] = [];
   page.on("request", (request) => {
     if (request.url().endsWith(".glb")) models.push(request.url());
+    if (/chapter(?:-mobile|-tablet)?-\d\.webp$/.test(request.url()))
+      stills.push(request.url());
   });
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Pokreni 3D" }),
-  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Pokreni 3D" })).toBeVisible();
   await page.waitForTimeout(500);
   expect(models).toEqual([]);
+  expect(stills).toHaveLength(1);
+  await page.locator('.journey-dock a[href="#povjerenje"]').click();
+  await expect(page.locator(".world-stills img.active")).toHaveAttribute(
+    "src",
+    /chapter-1.webp$/,
+  );
+  await page.locator('.journey-dock a[href="#vizija"]').click();
+  await expect(page.locator(".world-stills img.active")).toHaveAttribute(
+    "src",
+    /chapter-0.webp$/,
+  );
   await context.close();
 });
 test("a narrow desktop opens an animated garden and preserves an explicit pause on resize", async ({
@@ -29,7 +42,7 @@ test("a narrow desktop opens an animated garden and preserves an explicit pause 
   await expect(page.getByRole("button", { name: "Zaustavi 3D" })).toBeVisible();
   const firstChapter = await page.locator("canvas").screenshot();
   await page.locator('.journey-dock a[href="#povjerenje"]').click();
-  await expect(page.locator('#povjerenje .chapter-content')).toBeInViewport();
+  await expect(page.locator("#povjerenje .chapter-content")).toBeInViewport();
   expect(await page.locator("canvas").screenshot()).not.toEqual(firstChapter);
   await page.getByRole("button", { name: "Zaustavi 3D" }).click();
   await expect(page.locator("canvas")).toHaveCount(0);
@@ -57,6 +70,13 @@ for (const width of [390, 768, 1440]) {
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.locator(".header-cta")).toBeInViewport();
     expect(
+      (
+        await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth + 1,
       ),
@@ -83,8 +103,21 @@ for (const width of [390, 768, 1440]) {
       .click();
     await expect(page.locator("#usluge")).toBeInViewport();
     await page.screenshot({ path: `/tmp/adduco-qa/services-${width}.png` });
+    await page.getByRole("button", { name: "Natrag u priču" }).click();
+    if (width < 768)
+      await expect(
+        page.getByRole("button", { name: "Otvori izbornik" }),
+      ).toBeFocused();
     await page.locator(".header-cta").click();
     await expect(page.locator("#kontakt")).toBeInViewport();
+    await expect(page.locator(".panel-shell")).toHaveCSS("opacity", "1");
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
     await page.screenshot({ path: `/tmp/adduco-qa/contact-${width}.png` });
     expect(
       await page.evaluate(
@@ -96,6 +129,11 @@ for (const width of [390, 768, 1440]) {
 test("all chapters work forward and backward with native scroll", async ({
   page,
 }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   await expect(page.locator("canvas.ready")).toBeVisible({ timeout: 30000 });
@@ -119,6 +157,29 @@ test("all chapters work forward and backward with native scroll", async ({
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(350);
   await page.mouse.wheel(0, -450);
   await expect.poll(() => page.evaluate(() => scrollY)).toBeLessThan(120);
+  expect(errors).toEqual([]);
+});
+
+test("essential business content and direct contact work without JavaScript", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    viewport: { width: 390, height: 844 },
+  });
+  const page = await context.newPage();
+  await page.goto("/");
+  await page
+    .getByRole("navigation", { name: "Glavna navigacija" })
+    .getByRole("link", { name: "Usluge", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Visokogradnja" }),
+  ).toBeVisible();
+  await page.locator(".header-cta").click();
+  await expect(page.locator('a[href="mailto:adduco@adduco.hr"]')).toBeVisible();
+  await expect(page.locator(".inquiry-form")).toBeHidden();
+  await context.close();
 });
 test("reduced motion and unavailable WebGL keep a usable illustrated page", async ({
   browser,
@@ -180,6 +241,9 @@ test("inquiry errors, a reviewable draft and every internal CTA", async ({
         .filter((href) => !document.querySelector(href!)),
     );
   expect(broken).toEqual([]);
+  await page.getByRole("button", { name: "Natrag u priču" }).click();
+  await page.locator('.journey-dock a[href="#povjerenje"]').click();
+  await page.getByRole("link", { name: "Kako počinjemo" }).click();
   const download = page.waitForEvent("download");
   await page.getByRole("link", { name: /Preuzmite kontrolnu listu/ }).click();
   expect((await download).suggestedFilename()).toBe(
@@ -194,9 +258,7 @@ test("mode changes and keyboard access preserve a working page", async ({
   await expect(page.locator("canvas.ready")).toBeVisible({ timeout: 30000 });
   await page.getByRole("button", { name: "Zaustavi 3D" }).click();
   await expect(page.locator("canvas")).toHaveCount(0);
-  await expect(
-    page.getByRole("button", { name: "Pokreni 3D" }),
-  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Pokreni 3D" })).toBeVisible();
   await page.getByRole("button", { name: "Pokreni 3D" }).click();
   await expect(page.locator("canvas.ready")).toBeVisible({ timeout: 30000 });
   await expect(page.locator("canvas")).toHaveCount(1);
@@ -206,4 +268,51 @@ test("mode changes and keyboard access preserve a working page", async ({
   await expect(
     page.getByRole("link", { name: "Preskoči na sadržaj" }),
   ).toBeFocused();
+});
+
+test("continuous scene keeps its caption framed and details return to the same camera position", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await expect(page.locator("canvas.ready")).toBeVisible({ timeout: 30000 });
+  const caption = page.locator("#vizija .chapter-content");
+  const before = await caption.boundingBox();
+  await page.mouse.wheel(0, 260);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(200);
+  const after = await caption.boundingBox();
+  expect(Math.abs(after!.y - before!.y)).toBeLessThan(35);
+  const scrollPosition = await page.evaluate(() => scrollY);
+  await page
+    .getByRole("navigation", { name: "Glavna navigacija" })
+    .getByRole("link", { name: "Usluge", exact: true })
+    .click();
+  await expect(page.getByRole("dialog", { name: "Usluge" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  expect(await page.evaluate(() => scrollY)).toBeCloseTo(scrollPosition, 0);
+  await expect(
+    page
+      .getByRole("navigation", { name: "Glavna navigacija" })
+      .getByRole("link", { name: "Usluge", exact: true }),
+  ).toBeFocused();
+});
+
+test("direct detail URLs and browser Back preserve the immersive page", async ({
+  page,
+}) => {
+  await page.goto("/?fallback#projekti");
+  await expect(page.getByRole("dialog", { name: "Projekti" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /Mlinske ulice/ }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Natrag u priču" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await page
+    .getByRole("navigation", { name: "Glavna navigacija" })
+    .getByRole("link", { name: "Usluge", exact: true })
+    .click();
+  await page.goBack();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 });

@@ -1,6 +1,14 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import InquiryForm from "./InquiryForm";
-
+import {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  type MouseEvent,
+  type CSSProperties,
+} from "react";
+import { journeyProgress } from "./journey";
+import BusinessContent, { detailTitles, type Detail } from "./BusinessContent";
+import { Arrow, Wordmark } from "./ui";
 const chapters = [
   {
     id: "vizija",
@@ -58,35 +66,6 @@ const chapters = [
       "Podijelite svoju viziju s nama i napravimo prvi korak prema realizaciji.",
   },
 ];
-export function Arrow({ diagonal = false }: { diagonal?: boolean }) {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d={diagonal ? "M6 18 18 6M6 6h12v12" : "M4 12h15m-6-6 6 6-6 6"}
-        stroke="currentColor"
-        strokeWidth="1.3"
-      />
-    </svg>
-  );
-}
-function Wordmark() {
-  return (
-    <span className="brand-art">
-      <img
-        src="/assets/adduco-logo.webp"
-        alt="Adduco"
-        width="1008"
-        height="209"
-      />
-    </span>
-  );
-}
 function Experience({
   still,
   active,
@@ -97,6 +76,11 @@ function Experience({
   onFail: () => void;
 }) {
   const host = useRef<HTMLDivElement>(null);
+  const [loadedStills, setLoadedStills] = useState([true, false, false, false]);
+  const [shownStill, setShownStill] = useState(0);
+  useEffect(() => {
+    if (loadedStills[active]) setShownStill(active);
+  }, [active, loadedStills]);
   useEffect(() => {
     if (still || !host.current) return;
     let disposed = false;
@@ -124,27 +108,40 @@ function Experience({
   return (
     <div className="world" aria-hidden="true">
       <div className="world-stills">
-        {chapters.map((c, i) => (
-          <picture key={c.id}>
-            <source
-              media="(max-width: 767px)"
-              srcSet={`/assets/chapter-mobile-${i}.webp`}
-            />
-            <source
-              media="(max-width: 1023px)"
-              srcSet={`/assets/chapter-tablet-${i}.webp`}
-            />
-            <img
-              src={`/assets/chapter-${i}.webp`}
-              alt=""
-              width="1600"
-              height="1000"
-              fetchPriority={i === 0 ? "high" : undefined}
-              loading={i === 0 ? "eager" : "lazy"}
-              className={active === i ? "active" : ""}
-            />
-          </picture>
-        ))}
+        {chapters.map(
+          (c, i) =>
+            (loadedStills[i] || active === i) && (
+              <picture key={c.id}>
+                <source
+                  media="(max-width: 767px)"
+                  srcSet={`/assets/chapter-mobile-${i}.webp`}
+                />
+                <source
+                  media="(max-width: 1023px)"
+                  srcSet={`/assets/chapter-tablet-${i}.webp`}
+                />
+                <img
+                  src={`/assets/chapter-${i}.webp`}
+                  alt=""
+                  width="1600"
+                  height="1000"
+                  fetchPriority={i === 0 ? "high" : undefined}
+                  loading="eager"
+                  onLoad={() => {
+                    setLoadedStills((previous) =>
+                      previous[i]
+                        ? previous
+                        : previous.map(
+                            (loaded, index) => loaded || index === i,
+                          ),
+                    );
+                    if (i === active) setShownStill(i);
+                  }}
+                  className={shownStill === i ? "active" : ""}
+                />
+              </picture>
+            ),
+        )}
       </div>
       <div ref={host} className="world-canvas" />
       <div className="world-wash" />
@@ -152,15 +149,24 @@ function Experience({
   );
 }
 export default function App() {
+  const [ready, setReady] = useState(false);
   const [still, setStill] = useState(true);
-  const [active, setActive] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const active = Math.round(progress);
   const [menu, setMenu] = useState(false);
-  const [atContact, setAtContact] = useState(false);
-  const fail = useCallback(() => setStill(true), []);
+  const [panel, setPanel] = useState<Detail | null>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
+  const opener = useRef<HTMLElement | null>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const fail = useCallback(() => setStill(true), []);
+  const closePanel = useCallback(() => {
+    setPanel(null);
+    history.replaceState(null, "", `#${chapters[active].id}`);
+  }, [active]);
   useEffect(() => {
+    setReady(true);
     const mq = matchMedia("(prefers-reduced-motion: reduce)");
-    const connection = navigator as Navigator & {
+    const device = navigator as Navigator & {
       connection?: { saveData?: boolean };
       deviceMemory?: number;
     };
@@ -168,44 +174,77 @@ export default function App() {
       mq.matches ||
         innerWidth < 768 ||
         (innerWidth < 1024 && matchMedia("(pointer: coarse)").matches) ||
-        Boolean(connection.connection?.saveData) ||
-        (connection.deviceMemory ?? 8) <= 4 ||
+        Boolean(device.connection?.saveData) ||
+        (device.deviceMemory ?? 8) <= 4 ||
         new URLSearchParams(location.search).has("fallback"),
     );
     const motion = () => setStill(mq.matches);
     mq.addEventListener("change", motion);
-    let ticking = false;
+    const route = () => {
+      const id = location.hash.slice(1);
+      setPanel(id in detailTitles ? (id as Detail) : null);
+    };
+    route();
+    const restore = () => {
+      const id = location.hash.slice(1);
+      if (id in detailTitles) window.scrollTo({ top: 0, behavior: "instant" });
+      else if (chapters.some((c) => c.id === id))
+        document.getElementById(id)?.scrollIntoView({ behavior: "instant" });
+    };
+    const initial = requestAnimationFrame(restore);
+    window.addEventListener("load", restore, { once: true });
+    window.addEventListener("hashchange", route);
+    window.addEventListener("popstate", route);
+    return () => {
+      cancelAnimationFrame(initial);
+      window.removeEventListener("load", restore);
+      mq.removeEventListener("change", motion);
+      window.removeEventListener("hashchange", route);
+      window.removeEventListener("popstate", route);
+    };
+  }, []);
+  useEffect(() => {
+    let frame = 0;
     const update = () => {
-      const checkpoint = scrollY + innerHeight * 0.5;
-      let n = 0;
-      chapters.forEach((c, i) => {
-        const el = document.getElementById(c.id);
-        if (el && el.offsetTop <= checkpoint) n = i;
-      });
-      setActive(n);
-      const contact = document.getElementById("kontakt");
-      setAtContact(
-        Boolean(
-          contact && contact.getBoundingClientRect().top < innerHeight * 0.55,
-        ),
-      );
-      ticking = false;
+      frame = 0;
+      setProgress(journeyProgress());
     };
     const scroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
+      if (!frame) frame = requestAnimationFrame(update);
     };
     window.addEventListener("scroll", scroll, { passive: true });
     window.addEventListener("resize", scroll);
     update();
     return () => {
-      mq.removeEventListener("change", motion);
+      cancelAnimationFrame(frame);
       window.removeEventListener("scroll", scroll);
       window.removeEventListener("resize", scroll);
     };
   }, []);
+  const panelOpen = panel !== null;
+  useEffect(() => {
+    if (!panelOpen) return;
+    const element = dialog.current!;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    element.showModal();
+    return () => {
+      element.close();
+      document.body.style.overflow = previousOverflow;
+      opener.current?.focus({ preventScroll: true });
+    };
+  }, [panelOpen]);
+  useEffect(() => {
+    if (panel) {
+      const section = document.getElementById(panel);
+      const scroller = dialog.current?.querySelector(".panel-scroll");
+      if (section && scroller)
+        scroller.scrollTop +=
+          section.getBoundingClientRect().top -
+          scroller.getBoundingClientRect().top -
+          24;
+    }
+  }, [panel]);
   useEffect(() => {
     if (!menu) return;
     const escape = (e: KeyboardEvent) => {
@@ -217,13 +256,36 @@ export default function App() {
     document.addEventListener("keydown", escape);
     return () => document.removeEventListener("keydown", escape);
   }, [menu]);
+  function navigate(event: MouseEvent<HTMLDivElement>) {
+    const link = (event.target as Element).closest<HTMLAnchorElement>(
+      'a[href^="#"]',
+    );
+    if (
+      !link ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    )
+      return;
+    const id = link.hash.slice(1);
+    setMenu(false);
+    if (id in detailTitles) {
+      event.preventDefault();
+      if (!panel)
+        opener.current =
+          menu && link.closest(".main-nav") ? menuButton.current : link;
+      history.pushState(null, "", `#${id}`);
+      setPanel(id as Detail);
+    } else if (panel) setPanel(null);
+  }
   return (
-    <>
-      <a className="skip" href="#sadrzaj">
+    <div className={`site ${ready ? "is-ready" : ""}`} onClick={navigate}>
+      <a className="skip" href="#o-nama">
         Preskoči na sadržaj
       </a>
       <Experience still={still} active={active} onFail={fail} />
-      <header className={`header ${atContact ? "on-dark" : ""}`}>
+      <header className="header">
         <a href="#vizija" className="brand" aria-label="Adduco — početna">
           <Wordmark />
         </a>
@@ -231,7 +293,6 @@ export default function App() {
           className={`main-nav ${menu ? "is-open" : ""}`}
           id="main-nav"
           aria-label="Glavna navigacija"
-          onClick={() => setMenu(false)}
         >
           <a href="#o-nama">O nama</a>
           <a href="#usluge">Usluge</a>
@@ -245,8 +306,7 @@ export default function App() {
           className="header-cta"
           aria-label="Razgovarajmo o vašem projektu"
         >
-          <span className="cta-full">Razgovarajmo o vašem projektu</span>
-          <span className="cta-short">Razgovarajmo</span>
+          <span>Razgovarajmo</span>
           <Arrow diagonal />
         </a>
         <button
@@ -257,322 +317,87 @@ export default function App() {
           aria-controls="main-nav"
           onClick={() => setMenu(!menu)}
         >
-          {menu ? "Zatvori" : "Izbornik"}
           <span>{menu ? "−" : "+"}</span>
         </button>
       </header>
-      <main id="sadrzaj">
-        <section
-          className="chapter hero"
-          id="vizija"
-          aria-labelledby="title-vizija"
-        >
-          <div className="chapter-content">
-            <p className="eyebrow">
-              <span className="tiny-line" />
-              ADDUCO · GRAĐEVINARSTVO
-            </p>
-            <h1 id="title-vizija">{chapters[0].title}</h1>
-            <p className="hero-intro">
-              Niskogradnja, betonski radovi i prometnice.
-              <br />
-              Za privatne i poslovne investitore.
-            </p>
-            <a href="#usluge" className="text-link">
-              Upoznajte Adduco <Arrow />
-            </a>
-          </div>
-          <div className="hero-bottom">
-            <p>
-              Gradimo ono
-              <br />
-              <strong>što ostaje.</strong>
-            </p>
-            <a className="scroll-cue" href="#o-nama">
-              <span className="scroll-line" />
-              Pomaknite se i otkrijte našu priču
-            </a>
-            <span className="location">METKOVIĆ, HRVATSKA</span>
-          </div>
-          <span className="art-caption">01 / VIZIJA</span>
-        </section>
-        <section className="editorial intro-section" id="o-nama">
-          <div className="section-label">01 — VIZIJA</div>
-          <div className="intro-grid">
-            <h2>
-              Dobro izgrađeno
-              <br />
-              počinje <em>dobro promišljenim.</em>
-            </h2>
-            <div>
-              <p className="body-large">{chapters[0].caption}</p>
-              <p>
-                Adduco d.o.o. je građevinska tvrtka iz Metkovića. Naš rad
-                obuhvaća niskogradnju, betonske i asfalterske radove te gradnju
-                cesta.
+      <main id="sadrzaj" className="journey">
+        {chapters.map((chapter, i) => (
+          <section
+            key={chapter.id}
+            id={chapter.id}
+            className={`chapter ${i === 0 ? "hero" : ""}`}
+            aria-labelledby={`title-${chapter.id}`}
+          >
+            <div
+              className="chapter-content"
+              inert={ready && Math.abs(progress - i) >= 0.48}
+              style={
+                {
+                  "--caption-opacity": Math.max(
+                    0,
+                    Math.min(1, (0.48 - Math.abs(progress - i)) / 0.16),
+                  ),
+                  "--caption-drift": `${(progress - i) * -36}px`,
+                } as CSSProperties
+              }
+            >
+              <p className="eyebrow">
+                {i === 0 ? "ADDUCO · GRAĐEVINARSTVO" : chapter.label}
               </p>
-              <a href="#kontakt" className="text-link">
-                Razgovarajmo o vašem projektu <Arrow diagonal />
-              </a>
-            </div>
-          </div>
-          <div className="services" id="usluge">
-            <div className="section-label">ŠTO RADIMO</div>
-            {[
-              {
-                name: "Niskogradnja",
-                text: "Zemljani radovi i priprema terena za infrastrukturu.",
-              },
-              {
-                name: "Betonski radovi",
-                text: "Betoniranje i izvedba betonskih konstrukcijskih elemenata.",
-              },
-              {
-                name: "Asfaltiranje i prometnice",
-                text: "Priprema i asfaltiranje površina te gradnja cesta.",
-              },
-            ].map((s, i) => (
-              <a className="service" key={s.name} href="#kontakt">
-                <span className="service-number">0{i + 1}</span>
-                <h3>{s.name}</h3>
-                <p>{s.text}</p>
+              {i === 0 ? (
+                <h1 id={`title-${chapter.id}`}>{chapter.title}</h1>
+              ) : (
+                <h2 id={`title-${chapter.id}`}>{chapter.title}</h2>
+              )}
+              <p className="chapter-copy">
+                {i === 0 ? (
+                  <>
+                    Visokogradnja i niskogradnja.
+                    <br />
+                    Betonski radovi i prometnice.
+                  </>
+                ) : (
+                  chapter.caption
+                )}
+              </p>
+              <a
+                className="text-link"
+                href={["#o-nama", "#priprema", "#projekti", "#kontakt"][i]}
+              >
+                {
+                  [
+                    "Upoznajte Adduco",
+                    "Kako počinjemo",
+                    "Pogledajte projekte",
+                    "Razgovarajmo o vašem projektu",
+                  ][i]
+                }
                 <Arrow diagonal />
               </a>
-            ))}
-            <p className="service-note">
-              Opseg radova dogovaramo prema potrebama vašeg projekta.
-            </p>
-          </div>
-        </section>
-        <section
-          className="chapter"
-          id="povjerenje"
-          aria-labelledby="title-povjerenje"
-        >
-          <div className="chapter-content">
-            <p className="eyebrow">02 / {chapters[1].label}</p>
-            <h2 id="title-povjerenje">{chapters[1].title}</h2>
-            <p className="chapter-copy">{chapters[1].caption}</p>
-          </div>
-          <span className="art-caption">DVIJE FORME. JEDAN OSLONAC.</span>
-        </section>
-        <section className="editorial process-section">
-          <div className="section-label">PRIJE PRVOG RAZGOVORA</div>
-          <div className="section-heading">
-            <h2>
-              Jasan početak.
-              <br />
-              <em>Čvrst oslonac za dalje.</em>
-            </h2>
-            <p>
-              Što nam više kažete o svom projektu, to razgovor može biti
-              konkretniji. Krenimo od tri jednostavna koraka.
-            </p>
-          </div>
-          <div className="process-grid">
-            {[
-              {
-                title: "Podijelite ideju",
-                text: "Recite nam gdje planirate graditi, čemu je projekt namijenjen i što želite postići.",
-              },
-              {
-                title: "Pripremite osnovne podatke",
-                text: "Prikupite dostupnu dokumentaciju, okvirni budžet i željeni vremenski plan.",
-              },
-              {
-                title: "Razjasnimo sljedeći korak",
-                text: "Razgovarajmo o potrebnom opsegu radova, otvorenim pitanjima i mogućnostima suradnje.",
-              },
-            ].map((s, i) => (
-              <article key={s.title}>
-                <span className="step-no">0{i + 1}</span>
-                <h3>{s.title}</h3>
-                <p>{s.text}</p>
-              </article>
-            ))}
-          </div>
-          <div className="download-row">
-            <div>
-              <span className="eyebrow">DOBRA PRIPREMA ČINI RAZLIKU</span>
-              <h3>Vaš projekt, na jednom listu.</h3>
-              <p>
-                Kontrolna lista za pripremu razgovora o građevinskom projektu.
-              </p>
             </div>
-            <a
-              className="outline-button"
-              href="/kontrolna-lista-adduco.pdf"
-              download
-            >
-              Preuzmite kontrolnu listu <span>PDF ↓</span>
-            </a>
-          </div>
-        </section>
-        <section
-          className="chapter"
-          id="preciznost"
-          aria-labelledby="title-preciznost"
-        >
-          <div className="chapter-content">
-            <p className="eyebrow">03 / {chapters[2].label}</p>
-            <h2 id="title-preciznost">{chapters[2].title}</h2>
-            <p className="chapter-copy">{chapters[2].caption}</p>
-            <a href="#projekti" className="text-link">
-              Pogledajte projekte <Arrow />
-            </a>
-          </div>
-          <span className="art-caption">DETALJI KOJI DRŽE CJELINU.</span>
-        </section>
-        <section className="editorial projects-section" id="projekti">
-          <div className="section-label">IZ NAŠEG RADA</div>
-          <div className="section-heading">
-            <h2>
-              Stvarni projekti.
-              <br />
-              <em>Konkretna uloga.</em>
-            </h2>
-            <p>
-              Od lokalnih prometnica do infrastrukturnih zahvata. Upoznajte
-              projekte u kojima je sudjelovao Adduco.
-            </p>
-          </div>
-          <article className="project-record">
-            <div className="project-index">
-              01<span>METKOVIĆ</span>
-            </div>
-            <div>
-              <span className="eyebrow">PROMETNA INFRASTRUKTURA</span>
-              <h3>
-                Rekonstrukcija
-                <br />
-                Mlinske ulice
-              </h3>
-              <p>
-                Grad Metković u svojem pregledu projekata navodi Adduco kao
-                ugovorenog izvođača rekonstrukcije Mlinske ulice, od spoja s
-                Industrijskom ulicom do graničnog prijelaza Unka.
-              </p>
-              <a
-                className="text-link small"
-                href="https://grad-metkovic.hr/wp-content/uploads/2025/03/Zavrseni-i-odobreni-projekti-u-periodu-od-2021.-2025.-godine.pdf"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Projekt u izvješću Grada <Arrow diagonal />
-              </a>
-            </div>
-            <dl>
-              <dt>Uloga</dt>
-              <dd>Ugovoreni izvođač radova</dd>
-              <dt>Naručitelj</dt>
-              <dd>Grad Metković</dd>
-              <dt>Izvor</dt>
-              <dd>Gradski pregled projekata 2021.–2025.</dd>
-            </dl>
-          </article>
-          <article className="project-record">
-            <div className="project-index">
-              02<span>RABA — DUBA</span>
-            </div>
-            <div>
-              <span className="eyebrow">KOMUNIKACIJSKA INFRASTRUKTURA</span>
-              <h3>
-                Infrastruktura za
-                <br />
-                bolju povezanost
-              </h3>
-              <p>
-                U obavijesti iz svibnja 2026. Adduco i Konektor navedeni su kao
-                izvođači iskopa kabelske kanalizacije na dionici Raba–Duba za
-                razvoj širokopojasne mreže.
-              </p>
-              <a
-                className="text-link small"
-                href="https://metkovic-news.com/news/nocno-zatvaranje-ceste-na-dionici-raba-duba-zbog-radova-na-sirokopojasnoj-mrezi/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Pročitajte obavijest o radovima <Arrow diagonal />
-              </a>
-            </div>
-            <dl>
-              <dt>Uloga</dt>
-              <dd>Sudjelovanje u izvođenju iskopa</dd>
-              <dt>Zahvat</dt>
-              <dd>Kabelska kanalizacija</dd>
-              <dt>Izvor</dt>
-              <dd>Metković NEWS, 20. 5. 2026.</dd>
-            </dl>
-          </article>
-        </section>
-        <section
-          className="chapter final-chapter"
-          id="projekt"
-          aria-labelledby="title-projekt"
-        >
-          <div className="chapter-content">
-            <p className="eyebrow">04 / {chapters[3].label}</p>
-            <h2 id="title-projekt">{chapters[3].title}</h2>
-            <p className="chapter-copy">{chapters[3].caption}</p>
-            <a href="#kontakt" className="solid-button">
-              Razgovarajmo o vašem projektu <Arrow diagonal />
-            </a>
-          </div>
-          <span className="art-caption">
-            SLJEDEĆE POGLAVLJE POČINJE S VAMA.
-          </span>
-        </section>
-        <section className="contact-section" id="kontakt">
-          <p className="eyebrow">KONTAKT</p>
-          <div className="contact-grid">
-            <div>
-              <h2>
-                Što želite
-                <br />
-                <em>izgraditi?</em>
-              </h2>
-              <p>
-                Recite nam nešto o svom projektu.
-                <br />
-                Prvi korak je razgovor.
-              </p>
-              <a className="contact-email" href="mailto:adduco@adduco.hr">
-                adduco@adduco.hr <Arrow diagonal />
-              </a>
-              <a className="contact-phone" href="tel:+38520681566">
-                +385 (0)20 681 566
-              </a>
-              <address>
-                Mlinska ulica 6<br />
-                20350 Metković, Hrvatska
-              </address>
-            </div>
-            <div id="inquiry-form">
-              <InquiryForm />
-            </div>
-          </div>
-          <footer>
-            <a href="#vizija" aria-label="Adduco — povratak na početak">
-              <Wordmark />
-            </a>
-            <span>ADDUCO d.o.o. · OIB 40912050957</span>
-            <a
-              href="https://infobiz.fina.hr/subjekt/adduco-d-o-o/OIB-40912050957"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Podaci o društvu ↗
-            </a>
-            <span>© {new Date().getFullYear()} Adduco</span>
-          </footer>
-        </section>
+          </section>
+        ))}
       </main>
-      <div className={`journey-dock ${atContact ? "dock-hidden" : ""}`}>
+      {!ready && (
+        <div className="business-library">
+          <BusinessContent />
+        </div>
+      )}
+      <div className="journey-meta">
+        <span>METKOVIĆ, HRVATSKA</span>
+        <a href={active === 3 ? "#vizija" : `#${chapters[active + 1].id}`}>
+          {active === 3
+            ? "Povratak na početak ↑"
+            : "Pomaknite se i zakoračite u priču ↓"}
+        </a>
+      </div>
+      <div className="journey-dock">
         <nav aria-label="Poglavlja priče">
           {chapters.map((c, i) => (
             <a
               key={c.id}
               href={`#${c.id}`}
+              aria-label={`${String(i + 1).padStart(2, "0")} ${c.name}`}
               aria-current={active === i ? "step" : undefined}
             >
               <span>0{i + 1}</span>
@@ -581,14 +406,45 @@ export default function App() {
             </a>
           ))}
         </nav>
-        <button
-          className="mode-button"
-          onClick={() => setStill(!still)}
-        >
-          <span className="mode-icon" aria-hidden="true">{still ? "▶" : "Ⅱ"}</span>
+        <button className="mode-button" onClick={() => setStill(!still)}>
+          <span className="mode-icon" aria-hidden="true">
+            {still ? "▶" : "Ⅱ"}
+          </span>
           <span>{still ? "Pokreni 3D" : "Zaustavi 3D"}</span>
         </button>
       </div>
+      {ready && (
+        <dialog
+          ref={dialog}
+          className="detail-panel"
+          aria-label={panel ? detailTitles[panel] : undefined}
+          onCancel={(e) => {
+            e.preventDefault();
+            closePanel();
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closePanel();
+          }}
+        >
+          <div className="panel-shell">
+            <div className="panel-top">
+              <span className="eyebrow">
+                ADDUCO / {panel ? detailTitles[panel] : ""}
+              </span>
+              <button
+                type="button"
+                onClick={closePanel}
+                className="panel-close"
+              >
+                Natrag u priču <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="panel-scroll">
+              <BusinessContent active={panel} />
+            </div>
+          </div>
+        </dialog>
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -607,6 +463,6 @@ export default function App() {
           }),
         }}
       />
-    </>
+    </div>
   );
 }

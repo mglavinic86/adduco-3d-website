@@ -6,6 +6,9 @@ After accepting the local delivery, the user requested publication through Sites
 ## Problem statement
 Private and commercial investors need to understand Adduco's construction offering, assess credible evidence, and begin a useful conversation. The initial local site works, but the user rejected its pale palette and abstract assets. The supplied red/black logo must guide a more realistic treatment. Approved project photography remains pending.
 
+## Filmska šetnja amendment — 15 September 2026
+The user selected continuous cinematic travel with all business content over the 3D scene. Remove editorial bands; preserve real copy and inquiry/PDF behavior. Detail panels support direct URLs, Escape/Back, focus return and unchanged camera position. Correct per-triangle logo shades. Deploy the accepted result through the existing owner-private Site.
+
 ## Solution
 A Croatian-language business website connected to one original four-chapter sculpture garden. The user selected Gallery Journey: expansive architectural scenes with compact readable content, direct navigation, and an accessible inquiry route. Delivery is localhost only.
 
@@ -41,3 +44,6 @@ Public deployment, sending test inquiries, made-up portfolio entries, business g
 
 ## Further notes
 The root DESIGN.md is the only visual specification. Sources and remaining content approvals belong in CONTENT-SOURCES.md. Implementation slices remain local because the user has not approved publishing issues.
+
+## Confirmed construction direction — 15 September 2026
+The user confirmed that Adduco also performs visokogradnja; include it in the hero, company introduction, service list and metadata. All classical columns and planted circular islands are replaced by contemporary concrete construction: structural frames, walls, beams, slabs, formwork details and reinforcement. Follow the supplied dark realistic industrial reference with detailed concrete/metal surfaces and wet reflections. The selected continuous camera journey and accessible overlays remain.
