@@ -1,36 +1,30 @@
-# Local acceptance report
+# Cinematic acceptance report
 
-Verified 15 September 2026 against the production preview at http://127.0.0.1:5184/. Selected direction: a continuous cinematic journey through dark contemporary construction. The user authorized updating the existing owner-private Sites deployment.
+Verified 15 September 2026 at http://127.0.0.1:5184/. Current direction: a photoreal construction film generated through Higgsfield, native scrolling and HTML overlays. The owner authorized the existing private Sites update.
 
 ## Checks
 
-| Check | Result |
-| --- | --- |
-| Component behavior | 4 tests passed |
-| Chrome behavior | 13 tests passed, including a regression for deferred still loading and reverse navigation |
-| TypeScript, ESLint and production build | Passed |
-| Responsive browser review | 390, 768 and 1440px; no horizontal overflow |
-| Accessibility | Axe WCAG 2 A/AA and 2.1 AA: no violations in the entry and contact views at all three widths |
-| Rendering | Actual canvas changes through forward/reverse camera travel; no console or JavaScript errors in the journey regression |
-| No JavaScript / unavailable WebGL / reduced motion | Essential content and direct contact remain usable |
-| PDF | Real one-page Croatian PDF; updated faithful logo, selectable text and visible diacritics |
-| Design artifact audit | Passed; DESIGN.md is the sole visual contract |
+- 4 component tests and 15 Chrome behavior tests passed; the 5 responsive/opt-in checks passed again after the final portrait framing adjustment.
+- TypeScript, ESLint, production build and the design artifact audit passed.
+- Reviewed 390, 768, 1440px and the actual 1013px in-app window. No horizontal overflow. Axe WCAG 2/2.1 A/AA found no violations in entry/contact at all three widths.
+- Video time advances with native scrolling and returns near zero in reverse; readyState 4 was observed in the in-app browser. The first regression failed against the old video-free page, then passed after implementation.
+- Mobile/tablet initially requests one still and no movie. Explicit start, final frame, reverse navigation, pause/restart, resize and return from contact preserve expected behavior.
+- Reduced motion, failed movie requests, JavaScript-disabled essential content, direct fragments, Escape, browser Back, focus return, inquiry validation and PDF response/download passed. No inquiry was sent.
+- The scroll regression waits for preceding smooth anchor navigation to finish before a wheel input; the earlier test could otherwise race Chrome's pending navigation.
 
-The four former white content bands have been replaced by fixed captions that fade during camera travel. About, services, preparation, sourced projects and contact open in a native modal over the scene. Escape, the close action, browser Back, direct fragments and return to the same camera position are covered. Focus returns to the opener, or the mobile menu button when its link has been hidden. The underlying captions disappear while reading so they do not show through the form.
+## Visual and asset evidence
 
-The inquiry validates Croatian inline errors and prepares a reviewable mailto draft; it never sends or stores a message. All internal targets and the ungated PDF download are checked. Without JavaScript the semantic business content is visible and the interactive form is hidden.
+Higgsfield GPT Image 2.5 Flare generated a 3840×2160 master from the original logo and owner's dark reference. Seedance 2.5 generated the silent 1920×1080 move at 24fps, duration 7.042 seconds. Eight sampled frames and actual forward/reverse website interaction were inspected. The A retains triangular plates and different reds; concrete portals, slabs, reinforcement and wet reflections remain coherent through the camera move. The film is conceptual artwork, not project photography or a pixel-exact replacement logo.
 
-## Asset evidence
+A 24-second request was rejected before submission for insufficient credits. A seven-second film was successfully generated for 63 credits. This release uses that continuous shot across four caption moments; it does not contain four new locations or 24 seconds of footage. A longer journey needs additional source footage and generation credits. No purchase was made.
 
-Higgsfield 3D Jutsu project `4b8b4f3c-d1ea-4cec-aa5c-402de6054dd6`, final committed revision **9**, operation `adduco-lifting-camera-finish-01`. Its rendered camera and exported geometry were inspected. The export contains **183 construction parts**, **13 semantic portal fragments**, and **zero classical/fluted columns**. Concrete frames, walls, slabs, casting details, rebar and lifting hardware replace antique architecture and planted circular islands.
+Higgsfield ffmpeg produced H.264/yuv420p, no audio, six-frame keyframe intervals, no B-frames and fast-start metadata. Desktop 1920×1080: 13,240,209 bytes. Narrow-screen 1280×720: 5,405,535 bytes. Twelve film-derived WebP stills are 46–147KB each; the initial phone image is 53,882 bytes. Frequent keyframes favor reverse seeking and surface detail at the cost of larger movies. Stills/content appear before decoding; mobile and reduced-motion defaults do not download video until requested. No permanent render loop or third-party visitor request remains.
 
-The original 6,239,560-byte export is delivered as a 658,396-byte WebP/Meshopt GLB. Seven source-sampled red materials map to the thirteen original emblem triangles. Original supplied logo remains untouched; header and PDF derivatives preserve its actual shapes and shade differences. The web renderer adds the Higgsfield-generated concrete albedo, derived surface maps, evening sky, and textured wet reflections. Generator/source links are in CONTENT-SOURCES.md.
-
-Twelve UI-free desktop/tablet/mobile stills use the same final geometry and website camera. Only the first still loads initially; later images load on demand and the previous image remains while a new one loads. Returning to an already loaded frame is tested. Stills are approximately 64–102KB each. Screenshots and working renders remain outside the repository under `/tmp/adduco-qa/`.
+Portrait framing fits the full emblem below the header even at the final close view, with a gradual lower fade for captions. Actual iPhone/Safari hardware decoding has not been tested: mobile evidence uses Chrome viewport/touch emulation and the in-app browser. Retired WebGL code, meshes, maps and unused Three.js/GSAP dependencies were removed; their source remains in Git history and the editable Higgsfield project.
 
 ## Performance
 
-Local Lighthouse 13.4.1 / Chrome 153 lab measurements, not field Core Web Vitals. Mobile: 412×823, 4× CPU, 150ms RTT, 1.64Mbps. Desktop: 1350×940, 1× CPU, 40ms RTT, 10.24Mbps. Devices, GPUs, hosting and networks will differ.
+Local Lighthouse 13.4.1 / Chrome 153 lab measurements, not field Core Web Vitals. Mobile: 412×823, 4× CPU, 150ms RTT, 1.64Mbps. Desktop: 1350×940, 1× CPU, 40ms RTT, 10.24Mbps.
 
 | Metric | Mobile | Desktop |
 | --- | ---: | ---: |
@@ -38,17 +32,14 @@ Local Lighthouse 13.4.1 / Chrome 153 lab measurements, not field Core Web Vitals
 | Accessibility | 100/100 | 100/100 |
 | Best practices | 100/100 | 100/100 |
 | First contentful paint | 1.51s | 0.37s |
-| Largest contentful paint | 2.26s | 0.51s |
-| Total blocking time | 0ms | 16.5ms |
-| Cumulative layout shift | 0 | 0.0000015 |
+| Largest contentful paint | 2.18s | 0.55s |
+| Total blocking time | 0ms | 0ms |
+| Cumulative layout shift | 0 | 0.0000023 |
 
-The initial construction pass measured 92 mobile / 75 desktop. Deferred still loading reduced mobile LCP from 3.23s to 2.26s. An unlit sky dome and asynchronous preparation of the reflection shader variants removed the first-frame compilation stall, reducing desktop blocking time from 644ms to 16.5ms. GPU uploads and geometry batches still yield between tasks; DPR is capped, quality adapts, and idle/hidden views stop rendering. Three.js remains a deferred 652KB raw / 165KB gzip chunk, causing Vite's normal chunk-size advisory.
-
-Raw reports: `/tmp/adduco-qa/lighthouse-construction-mobile-final.json` (08:58:32 UTC), `/tmp/adduco-qa/lighthouse-construction-desktop-final.json` (08:59:51 UTC). The later cache-return behavior fix does not alter initial loading. Fallback captures were refreshed after sky preparation changed. INP was not measured. SEO is 69 because this owner-private preview intentionally blocks indexing; no public-launch SEO claim is made.
+These measure initial presentation, not full movie download or sustained decoding on every device. INP was not measured. SEO is 69 because the private preview intentionally blocks indexing. Reports: /tmp/adduco-qa/lighthouse-cinema-mobile-final.json (18:36:16 UTC), /tmp/adduco-qa/lighthouse-cinema-desktop-final.json (18:36:26 UTC). Screenshots, contact sheets and raw media remain outside the repository.
 
 ## Delivery boundaries
 
-- Desktop windows from 768px start 3D automatically. Phones, coarse-pointer tablets below 1024px, reduced-motion/save-data and limited-memory devices use the lighter still presentation, with an explicit “Pokreni 3D” control.
-- Business scope now includes user-confirmed visokogradnja. Project photography and final public-launch copy/recipient approval remain pending.
-- The environment is conceptual artwork, not photography of completed Adduco projects. Generated surface textures are not measured material scans.
-- Source, tests, configuration, project/content/QA documentation, editable asset/PDF generators, optimized assets and the supplied logo are intentional repository files. Build output, dependencies, test output and drafts are not shipped as source.
+The original logo and faithful header/PDF derivatives remain unchanged. Visokogradnja is included. Approved project photos, final public-launch copy, recipient confirmation and privacy/domain setup remain pending. Preserve owner-private access and the reviewable mailto behavior.
+
+Intentional files: application source, tests, build/hosting configuration, one DESIGN.md, project/content/QA documentation, generation provenance, PDF generator, optimized movies/stills, the PDF and supplied logo. No drafts or unused render assets remain.

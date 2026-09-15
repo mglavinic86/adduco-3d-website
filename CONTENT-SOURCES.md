@@ -22,11 +22,12 @@ Checked 15 September 2026. User confirmed the Metković company (OIB 40912050957
 ## Asset distinction
 Higgsfield sculptures and rendered garden imagery are original conceptual illustrations. They must never be presented as photographs of Adduco projects. Publicly accessible news images are not assumed licensed. No stock or AI-built villa may stand in for a portfolio project.
 
-Current geometric source: Higgsfield 3D Jutsu project `4b8b4f3c-d1ea-4cec-aa5c-402de6054dd6`. The final construction revision is recorded in QA.md. Thirteen source-mapped red shades/faces retain the supplied identity; contemporary concrete frames, walls, slabs, reinforcement and lifting chains replace the classical columns. `scripts/garden.py` reproduces the editable construction scene. Web geometry uses WebP/Meshopt compression with semantic fragment names preserved.
-
-- Evening sky: Higgsfield generation `631b6ecf-a492-4856-b2a4-a142c0488177`, optimized through Higgsfield.
-- Concrete albedo: Higgsfield generation `e44017ce-9360-4055-acad-6cb93b2a0200`. Normal and roughness derivatives produced through Higgsfield. These are generated material textures, not measured scans. They are applied by the web renderer to structural concrete.
-- Desktop, tablet and mobile stills come from the same live scene and camera. Concepts are art direction, not baked website screenshots.
+Current film provenance:
+- Master: Higgsfield GPT Image 2.5 Flare, maximum quality, 3840×2160, generation `658b6fbf-87b6-482f-97a7-f88a29b26f43`. References: original logo media `913aee89-c7f8-40b3-b3e7-2425cadbfbdf` and owner-supplied dark-reference screenshot `ea667f0a-c0b9-44eb-beba-b500fc4e4107`.
+- Film: Higgsfield Seedance 2.5, 1080p, high bitrate, silent seven-second continuous camera move, generation `19cdd0c5-d2e7-4a95-b3ae-f17fc80fa474`. Generated concrete, steel, slabs and reinforcement are conceptual artwork. The sculptural A references the logo; it is not a replacement logo or a claim of exact vector geometry.
+- Web conversions: Higgsfield ffmpeg, H.264/yuv420p, six-frame keyframe interval, no B-frames, fast-start metadata. Desktop media `10d208e6-35f6-497c-b4dc-3ff1db04a0b4`; narrow-screen media `1a5397e7-a79f-49e9-b28f-a53bf536db0f`. Frame archive `53f1b6aa-2e0b-4ece-b578-2a0844a904b3`.
+- Twelve responsive stills are extracted from this same film. No scene has baked headings or controls. Prompts and conversion settings are retained in `scripts/cinema.json`.
+- The earlier editable 3D Jutsu world remains in Higgsfield project `4b8b4f3c-d1ea-4cec-aa5c-402de6054dd6`, revision 9; its runtime, maps and GLB have been removed from the website because the owner requested greater realism. Its authoring code remains available in Git history.
 
 ## Excluded entity
 ADDUCO d.o.o. in Velika Gorica, OIB 63670984387, and the adduco9.webnode.hr/Njuškalo listing belong to a different company. Do not merge their contact details, brand, or projects.

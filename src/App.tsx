@@ -7,6 +7,7 @@ import {
   type CSSProperties,
 } from "react";
 import { journeyProgress } from "./journey";
+import CinematicFilm from "./CinematicFilm";
 import BusinessContent, { detailTitles, type Detail } from "./BusinessContent";
 import { Arrow, Wordmark } from "./ui";
 const chapters = [
@@ -75,36 +76,11 @@ function Experience({
   active: number;
   onFail: () => void;
 }) {
-  const host = useRef<HTMLDivElement>(null);
   const [loadedStills, setLoadedStills] = useState([true, false, false, false]);
   const [shownStill, setShownStill] = useState(0);
   useEffect(() => {
     if (loadedStills[active]) setShownStill(active);
   }, [active, loadedStills]);
-  useEffect(() => {
-    if (still || !host.current) return;
-    let disposed = false;
-    let cleanup: (() => void) | undefined;
-    const parent = host.current;
-    const timeout = window.setTimeout(() => {
-      import("./scene")
-        .then(async ({ mountGarden }) => {
-          if (disposed) return;
-          cleanup = await mountGarden(parent, () => {
-            if (!disposed) onFail();
-          });
-          if (disposed) cleanup?.();
-        })
-        .catch(() => {
-          if (!disposed) onFail();
-        });
-    }, 120);
-    return () => {
-      disposed = true;
-      clearTimeout(timeout);
-      cleanup?.();
-    };
-  }, [still, onFail]);
   return (
     <div className="world" aria-hidden="true">
       <div className="world-stills">
@@ -124,7 +100,7 @@ function Experience({
                   src={`/assets/chapter-${i}.webp`}
                   alt=""
                   width="1600"
-                  height="1000"
+                  height="900"
                   fetchPriority={i === 0 ? "high" : undefined}
                   loading="eager"
                   onLoad={() => {
@@ -143,7 +119,7 @@ function Experience({
             ),
         )}
       </div>
-      <div ref={host} className="world-canvas" />
+      {!still && <CinematicFilm onFail={onFail} />}
       <div className="world-wash" />
     </div>
   );
@@ -410,7 +386,7 @@ export default function App() {
           <span className="mode-icon" aria-hidden="true">
             {still ? "▶" : "Ⅱ"}
           </span>
-          <span>{still ? "Pokreni 3D" : "Zaustavi 3D"}</span>
+          <span>{still ? "Pokreni animaciju" : "Zaustavi animaciju"}</span>
         </button>
       </div>
       {ready && (

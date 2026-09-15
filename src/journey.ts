@@ -1,4 +1,4 @@
-/** Native scroll is the shared clock for both HTML captions and the 3D camera. */
+/** Native scroll is the shared clock for HTML captions and the cinematic camera. */
 export function journeyProgress() {
   const first = document.getElementById("vizija");
   const next = document.getElementById("povjerenje");

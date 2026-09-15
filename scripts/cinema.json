@@ -1,0 +1,61 @@
+{
+  "master": {
+    "id": "658b6fbf-87b6-482f-97a7-f88a29b26f43",
+    "type": "image",
+    "status": "pending",
+    "model": "gpt_image_2_5",
+    "params": {
+      "prompt": "Create ONE cinematic photoreal 16:9 master establishing frame for a premium construction company's continuous film. First reference is the ORIGINAL ADDUCO identity: meticulously preserve the triangular tessellated A emblem silhouette, central opening, separate small inner triangle, precise triangle layout and the DIFFERENT burgundy, crimson and scarlet shades across faces. Only the emblem becomes a monumental thick engineered red enamel steel sculpture. Do not include lettering. Second reference is a screenshot: use ONLY the pictured dark industrial construction scene as art direction, completely exclude every interface, text, logo header, border and screenshot background. We need a fully photographic high-end architectural film frame, not a website mockup or game render. Wide low camera at 1.5m, 32mm cinema lens, 5-metre tall A occupying center-right at 64% image width, entirely visible with breathing space, suspended by two taut heavy steel lifting chains attached through engineered lugs. Behind it massive contemporary reinforced-concrete rectangular portal frame, partially built multi-storey concrete structure with deep floor slabs and believable supports. A ribbed reinforcement cage and precast wall panels at the far edges establish foreground depth. Open travel corridor through concrete frames visible behind the A, no obstructions along the camera path. Detailed tactile poured concrete: pores, subtle formwork grain, tie holes, casting seams, damp dark patches, slightly chipped edges. Real machined bolts, steel welds, varied red enamel micro scratches, convincing mass and thickness. Dark wet concrete ground and shallow puddles reflect the red A and warm linear construction lighting. Cool blue hour, dramatic overcast sky, distant Croatian karst ridge. Strong yet restrained warm grazed light on concrete and cool sky fill; physically accurate ray-traced contact shadows and reflections, nuanced midtones, restrained photographic grading, broad dynamic range, no excessive bloom or fog. Left 30% intentionally quiet and darker to receive HTML headlines later, but no text generated anywhere. Monumental, expensive, grounded, hyperreal. Entire scene is contemporary construction; no classical columns, vegetation, fantasy, smooth toy plastic, miniature/diorama look, floating unconnected pieces, people, watermarks, text or UI. Do not distort the logo into a generic A.",
+      "aspect_ratio": "16:9",
+      "reference_images": [
+        "913aee89-c7f8-40b3-b3e7-2425cadbfbdf",
+        "ea667f0a-c0b9-44eb-beba-b500fc4e4107"
+      ],
+      "variant": "flare",
+      "quality": "max",
+      "resolution": "4k"
+    }
+  },
+  "film": {
+    "id": "19cdd0c5-d2e7-4a95-b3ae-f17fc80fa474",
+    "type": "video",
+    "status": "pending",
+    "model": "seedance_2_5",
+    "params": {
+      "prompt": "One unbroken 7-second hyperreal cinematic architectural shot, starting exactly from the supplied first frame. This is a luxury construction brand film with heavy concrete, actual metal, physically accurate reflections and restrained blue-hour lighting. Preserve the red tessellated A's exact silhouette and geometry, every triangular panel and its distinct burgundy/crimson/scarlet shade, central opening, bolts, edge thickness and lifting chains. Reference image 2 is the original identity only, never display its flat white background or lettering. The massive sculpture and all architecture remain rigid and stationary; only the camera moves. Execute a smooth powerful motion-control dolly: camera starts low at 1.5m, travels 2.5m forward while arcing 25 degrees right around the suspended A and rising gently to 2.2m. Reveal its deep steel sides, richly textured concrete portal, wet reinforced concrete footing and the multi-storey slab structure behind with strong natural foreground parallax. Keep the entire A on center-right with breathing space throughout, quiet left third for later HTML copy. Slightly slow ease at both ends, no abrupt stops, final composition a compelling three-quarter view of the same A with reinforcement cage and slabs in depth. Expensive cinematic photography, deep architectural focus, believable rough concrete pores and formwork grain, wet enamel micro scratches, subtle water movement and coherent changing specular reflections. Warm construction strip lights and cool dramatic sky, natural broad dynamic range. No cuts, montage, scene changes, zoom-only movement, dissolves, logo deformation, melting geometry, assembly, appearing objects, floating concrete, people, vegetation, ancient columns, text, UI, watermarks or sound.",
+      "aspect_ratio": "16:9",
+      "duration": 7,
+      "reference_images": [
+        "658b6fbf-87b6-482f-97a7-f88a29b26f43",
+        "913aee89-c7f8-40b3-b3e7-2425cadbfbdf"
+      ],
+      "mode": "omni_reference",
+      "resolution": "1080p",
+      "bitrate_mode": "high",
+      "generate_audio": false
+    }
+  },
+  "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_182349_19cdd0c5-d2e7-4a95-b3ae-f17fc80fa474.mp4",
+  "encoding": {
+    "desktop": {
+      "codec": "libx264",
+      "preset": "medium",
+      "crf": 18,
+      "keyint": 6,
+      "bframes": 0,
+      "pixelFormat": "yuv420p",
+      "movflags": "+faststart",
+      "audio": false
+    },
+    "mobile": {
+      "width": 1280,
+      "crf": 20
+    },
+    "stills": {
+      "timeRule": "(source duration - 0.15) * chapter index / 3",
+      "widths": [1600, 1024, 780],
+      "webpQuality": 86
+    }
+  },
+  "processing": "Higgsfield sandbox ffmpeg / Pillow"
+}

@@ -46,7 +46,7 @@ describe("Investor journey", () => {
       expect(
         document.querySelector(link.getAttribute("href")!),
       ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Pokreni 3D" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Pokreni animaciju" })).toBeVisible();
   });
   it("validates an inquiry and prepares a reviewable email without claiming it was sent", async () => {
     render(<App />);

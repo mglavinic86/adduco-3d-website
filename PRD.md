@@ -1,5 +1,8 @@
 # Adduco — local website
 
+## Cinematic realism amendment — 15 September 2026
+The owner requested photorealistic video-quality construction graphics, suggesting Seedance 2.5 through Higgsfield. Replace the visible real-time render with a continuous generated film controlled by native scroll, retaining the accepted dark industrial direction, original logo, four caption waypoints, services including visokogradnja, and all detail/inquiry behavior. A seven-second 1080p proof fits the current credit balance; the longer 24-second request was rejected before submission. Verify the film before release, clearly distinguish this first cinematic version from a longer future journey, and preserve the existing private Sites audience. Reduced-motion and constrained-device access uses selected film frames without downloading the movie until requested.
+
 ## Hosting amendment — 15 September 2026
 After accepting the local delivery, the user requested publication through Sites. Host this implementation with the default owner-private audience; preserve existing functionality and content limitations. This supersedes the original local-only delivery boundary for Sites publication, including its required source/version workflow. A public audience or other hosting provider still requires a separate user request.
 
@@ -10,7 +13,7 @@ Private and commercial investors need to understand Adduco's construction offeri
 The user selected continuous cinematic travel with all business content over the 3D scene. Remove editorial bands; preserve real copy and inquiry/PDF behavior. Detail panels support direct URLs, Escape/Back, focus return and unchanged camera position. Correct per-triangle logo shades. Deploy the accepted result through the existing owner-private Site.
 
 ## Solution
-A Croatian-language business website connected to one original four-chapter sculpture garden. The user selected Gallery Journey: expansive architectural scenes with compact readable content, direct navigation, and an accessible inquiry route. Delivery is localhost only.
+A Croatian-language business website connected to one original cinematic construction environment. Four caption moments accompany continuous camera travel, with direct business navigation and an accessible inquiry route. Deliver locally and through the authorized owner-private Site.
 
 ## User stories
 1. As an investor, I can immediately understand the company and its offering.
@@ -22,22 +25,22 @@ A Croatian-language business website connected to one original four-chapter scul
 7. I can download the Croatian preparation checklist without an email gate.
 8. I can validate and prepare a short inquiry, with an honest description of its delivery method.
 9. I can use the site with a keyboard and screen reader.
-10. I can use a complete page on mobile, with reduced motion, or without WebGL.
-11. I can access essential content before 3D downloads and without client-side JavaScript.
+10. I can use a complete page on mobile, with reduced motion, or if video cannot load.
+11. I can access essential content before movie downloads and without client-side JavaScript.
 12. I can pause animation or choose a simpler presentation.
 13. As the owner, I can inspect the local implementation and its measured performance before publishing.
 
 ## Implementation decisions
-- React, TypeScript, Vite, Three.js, and GSAP. Pre-render essential React content into the built HTML; hydrate interactive controls independently of lazy-loaded 3D.
-- One continuous world in the selected Crveni monolit direction: four red/neutral-concrete sculptures based on the supplied triangular logo, textured fluted pillars, restrained planting, shallow water and neutral daylight. Scroll remains native. A measured path maps document scroll to camera progress; no wheel interception.
-- Use Higgsfield MCP's editable Blender scene builder and GLB export for actual geometric assets. Generated stills are fallback artwork, never photographs of completed projects. Shared geometry and named semantic sculpture parts support consistency and portal assembly.
-- Cap pixel ratio, throttle frames when idle, suspend hidden scenes, and choose a simpler mode for narrow viewports, reduced motion, resource-constrained devices, or context failure.
+- React, TypeScript and Vite. Pre-render essential React content into built HTML; hydrate controls independently of movie loading.
+- One continuous dark construction world: a suspended tessellated red steel emblem, concrete portals, walls, slabs, reinforcement and wet reflections. No classical columns or planting. A generated film provides photographic materials and camera motion. Native document progress selects video frames without wheel interception.
+- Generate a master through Higgsfield GPT Image 2.5 using the original logo and owner-approved dark reference, then animate it through Seedance 2.5. Generated stills are fallback artwork, never photographs of completed projects.
+- Serialize seeks and skip stale targets. Do no work while idle or hidden. Phones, touch tablets, reduced-motion and resource-constrained devices start with stills; explicit animation controls remain available. Media failure preserves content.
 - Contact begins with browser validation and a reviewable email draft. No message is sent during testing. An automatic form delivery service requires separate configuration and approval.
-- No database, credentials, analytics, cookies requiring consent, migrations, deployment, or external issue publishing.
+- No database, analytics, cookies requiring consent, migrations or external issue publishing. Deployment is authorized only through the existing private Site; no credential is stored in source.
 - The user confirmed ADDUCO d.o.o., Metković, OIB 40912050957. Use sourced facts only; track uncertain brand assets and project images separately.
 
 ## Testing decisions
-Use behavioral tests through the rendered page: direct navigation, form validation and email preparation, real PDF response, scrolling and chapter state, reduced motion, mobile and WebGL fallback. Do not couple tests to mesh counts or component internals. TDD proceeds one runnable slice at a time. Browser QA at 390, 768, and 1440 pixels includes screenshots, keyboard use, page errors, overlap, overflow, and CTA visibility. Performance reports are local laboratory measurements, never field Core Web Vitals claims.
+Use behavioral tests through the rendered page: direct navigation, form validation and email preparation, real PDF response, scrolling and chapter state, video seeking in both directions, reduced motion, mobile opt-in and failed media fallback. Do not couple tests to component internals. TDD proceeds one runnable slice at a time. Browser QA at 390, 768, and 1440 pixels includes screenshots, keyboard use, page errors, overlap, overflow, and CTA visibility. Performance reports are local laboratory measurements, never field Core Web Vitals claims.
 
 ## Out of scope
 Public deployment, sending test inquiries, made-up portfolio entries, business guarantees, invented testimonials, or unverified certifications. Automatic inquiry delivery is not configured in this local build.
