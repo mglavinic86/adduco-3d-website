@@ -17,10 +17,9 @@ try {
   ]) {
     const page = await browser.newPage({ viewport: { width, height } });
     await page.goto(url);
-    const mode = page.getByRole("button", { name: "Mirni prikaz" });
+    const mode = page.getByRole("button", { name: "Pokreni 3D" });
     await page.waitForTimeout(300);
-    if ((await mode.getAttribute("aria-pressed")) === "true")
-      await mode.click();
+    if (await mode.isVisible()) await mode.click();
     await page.locator("canvas.ready").waitFor({ timeout: 30000 });
     await page.addStyleTag({
       content:

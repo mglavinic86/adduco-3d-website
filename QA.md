@@ -10,7 +10,7 @@ Verified 15 September 2026 against the production preview at http://127.0.0.1:51
 | `npm run typecheck` | Passed; also included in production build |
 | `npm run lint` | Passed |
 | `npm run build` | Passed; essential content pre-rendered |
-| `npm run test:e2e` | 9 Chrome tests passed, final run 18.8 seconds |
+| `npm run test:e2e` | 10 Chrome tests passed after the narrow-window fix, final run 22.8 seconds |
 | Responsive browser review | 390, 768 and 1440px; no horizontal overflow |
 | Automated accessibility | Axe WCAG 2 A/AA and 2.1 AA: no violations at all three widths |
 | Browser diagnostics | No recorded JavaScript or console errors |
@@ -42,7 +42,13 @@ Raw reports: `/tmp/adduco-qa/lighthouse-mobile-final.json` (05:03:50 UTC), `/tmp
 
 ## Delivery boundaries
 
-- Local preview is running on port 5184. No public deployment, push or commit was performed.
+### Hosted animation follow-up
+
+The reported animation failure was reproduced in the user's 1013×941 in-app browser: the old `<1024px` width rule selected still mode even on a desktop. Manually enabling the scene on Sites produced a ready canvas with no logged errors, confirming the hosted assets and renderer worked. Desktop windows from 768px now start 3D; the tablet shortcut additionally requires a coarse pointer. Phones, reduced motion, limited device memory and save-data still receive the lighter default. The button now states its action: “Pokreni 3D” or “Zaustavi 3D”.
+
+A new regression first failed at the user's exact viewport, then passed after the fix. It verifies automatic 3D startup, a changing rendered scene after chapter navigation, explicit pause across a resize and restarting 3D. The tablet test now emulates touch input. All 3 component tests, 10 browser tests, typecheck, lint and build pass. Scene geometry and the mobile/default desktop performance paths are unchanged; the Lighthouse measurements above are from the original run, not a new measurement of this fix.
+
+- Local preview remains on port 5184. The implementation is also published privately through Sites with its required source repository; no public audience has been enabled.
 - Approved real project photography and final owner review of project captions/creative copy remain pending.
 - The form validates and prepares a mailto draft. It does not send or store submissions. Automatic delivery, recipient confirmation and production privacy/domain configuration remain pending.
 - Higgsfield revision 4 is the editable geometric source. The garden is conceptual artwork and is not presented as completed-project photography.

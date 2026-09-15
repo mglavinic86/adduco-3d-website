@@ -1,8 +1,12 @@
 import { test, expect } from "@playwright/test";
 test("tablet starts in the lighter presentation without requesting a 3D model", async ({
-  page,
+  browser,
 }) => {
-  await page.setViewportSize({ width: 768, height: 1024 });
+  const context = await browser.newContext({
+    viewport: { width: 768, height: 1024 },
+    hasTouch: true,
+  });
+  const page = await context.newPage();
   const models: string[] = [];
   page.on("request", (request) => {
     if (request.url().endsWith(".glb")) models.push(request.url());
@@ -10,10 +14,30 @@ test("tablet starts in the lighter presentation without requesting a 3D model", 
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Mirni prikaz" }),
-  ).toHaveAttribute("aria-pressed", "true");
+    page.getByRole("button", { name: "Pokreni 3D" }),
+  ).toBeVisible();
   await page.waitForTimeout(500);
   expect(models).toEqual([]);
+  await context.close();
+});
+test("a narrow desktop opens an animated garden and preserves an explicit pause on resize", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1013, height: 941 });
+  await page.goto("/");
+  await expect(page.locator("canvas.ready")).toBeVisible({ timeout: 30000 });
+  await expect(page.getByRole("button", { name: "Zaustavi 3D" })).toBeVisible();
+  const firstChapter = await page.locator("canvas").screenshot();
+  await page.locator('.journey-dock a[href="#povjerenje"]').click();
+  await expect(page.locator('#povjerenje .chapter-content')).toBeInViewport();
+  expect(await page.locator("canvas").screenshot()).not.toEqual(firstChapter);
+  await page.getByRole("button", { name: "Zaustavi 3D" }).click();
+  await expect(page.locator("canvas")).toHaveCount(0);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(page.getByRole("button", { name: "Pokreni 3D" })).toBeVisible();
+  await expect(page.locator("canvas")).toHaveCount(0);
+  await page.getByRole("button", { name: "Pokreni 3D" }).click();
+  await expect(page.locator("canvas.ready")).toBeVisible({ timeout: 30000 });
 });
 test("checklist download returns a real PDF without an email gate", async ({
   request,
@@ -119,8 +143,8 @@ test("reduced motion and unavailable WebGL keep a usable illustrated page", asyn
       });
     await page.goto("/");
     await expect(
-      page.getByRole("button", { name: "Mirni prikaz" }),
-    ).toHaveAttribute("aria-pressed", "true");
+      page.getByRole("button", { name: "Pokreni 3D" }),
+    ).toBeVisible();
     await expect(page.locator(".world-stills img").first()).toHaveJSProperty(
       "naturalWidth",
       1600,
@@ -168,12 +192,12 @@ test("mode changes and keyboard access preserve a working page", async ({
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   await expect(page.locator("canvas.ready")).toBeVisible({ timeout: 30000 });
-  await page.getByRole("button", { name: "Mirni prikaz" }).click();
+  await page.getByRole("button", { name: "Zaustavi 3D" }).click();
   await expect(page.locator("canvas")).toHaveCount(0);
   await expect(
-    page.getByRole("button", { name: "Mirni prikaz" }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Mirni prikaz" }).click();
+    page.getByRole("button", { name: "Pokreni 3D" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Pokreni 3D" }).click();
   await expect(page.locator("canvas.ready")).toBeVisible({ timeout: 30000 });
   await expect(page.locator("canvas")).toHaveCount(1);
   await page.goto("/?fallback");

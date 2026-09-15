@@ -35,7 +35,7 @@ Four distinct related sculptures: (1) tessellated red A, deep triangular prisms 
 Portable maps and UVs must survive GLB batching. Neutral daylight must retain shaded faces and contact. Avoid excessive exposure/fog and mesh counts; batch by shared material. Camera stays human-height, clears geometry and reveals chapters gradually.
 
 ## Motion and resilience
-Native scroll and short camera settling. Portal assembly explains joining. No sound. Still control, capped DPR, idle/offscreen rendering suspension and adaptive quality. Portrait and low-powered devices default to composed stills. Reduced motion removes nonessential animation. Still assets contain only artwork, never baked text or controls.
+Native scroll and short camera settling. Portal assembly explains joining. No sound. Explicit “Pokreni 3D” / “Zaustavi 3D” controls, capped DPR, idle/offscreen rendering suspension and adaptive quality. Phones below 768px, touch tablets below 1024px and low-powered devices default to composed stills. Narrow desktop windows from 768px run 3D automatically; viewport width alone must not classify a desktop as a tablet. Reduced motion removes nonessential animation. Still assets contain only artwork, never baked text or controls.
 
 ## Accessibility and proof
 Prerendered semantic content, one h1, skip link, visible focus, named controls, AA contrast, 44px targets and Croatian inline errors. Essential content and direct contact survive without JavaScript/WebGL. Escape closes menu and restores focus.

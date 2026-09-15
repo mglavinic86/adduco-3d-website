@@ -26,8 +26,7 @@ describe("Investor journey", () => {
       expect(
         document.querySelector(link.getAttribute("href")!),
       ).toBeInTheDocument();
-    const mode = screen.getByRole("button", { name: /Mirni prikaz/i });
-    expect(mode).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Pokreni 3D" })).toBeVisible();
   });
   it("validates an inquiry and prepares a reviewable email without claiming it was sent", async () => {
     render(<App />);

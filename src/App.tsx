@@ -166,7 +166,8 @@ export default function App() {
     };
     setStill(
       mq.matches ||
-        innerWidth < 1024 ||
+        innerWidth < 768 ||
+        (innerWidth < 1024 && matchMedia("(pointer: coarse)").matches) ||
         Boolean(connection.connection?.saveData) ||
         (connection.deviceMemory ?? 8) <= 4 ||
         new URLSearchParams(location.search).has("fallback"),
@@ -582,11 +583,10 @@ export default function App() {
         </nav>
         <button
           className="mode-button"
-          aria-pressed={still}
           onClick={() => setStill(!still)}
         >
-          <span className="mode-icon">{still ? "Ⅱ" : "◌"}</span>
-          <span>Mirni prikaz</span>
+          <span className="mode-icon" aria-hidden="true">{still ? "▶" : "Ⅱ"}</span>
+          <span>{still ? "Pokreni 3D" : "Zaustavi 3D"}</span>
         </button>
       </div>
       <script
