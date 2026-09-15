@@ -71,6 +71,11 @@ Use the accepted UI-free framing anchors as responsive fallback images. Phone AV
 
 ## Motion and resilience
 
+### Overlay and interface finish — approved follow-up
+Keep the accepted films, camera seeking and stable viewport unchanged. Captions have a fully opaque reading hold around their framing anchor, then a short 160ms entrance/exit with at most 10px of movement. Opacity must settle even when the visitor stops scrolling midway between anchors; only the currently relevant caption is interactive. Use a soft, localized reading scrim and a lighter full-scene wash to preserve concrete and reflections. Compact phone layouts reserve space for the artwork, keep the action and chapter navigation apart, and account for lower viewport heights.
+
+The mobile menu uses the same restrained dark material, larger numbered links and small directional arrows. Opening it focuses the first link; Escape or a click outside dismisses it, and choosing a detail restores focus to the menu button on return. Contact uses an adaptive two-column layout when the panel has enough room, a compact single column on phones, readable 16px form inputs, and clear focus/error states. The form continues to prepare a reviewable email draft. Panel entrances and button feedback are brief; reduced motion removes non-essential transitions. Approved project photography remains a later content phase.
+
 ### Continuity correction
 Mobile browser chrome must not resize or recrop the cinematic world: size the shared film/still/wash surface to the stable large viewport (`100lvh`), anchored at the top, so the extra bottom area is already present when the address bar retracts. Keep chapter distances in stable small viewport units (`svh`); only real viewport/orientation changes should alter those dimensions. Header, captions and navigation remain accessible within the visible viewport. Restore an initial fragment once after the enhanced layout commits, never again on late `window.load` after the visitor has started scrolling. Regression coverage models fixed small/large viewport units while varying visible height; this is layout evidence, not a substitute for physical Android compositor verification.
 

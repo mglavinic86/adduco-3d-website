@@ -1,5 +1,11 @@
 # Vertical implementation slices
 
+## Overlay and interface finish
+
+- UI1 — AFK, complete: captions settle at full opacity with a 160ms transition and at most 10px of movement. Chrome and WebKit regressions reproduced stalled partial opacity and initial overlapping titles before the fixes. Keep layout centering separate from the animated translation to avoid an initial vertical jump. Decoded-film progress remains the caption source; movies and camera seeking are unchanged.
+- UI2 — AFK, complete; depends on UI1: localized caption contrast preserves visible concrete and reflections, with compact 360×640 composition and safe-area spacing. The numbered mobile menu focuses its first link, dismisses on Escape/outside click and restores focus after details. Chrome and WebKit behavior checks pass; native scrolling and stable viewport sizing are preserved.
+- UI3 — AFK, local QA complete; depends on UI2: adaptive contact columns, readable 16px inputs, clearer focus/error states and brief panel/control feedback. The inquiry remains an unsent, reviewable email draft. All 59 Chrome/WebKit browser checks pass with one worker, alongside four component tests, typecheck and lint. Five concurrent workers caused a movie-image comparison timeout and undersampled a 180ms blend; both passed twice independently, followed by the complete sequential suite. Visual review covers 360×640 and 390/768/1440px layouts, with direct navigation, reduced motion and focus/scene return. Ready for the existing owner-private Sites publication; physical Android verification remains a device check.
+
 ## Mobile toolbar and late-load correction
 
 - VP1 — AFK, complete locally: reproduce `#vizija` rewinding from 950px to 0 when a delayed image finishes loading. Restore the initial fragment in a layout effect only after the enhanced layout commits. Chrome and WebKit regression failed before removal of the late-load restoration and passed afterward. Direct-chapter testing also exposed a startup frame running before enhanced heights existed (1400px instead of 3220px); all eight repeated Chrome checks passed after tying restoration to the committed layout.

@@ -15,6 +15,7 @@ export default defineConfig({
         "**/webkit-film.spec.ts",
         "**/opening.spec.ts",
         "**/viewport.spec.ts",
+        "**/interface.spec.ts",
       ],
       use: {
         browserName: "webkit",

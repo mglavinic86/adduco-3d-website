@@ -149,6 +149,7 @@ export default function App() {
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLElement | null>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const navigation = useRef<HTMLElement>(null);
   const fail = useCallback(() => setStill(true), []);
   const closePanel = useCallback(() => {
     setPanel(null);
@@ -234,6 +235,17 @@ export default function App() {
   }, [panel]);
   useEffect(() => {
     if (!menu) return;
+    navigation.current
+      ?.querySelector<HTMLAnchorElement>("a")
+      ?.focus({ preventScroll: true });
+    const outside = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (
+        !navigation.current?.contains(target) &&
+        !menuButton.current?.contains(target)
+      )
+        setMenu(false);
+    };
     const escape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setMenu(false);
@@ -241,7 +253,11 @@ export default function App() {
       }
     };
     document.addEventListener("keydown", escape);
-    return () => document.removeEventListener("keydown", escape);
+    document.addEventListener("pointerdown", outside);
+    return () => {
+      document.removeEventListener("keydown", escape);
+      document.removeEventListener("pointerdown", outside);
+    };
   }, [menu]);
   function navigate(event: MouseEvent<HTMLDivElement>) {
     const link = (event.target as Element).closest<HTMLAnchorElement>(
@@ -282,15 +298,41 @@ export default function App() {
           <Wordmark />
         </a>
         <nav
+          ref={navigation}
           className={`main-nav ${menu ? "is-open" : ""}`}
           id="main-nav"
           aria-label="Glavna navigacija"
         >
-          <a href="#o-nama">O nama</a>
-          <a href="#usluge">Usluge</a>
-          <a href="#projekti">Projekti</a>
+          <span className="menu-heading" aria-hidden="true">
+            ADDUCO / ISTRAŽITE
+          </span>
+          <a href="#o-nama">
+            <span className="menu-index" aria-hidden="true">
+              01
+            </span>
+            <span>O nama</span>
+            <Arrow diagonal />
+          </a>
+          <a href="#usluge">
+            <span className="menu-index" aria-hidden="true">
+              02
+            </span>
+            <span>Usluge</span>
+            <Arrow diagonal />
+          </a>
+          <a href="#projekti">
+            <span className="menu-index" aria-hidden="true">
+              03
+            </span>
+            <span>Projekti</span>
+            <Arrow diagonal />
+          </a>
           <a href="#kontakt" className="mobile-contact">
-            Kontakt
+            <span className="menu-index" aria-hidden="true">
+              04
+            </span>
+            <span>Kontakt</span>
+            <Arrow diagonal />
           </a>
         </nav>
         <a
@@ -309,66 +351,70 @@ export default function App() {
           aria-controls="main-nav"
           onClick={() => setMenu(!menu)}
         >
-          <span>{menu ? "−" : "+"}</span>
+          <span aria-hidden="true">+</span>
         </button>
       </header>
       <main id="sadrzaj" className="journey">
-        {chapters.map((chapter, i) => (
-          <section
-            key={chapter.id}
-            id={chapter.id}
-            className={`chapter ${i === 0 ? "hero" : ""}`}
-            aria-labelledby={`title-${chapter.id}`}
-          >
-            <div
-              className="chapter-content"
-              inert={ready && Math.abs(progress - i) >= 0.48}
-              style={
-                {
-                  "--caption-opacity": Math.max(
-                    0,
-                    Math.min(1, (0.48 - Math.abs(progress - i)) / 0.16),
-                  ),
-                  "--caption-drift": `${(progress - i) * -36}px`,
-                } as CSSProperties
-              }
+        {chapters.map((chapter, i) => {
+          const visible = Math.abs(progress - i) < 0.46;
+          return (
+            <section
+              key={chapter.id}
+              id={chapter.id}
+              className={`chapter ${i === 0 ? "hero" : ""}`}
+              aria-labelledby={`title-${chapter.id}`}
             >
-              <p className="eyebrow">
-                {i === 0 ? "ADDUCO · GRAĐEVINARSTVO" : chapter.label}
-              </p>
-              {i === 0 ? (
-                <h1 id={`title-${chapter.id}`}>{chapter.title}</h1>
-              ) : (
-                <h2 id={`title-${chapter.id}`}>{chapter.title}</h2>
-              )}
-              <p className="chapter-copy">
-                {i === 0 ? (
-                  <>
-                    Visokogradnja i niskogradnja.
-                    <br />
-                    Betonski radovi i prometnice.
-                  </>
-                ) : (
-                  chapter.caption
-                )}
-              </p>
-              <a
-                className="text-link"
-                href={["#o-nama", "#usluge", "#usluge", "#kontakt"][i]}
-              >
-                {
-                  [
-                    "Upoznajte Adduco",
-                    "Istražite usluge",
-                    "Istražite usluge",
-                    "Razgovarajmo o vašem projektu",
-                  ][i]
+              <div
+                className="chapter-content"
+                inert={ready && !visible}
+                style={
+                  {
+                    "--caption-opacity": visible ? 1 : 0,
+                    "--caption-drift": visible
+                      ? "0px"
+                      : progress > i
+                        ? "-10px"
+                        : "10px",
+                  } as CSSProperties
                 }
-                <Arrow diagonal />
-              </a>
-            </div>
-          </section>
-        ))}
+              >
+                <p className="eyebrow">
+                  {i === 0 ? "ADDUCO · GRAĐEVINARSTVO" : chapter.label}
+                </p>
+                {i === 0 ? (
+                  <h1 id={`title-${chapter.id}`}>{chapter.title}</h1>
+                ) : (
+                  <h2 id={`title-${chapter.id}`}>{chapter.title}</h2>
+                )}
+                <p className="chapter-copy">
+                  {i === 0 ? (
+                    <>
+                      Visokogradnja i niskogradnja.
+                      <br />
+                      Betonski radovi i prometnice.
+                    </>
+                  ) : (
+                    chapter.caption
+                  )}
+                </p>
+                <a
+                  className="text-link"
+                  href={["#o-nama", "#usluge", "#usluge", "#kontakt"][i]}
+                >
+                  {
+                    [
+                      "Upoznajte Adduco",
+                      "Istražite usluge",
+                      "Istražite usluge",
+                      "Razgovarajmo o vašem projektu",
+                    ][i]
+                  }
+                  <Arrow diagonal />
+                </a>
+              </div>
+            </section>
+          );
+        })}
       </main>
       {!ready && (
         <div className="business-library">

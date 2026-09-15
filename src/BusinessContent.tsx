@@ -228,7 +228,7 @@ export default function BusinessContent({
       >
         <p className="eyebrow">KONTAKT</p>
         <div className="contact-grid">
-          <div>
+          <div className="contact-intro">
             <h2>
               Što želite
               <br />

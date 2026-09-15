@@ -87,7 +87,7 @@ export default function InquiryForm() {
       }}
       noValidate
     >
-      {field("name", "Ime i prezime *", "Kako vam se možemo obratiti?")}
+      {field("name", "Ime i prezime *", "Vaše ime i prezime")}
       <div className="field-row">
         {field("email", "E-pošta *", "vasa@adresa.hr", "email")}
         {field("location", "Lokacija projekta", "Mjesto ili grad")}
@@ -95,7 +95,7 @@ export default function InquiryForm() {
       {field(
         "message",
         "O vašem projektu *",
-        "Što planirate graditi? Imate li dokumentaciju, okvirni budžet ili željeni rok?",
+        "Što planirate graditi? Navedite lokaciju, okvirni rok i dostupnu dokumentaciju.",
       )}
       <p className="form-note">
         * Obavezna polja. Podaci se ovdje ne šalju niti pohranjuju. Pripremit
