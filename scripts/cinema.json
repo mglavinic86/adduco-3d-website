@@ -529,16 +529,27 @@
         "bitrate_mode": "high"
       },
       "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_460f59fb-41bc-4318-94d6-47dd2111df4b.mp4",
-      "output": "public/assets/construction-portrait-v2-1.mp4",
-      "mediaId": "3f6d1cda-3bdb-4587-a743-3c3fbf5aed4a",
-      "bytes": 9672984,
+      "output": "public/assets/construction-portrait-v3-1.mp4",
+      "mediaId": "aedc2d52-8b81-447b-a1aa-80ecfed238f5",
+      "bytes": 9644227,
       "duration": 8.042,
       "width": 720,
       "height": 1280,
       "encodingOverride": {
         "keyint": 3,
         "minKeyint": 3,
-        "crf": 20
+        "crf": 20,
+        "colorMatrix": "bt709",
+        "colorPrimaries": "bt709",
+        "colorTransfer": "bt709",
+        "colorRange": "tv"
+      },
+      "continuityRepair": {
+        "openingAnchor": "Preceding delivered movie decoded frame 192",
+        "transitionFrames": 6,
+        "method": "Smoothstep blend from matched endpoint into native footage at same camera position; only first 0.25s affected",
+        "qaArchiveId": "9c24fbde-f5d9-40b5-ab2b-6e1104c27b12",
+        "inputTiming": "Both inputs normalized with settb=1/24,setpts=N before time-based blending"
       }
     },
     {
@@ -583,16 +594,27 @@
         "bitrate_mode": "high"
       },
       "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_a0a77647-21b8-4282-b9ea-dc9aa09b36d1.mp4",
-      "output": "public/assets/construction-portrait-v2-2.mp4",
-      "mediaId": "15155649-439a-42b9-a673-bbdb3511a15f",
-      "bytes": 10055558,
+      "output": "public/assets/construction-portrait-v3-2.mp4",
+      "mediaId": "67be2888-d406-4319-a39a-e820337e39ee",
+      "bytes": 10046550,
       "duration": 8.042,
       "width": 720,
       "height": 1280,
       "encodingOverride": {
         "keyint": 3,
         "minKeyint": 3,
-        "crf": 20
+        "crf": 20,
+        "colorMatrix": "bt709",
+        "colorPrimaries": "bt709",
+        "colorTransfer": "bt709",
+        "colorRange": "tv"
+      },
+      "continuityRepair": {
+        "openingAnchor": "Preceding delivered movie decoded frame 192",
+        "transitionFrames": 6,
+        "method": "Smoothstep blend from matched endpoint into native footage at same camera position; only first 0.25s affected",
+        "qaArchiveId": "9c24fbde-f5d9-40b5-ab2b-6e1104c27b12",
+        "inputTiming": "Both inputs normalized with settb=1/24,setpts=N before time-based blending"
       }
     }
   ],
@@ -612,6 +634,22 @@
     {
       "id": "14be8124-bc79-49c6-b74f-ae42ad56092e",
       "reason": "Blend during turn replaced with concrete foreground occlusion"
+    },
+    {
+      "id": "c6e4947d-eea7-4bf2-9445-41def827036a",
+      "reason": "Seam repair candidate missing explicit BT.709 conversion and metadata"
+    },
+    {
+      "id": "30291022-6a90-4e4f-9f8e-b657418e74af",
+      "reason": "Seam repair candidate missing explicit BT.709 conversion and metadata"
+    },
+    {
+      "id": "d82e1c47-d683-4a81-980c-070711eaf3c5",
+      "reason": "Timebase mismatch skipped intended six-frame correction; rejected by exact browser image continuity regression"
+    },
+    {
+      "id": "57bd6991-8acb-4396-a52e-480fd7db92ff",
+      "reason": "Timebase mismatch skipped intended six-frame correction; rejected by exact browser image continuity regression"
     }
   ],
   "encoding": {
@@ -690,6 +728,7 @@
     "hostWithoutByteRanges": "Prepare same-origin Blob for current and prefetched moves before crossing",
     "cache": "Retain up to three prepared moves per orientation; release old orientation after replacement frame is decoded",
     "prefetch": "Next directional move after 30% progress; first move only on entry",
-    "reducedMotion": "Composed stills; also used for data saving, explicit fallback or video failure"
+    "reducedMotion": "Composed stills; also used for data saving, explicit fallback or video failure",
+    "seekPosition": "Midpoint of quantized 24fps frame interval to avoid boundary rounding selecting a previous frame"
   }
 }

@@ -16,7 +16,7 @@ npm run build
 npm run preview -- --port 5184 --strictPort
 ```
 
-Checks: `npm test`, `npm run typecheck`, `npm run lint`, `npm run test:e2e` (server on port 5184, local Chrome installed).
+Checks: `npm test`, `npm run typecheck`, `npm run lint`, `npm run test:e2e` (server on port 5184, local Chrome installed). Install the additional Safari-engine test browser once with `npx playwright install webkit`. The suite runs the Chrome checks plus a WebKit phone regression.
 
 ## Files and assets
 

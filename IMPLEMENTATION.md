@@ -76,3 +76,9 @@ Acceptance: accessible short form, inline Croatian errors, valid inquiry creates
 ## S6 — Verify and deliver localhost
 Type: AFK. Blocked by: S2, S3 text, S4, S5. Story: 13.
 Acceptance: tests/typecheck/lint/build; desktop/tablet/mobile browser review; navigation both ways, reduced motion, no WebGL, PDF, form and all CTAs; local performance report; unused localhost port remains running. Public launch and final photography are HITL requirements.
+
+## Localized continuity follow-up
+
+- LC1 — AFK, complete. Reproduce skipped/duplicated frame selection at exact timestamps, then seek inside the selected frame interval. Public rendered-frame regression verifies adjacent positions in both directions.
+- LC2 — AFK, complete; depends on LC1. Inspect actual portrait movie endpoints, repair both small discontinuities through Higgsfield using the previous decoded endpoint, and validate image continuity through the browser.
+- LC3 — AFK, local verification complete; depends on LC1/LC2. Verify the new frame/transition behavior in Chrome and WebKit phone contexts, retain no-button automatic scrolling and business access, then publish to the existing owner-private Site.

@@ -8,7 +8,7 @@ React, TypeScript and Vite. A Higgsfield-generated film supplies the cinematic w
 - `npm run typecheck`: TypeScript.
 - `npm run lint`: ESLint.
 - `npm run build`: production bundle plus pre-rendered essential HTML.
-- `npm run test:e2e`: real Chrome checks; expects a server on 127.0.0.1:5184.
+- `npm run test:e2e`: real Chrome checks plus a WebKit phone regression; expects a server on 127.0.0.1:5184. Install its WebKit binary once with `npx playwright install webkit`.
 - `npm run preview -- --port 5184 --strictPort`: serve the completed build locally.
 
 Use TDD for behavioral code changes and keep each slice runnable. Browser QA must cover 390, 768, and 1440px, direct navigation, both scroll directions, reduced motion, unavailable video, inquiry validation and the PDF.

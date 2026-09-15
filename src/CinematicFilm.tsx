@@ -80,7 +80,8 @@ export default function CinematicFilm({
       video.preload = "auto";
       video.disablePictureInPicture = true;
       video.tabIndex = -1;
-      const version = orientation === "portrait" ? "-v2" : "";
+      const version =
+        orientation === "portrait" ? (index === 0 ? "-v2" : "-v3") : "";
       const source = `/assets/construction-${orientation}${version}-${index}.mp4`;
       const request = new AbortController();
       const frameCallbacks =
@@ -234,8 +235,11 @@ export default function CinematicFilm({
         return;
       }
       if (video.seeking) return;
-      const time =
+      const frameStart =
         Math.round(position * Math.max(0, video.duration - 1 / 24) * 24) / 24;
+      // Seek inside the frame. At the exact PTS, browser microsecond rounding
+      // can select the previous frame, producing a repeat followed by a skip.
+      const time = Math.min(video.duration - 0.001, frameStart + 1 / 48);
       if (Math.abs(video.currentTime - time) > 1 / 48) {
         film.requestedTime = time;
         video.currentTime = time;
