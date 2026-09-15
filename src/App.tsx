@@ -27,44 +27,42 @@ const chapters = [
   },
   {
     id: "povjerenje",
-    name: "Temelji povjerenja",
-    label: "Odnos koji nosi projekt.",
+    name: "Betonski radovi",
+    label: "Betonski radovi",
     title: (
       <>
-        Temelji
+        Snaga je
         <br />
-        <span>povjerenja.</span>
+        <span>u detalju.</span>
       </>
     ),
-    caption:
-      "Povjerenje gradimo jasnim dogovorima i odgovornim pristupom vašem projektu.",
+    caption: "Betoniranje i izvedba betonskih konstrukcijskih elemenata.",
   },
   {
     id: "preciznost",
-    name: "Preciznost izvedbe",
-    label: "Svaki detalj ima svoju ulogu.",
+    name: "Visokogradnja",
+    label: "Visokogradnja",
     title: (
       <>
-        Preciznost
+        Gradimo
         <br />
-        <span>izvedbe.</span>
+        <span>u visinu.</span>
       </>
     ),
-    caption: "Kvaliteta cjeline počinje pažnjom posvećenom svakom detalju.",
+    caption: "Izvedba objekata i njihovih nosivih konstrukcija.",
   },
   {
     id: "projekt",
-    name: "Vaš sljedeći projekt",
-    label: "Prostor za ono što dolazi.",
+    name: "Vaš projekt",
+    label: "Vaš sljedeći projekt",
     title: (
       <>
-        Vaša vizija.
+        Vaš projekt
         <br />
-        <span>Naš sljedeći korak.</span>
+        <span>počinje razgovorom.</span>
       </>
     ),
-    caption:
-      "Podijelite svoju viziju s nama i napravimo prvi korak prema realizaciji.",
+    caption: "Visokogradnja, niskogradnja i betonski radovi.",
   },
 ];
 function Experience({
@@ -89,8 +87,17 @@ function Experience({
             (loadedStills[i] || active === i) && (
               <picture key={c.id}>
                 <source
-                  media="(max-width: 767px)"
+                  type="image/avif"
+                  media="(max-width: 767px) and (max-aspect-ratio: 9/10)"
+                  srcSet={`/assets/chapter-mobile-${i}.avif`}
+                />
+                <source
+                  media="(max-width: 767px) and (max-aspect-ratio: 9/10)"
                   srcSet={`/assets/chapter-mobile-${i}.webp`}
+                />
+                <source
+                  media="(max-aspect-ratio: 9/10)"
+                  srcSet={`/assets/chapter-portrait-${i}.webp`}
                 />
                 <source
                   media="(max-width: 1023px)"
@@ -338,13 +345,13 @@ export default function App() {
               </p>
               <a
                 className="text-link"
-                href={["#o-nama", "#priprema", "#projekti", "#kontakt"][i]}
+                href={["#o-nama", "#usluge", "#usluge", "#kontakt"][i]}
               >
                 {
                   [
                     "Upoznajte Adduco",
-                    "Kako počinjemo",
-                    "Pogledajte projekte",
+                    "Istražite usluge",
+                    "Istražite usluge",
                     "Razgovarajmo o vašem projektu",
                   ][i]
                 }

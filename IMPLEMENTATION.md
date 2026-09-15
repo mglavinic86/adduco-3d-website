@@ -1,11 +1,32 @@
 # Vertical implementation slices
 
+## Current pass — monumental construction journey
+
+### M0 — Resolve generation resources and inspect framing anchors
+Type: AFK. Complete: owner funded and authorized both formats; eight accepted anchors inspected, including two corrections. No purchases or credit transfers.
+
+### M1 — Explore the first connected landscape transition
+Type: AFK. Production and behavior checks complete. Dependency satisfied: [M0](#m0--resolve-generation-resources-and-inspect-framing-anchors).
+Acceptance: validated eight-second film from entry to reinforcement detail, scene-specific HTML caption and still, retained working navigation and reduced-motion view. Test forward and reverse chapter behavior through the page before connecting the new media. Keep the local build runnable.
+
+### M2 — Reach height and final contact across film boundaries
+Type: AFK. Production and behavior checks complete. Dependency satisfied: [M1](#m1--explore-the-first-connected-landscape-transition).
+Acceptance: complete 24-second landscape path; current and adjacent segments load without fetching the portrait variant; no flash or stale-frame seek on fast jumps/reversal; failed segment retains composed still and usable content; modal preserves camera position. Start with a failing public browser test for crossing a segment boundary and returning, then implement and extend failure/no-range coverage one behavior at a time.
+
+### M3 — Explore the same journey in portrait
+Type: AFK. Production and behavior checks complete. Dependencies satisfied: [M0](#m0--resolve-generation-resources-and-inspect-framing-anchors), [M2](#m2--reach-height-and-final-contact-across-film-boundaries).
+Acceptance: purpose-composed portrait film and stills, complete emblem, building height and readable overlay within phone framing, motion opt-in and touch behavior preserved. Verify mobile requests the portrait source only and contact remains reachable.
+
+### M4 — Verify and publish the complete pass
+Type: AFK. Implementation and local QA complete. Release uses the authorized owner-private Site. Dependencies satisfied: [M2](#m2--reach-height-and-final-contact-across-film-boundaries), [M3](#m3--explore-the-same-journey-in-portrait).
+Acceptance: tests/typecheck/lint/build; real-browser visual and interaction evidence at 390/768/1440, network/media-failure and reduced-motion checks; inspect every film transition, logo geometry and service text. Publish through the already authorized existing owner-private Sites project, then verify actual hosted forward/reverse video progress. Remove unused temporary production assets after acceptance.
+
 ## Cinematic realism slices
 - C1 — Complete. AFK: photographic master and seven-second Seedance 2.5 film generated and visually inspected from the supplied logo and approved reference.
 - C2 — Complete. AFK, C1 satisfied: native-scroll film seeking in both directions, captions and detail overlays; regression verified red then green.
 - C3 — Complete. AFK, C2 satisfied: responsive frames, motion controls, media failure/reduced motion, opt-in and complete emblem in portrait.
 - C4 — Implementation and QA complete. AFK, C3 satisfied: 4 component tests, 16 browser checks, responsive/accessibility review and Lighthouse. Publish through the authorized private Sites workflow.
-- HITL: a longer 24-second film needs additional Higgsfield credits; no purchase is authorized.
+- Superseded by the funded M0–M4 production above.
 
 ## Filmska šetnja slices
 - F1 — Complete. AFK, no blockers: accessible business panels, direct URLs and return to the same scene. Test opening/closing before implementation.

@@ -74,6 +74,9 @@ export default function BusinessContent({
           <p className="service-note">
             Opseg radova dogovaramo prema potrebama vašeg projekta.
           </p>
+          <a href="#priprema" className="text-link">
+            Kako pripremiti projekt <Arrow diagonal />
+          </a>
         </div>
       </section>
       <section

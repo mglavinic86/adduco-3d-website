@@ -1,7 +1,20 @@
 # Adduco — local website
 
+## Monumental construction journey — current accepted pass
+
+The owner approved a cinematic passage through an already built construction frame after reviewing the seven-second film. The result communicates physical material detail and the scale of visokogradnja through a roughly 24-second native-scroll journey, with scene-specific Croatian HTML captions and a separately composed portrait version. The storyboard and exact visual constraints live only in DESIGN.md.
+
+Additional acceptance criteria:
+- As an investor, I encounter concrete/reinforcement detail and the building's height at distinct points in a spatially coherent journey.
+- I can move forward and backward across film boundaries without flashing, jumps to the wrong scene or obsolete queued seeks.
+- On portrait devices I see intentionally framed vertical artwork and a reachable action, without a large gap separating artwork from copy.
+- Essential text, navigation, the inquiry draft and the preparation PDF remain usable while subsequent segments load or fail.
+- Initial loading fetches the selected orientation and needed segment only; direct jumps, cached reverse movement and a host without seekable media byte ranges are tested through the page.
+
+The owner replenished credits and explicitly authorized landscape and separately directed portrait production. Eight accepted framing anchors and six eight-second films now support the full journey. Existing private Sites publication remains authorized. Production provenance and limitations are recorded in scripts/cinema.json and QA.md.
+
 ## Cinematic realism amendment — 15 September 2026
-The owner requested photorealistic video-quality construction graphics, suggesting Seedance 2.5 through Higgsfield. Replace the visible real-time render with a continuous generated film controlled by native scroll, retaining the accepted dark industrial direction, original logo, four caption waypoints, services including visokogradnja, and all detail/inquiry behavior. A seven-second 1080p proof fits the current credit balance; the longer 24-second request was rejected before submission. Verify the film before release, clearly distinguish this first cinematic version from a longer future journey, and preserve the existing private Sites audience. Reduced-motion and constrained-device access uses selected film frames without downloading the movie until requested.
+The owner requested photorealistic video-quality construction graphics, suggesting Seedance 2.5 through Higgsfield. Replace the visible real-time render with a continuous generated film controlled by native scroll, retaining the accepted dark industrial direction, original logo, four caption waypoints, services including visokogradnja, and all detail/inquiry behavior. The initial seven-second proof established this direction; the funded 24-second landscape/portrait production above supersedes it. Preserve the existing private Sites audience. Reduced-motion and constrained-device access uses selected film frames without downloading the movie until requested.
 
 ## Hosting amendment — 15 September 2026
 After accepting the local delivery, the user requested publication through Sites. Host this implementation with the default owner-private audience; preserve existing functionality and content limitations. This supersedes the original local-only delivery boundary for Sites publication, including its required source/version workflow. A public audience or other hosting provider still requires a separate user request.
@@ -17,8 +30,8 @@ A Croatian-language business website connected to one original cinematic constru
 
 ## User stories
 1. As an investor, I can immediately understand the company and its offering.
-2. I can go directly to services, projects, or contact without scrolling through the garden.
-3. I can explore Vizija, Temelji povjerenja, Preciznost izvedbe, and Vaš sljedeći projekt in either direction.
+2. I can go directly to services, projects, or contact without scrolling through the film.
+3. I can explore Vizija, Betonski radovi, Visokogradnja, and Vaš projekt in either direction.
 4. I can read every caption without artwork obscuring it.
 5. I can see sourced services and project roles without invented claims.
 6. I can learn what to prepare and discuss before commissioning work.

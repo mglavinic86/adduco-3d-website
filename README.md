@@ -28,7 +28,7 @@ Checks: `npm test`, `npm run typecheck`, `npm run lint`, `npm run test:e2e` (ser
 - `scripts/cinema.json`: exact Higgsfield generation prompts, references and web encoding settings. Use Higgsfield ffmpeg/Pillow to produce the videos and responsive chapter frames; keep working material outside the repository.
 - `scripts/checklist.py`: regenerate the Croatian preparation PDF with ReportLab and a Unicode Arial font.
 
-The construction environment is conceptual artwork, not project photography. The supplied original logo is preserved in `adduco logo/`; the public horizontal logo is a faithful crop/resizing of the supplied image, processed through Higgsfield. Movies and stills are served locally from the Site; no third-party generation service is contacted by visitors. The first cinematic version uses seven seconds of 1080p Seedance 2.5 footage. A longer journey needs additional source footage and Higgsfield credits.
+The construction environment is conceptual artwork, not project photography. The supplied original logo is preserved in `adduco logo/`; the public horizontal logo is a faithful crop/resizing of the supplied image, processed through Higgsfield. Movies and stills are served locally from the Site; no third-party generation service is contacted by visitors. The journey uses three eight-second Seedance 2.5 moves per orientation: desktop at 1920×1080 and a separately composed portrait version at 864×1536. Only the current and adjacent movie load; native scroll seeks in either direction. Phones and touch tablets show composed stills until motion is requested.
 
 ## Before public launch
 

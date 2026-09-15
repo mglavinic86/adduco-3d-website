@@ -20,13 +20,15 @@ Checked 15 September 2026. User confirmed the Metković company (OIB 40912050957
 - Automatic contact delivery integration, recipient confirmation, production privacy text and domain metadata before launch.
 
 ## Asset distinction
-Higgsfield sculptures and rendered garden imagery are original conceptual illustrations. They must never be presented as photographs of Adduco projects. Publicly accessible news images are not assumed licensed. No stock or AI-built villa may stand in for a portfolio project.
+Higgsfield construction films and still imagery are original conceptual illustrations. They must never be presented as photographs of Adduco projects. Publicly accessible news images are not assumed licensed. No stock or AI-built villa may stand in for a portfolio project.
 
 Current film provenance:
-- Master: Higgsfield GPT Image 2.5 Flare, maximum quality, 3840×2160, generation `658b6fbf-87b6-482f-97a7-f88a29b26f43`. References: original logo media `913aee89-c7f8-40b3-b3e7-2425cadbfbdf` and owner-supplied dark-reference screenshot `ea667f0a-c0b9-44eb-beba-b500fc4e4107`.
-- Film: Higgsfield Seedance 2.5, 1080p, high bitrate, silent seven-second continuous camera move, generation `19cdd0c5-d2e7-4a95-b3ae-f17fc80fa474`. Generated concrete, steel, slabs and reinforcement are conceptual artwork. The sculptural A references the logo; it is not a replacement logo or a claim of exact vector geometry.
-- Web conversions: Higgsfield ffmpeg, H.264/yuv420p, six-frame keyframe interval, no B-frames, fast-start metadata. Desktop media `10d208e6-35f6-497c-b4dc-3ff1db04a0b4`; narrow-screen media `1a5397e7-a79f-49e9-b28f-a53bf536db0f`. Frame archive `53f1b6aa-2e0b-4ece-b578-2a0844a904b3`.
-- Twelve responsive stills are extracted from this same film. No scene has baked headings or controls. Prompts and conversion settings are retained in `scripts/cinema.json`.
+- Approved master: Higgsfield GPT Image 2.5 Flare, 3840×2160, generation `658b6fbf-87b6-482f-97a7-f88a29b26f43`; original logo reference `913aee89-c7f8-40b3-b3e7-2425cadbfbdf` and owner's dark reference `ea667f0a-c0b9-44eb-beba-b500fc4e4107`.
+- Eight accepted 4K anchor images: four landscape and four independently composed portrait frames. Six accepted Seedance 2.5 films, each eight seconds, 1080p, high bitrate, silent. Full prompts, references, accepted IDs, rejected variants and output sizes are in `scripts/cinema.json`.
+- Final camera movement uses foreground concrete to conceal a viewpoint transition. Generated architecture and the sculptural emblem are conceptual artwork; they are not portfolio evidence or exact vector geometry.
+- Web output: Higgsfield ffmpeg H.264/yuv420p at 24fps, 12-frame keyframes, no B-frames, fast-start. Landscape 1920×1080; portrait 864×1536. Six separate assets allow current/adjacent loading and reverse motion without downloading both orientations.
+- Sixteen WebP stills derive from the accepted anchors. Four 780×1387 AVIF phone variants (quality 55) reduce initial transfer, retaining WebP fallbacks. All contain only artwork, with real HTML text and controls above them.
+- The previous seven-second film and its two web movie files were retired after the new footage passed inspection. Originals remain in Higgsfield and Git history.
 - The earlier editable 3D Jutsu world remains in Higgsfield project `4b8b4f3c-d1ea-4cec-aa5c-402de6054dd6`, revision 9; its runtime, maps and GLB have been removed from the website because the owner requested greater realism. Its authoring code remains available in Git history.
 
 ## Excluded entity

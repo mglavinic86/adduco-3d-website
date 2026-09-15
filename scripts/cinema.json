@@ -1,61 +1,669 @@
 {
-  "master": {
-    "id": "658b6fbf-87b6-482f-97a7-f88a29b26f43",
-    "type": "image",
-    "status": "pending",
-    "model": "gpt_image_2_5",
-    "params": {
-      "prompt": "Create ONE cinematic photoreal 16:9 master establishing frame for a premium construction company's continuous film. First reference is the ORIGINAL ADDUCO identity: meticulously preserve the triangular tessellated A emblem silhouette, central opening, separate small inner triangle, precise triangle layout and the DIFFERENT burgundy, crimson and scarlet shades across faces. Only the emblem becomes a monumental thick engineered red enamel steel sculpture. Do not include lettering. Second reference is a screenshot: use ONLY the pictured dark industrial construction scene as art direction, completely exclude every interface, text, logo header, border and screenshot background. We need a fully photographic high-end architectural film frame, not a website mockup or game render. Wide low camera at 1.5m, 32mm cinema lens, 5-metre tall A occupying center-right at 64% image width, entirely visible with breathing space, suspended by two taut heavy steel lifting chains attached through engineered lugs. Behind it massive contemporary reinforced-concrete rectangular portal frame, partially built multi-storey concrete structure with deep floor slabs and believable supports. A ribbed reinforcement cage and precast wall panels at the far edges establish foreground depth. Open travel corridor through concrete frames visible behind the A, no obstructions along the camera path. Detailed tactile poured concrete: pores, subtle formwork grain, tie holes, casting seams, damp dark patches, slightly chipped edges. Real machined bolts, steel welds, varied red enamel micro scratches, convincing mass and thickness. Dark wet concrete ground and shallow puddles reflect the red A and warm linear construction lighting. Cool blue hour, dramatic overcast sky, distant Croatian karst ridge. Strong yet restrained warm grazed light on concrete and cool sky fill; physically accurate ray-traced contact shadows and reflections, nuanced midtones, restrained photographic grading, broad dynamic range, no excessive bloom or fog. Left 30% intentionally quiet and darker to receive HTML headlines later, but no text generated anywhere. Monumental, expensive, grounded, hyperreal. Entire scene is contemporary construction; no classical columns, vegetation, fantasy, smooth toy plastic, miniature/diorama look, floating unconnected pieces, people, watermarks, text or UI. Do not distort the logo into a generic A.",
-      "aspect_ratio": "16:9",
-      "reference_images": [
-        "913aee89-c7f8-40b3-b3e7-2425cadbfbdf",
-        "ea667f0a-c0b9-44eb-beba-b500fc4e4107"
-      ],
-      "variant": "flare",
-      "quality": "max",
-      "resolution": "4k"
-    }
+  "title": "Od temelja do stvarnosti",
+  "date": "2026-09-15",
+  "identity": {
+    "original": "adduco logo/adduco logo.png",
+    "originalMediaId": "913aee89-c7f8-40b3-b3e7-2425cadbfbdf",
+    "masterId": "658b6fbf-87b6-482f-97a7-f88a29b26f43",
+    "note": "Conceptual artwork and sculptural interpretation; original header logo preserved."
   },
-  "film": {
-    "id": "19cdd0c5-d2e7-4a95-b3ae-f17fc80fa474",
-    "type": "video",
-    "status": "pending",
-    "model": "seedance_2_5",
-    "params": {
-      "prompt": "One unbroken 7-second hyperreal cinematic architectural shot, starting exactly from the supplied first frame. This is a luxury construction brand film with heavy concrete, actual metal, physically accurate reflections and restrained blue-hour lighting. Preserve the red tessellated A's exact silhouette and geometry, every triangular panel and its distinct burgundy/crimson/scarlet shade, central opening, bolts, edge thickness and lifting chains. Reference image 2 is the original identity only, never display its flat white background or lettering. The massive sculpture and all architecture remain rigid and stationary; only the camera moves. Execute a smooth powerful motion-control dolly: camera starts low at 1.5m, travels 2.5m forward while arcing 25 degrees right around the suspended A and rising gently to 2.2m. Reveal its deep steel sides, richly textured concrete portal, wet reinforced concrete footing and the multi-storey slab structure behind with strong natural foreground parallax. Keep the entire A on center-right with breathing space throughout, quiet left third for later HTML copy. Slightly slow ease at both ends, no abrupt stops, final composition a compelling three-quarter view of the same A with reinforcement cage and slabs in depth. Expensive cinematic photography, deep architectural focus, believable rough concrete pores and formwork grain, wet enamel micro scratches, subtle water movement and coherent changing specular reflections. Warm construction strip lights and cool dramatic sky, natural broad dynamic range. No cuts, montage, scene changes, zoom-only movement, dissolves, logo deformation, melting geometry, assembly, appearing objects, floating concrete, people, vegetation, ancient columns, text, UI, watermarks or sound.",
-      "aspect_ratio": "16:9",
-      "duration": 7,
-      "reference_images": [
-        "658b6fbf-87b6-482f-97a7-f88a29b26f43",
-        "913aee89-c7f8-40b3-b3e7-2425cadbfbdf"
-      ],
-      "mode": "omni_reference",
-      "resolution": "1080p",
-      "bitrate_mode": "high",
-      "generate_audio": false
-    }
+  "anchors": {
+    "landscape": [
+      {
+        "id": "761f4857-f6b4-4179-bff1-d3efaa286934",
+        "model": "gpt_image_2_5",
+        "status": "completed",
+        "params": {
+          "prompt": "Create a single premium architectural cinema keyframe, photorealistic enough to pass for a large-format camera photograph. This is one location photographed from a new camera position, not a redesign of the reference. Reference 1 establishes the actual fixed space: a monumental suspended red tessellated A in a wet concrete forecourt, one rectangular reinforced-concrete entrance portal, a ribbed reinforcement cage on the right, and a contemporary multi-storey reinforced concrete frame behind. Maintain those physical relationships, construction scale and blue-hour lighting. Reference 2 is the ORIGINAL ADDUCO logo identity: preserve the A silhouette, its open center, the separate inner triangle, triangular panel layout and distinctly different dark burgundy, crimson and scarlet faces. Render the emblem as thick bolted enamelled steel, suspended on taut steel chains, with believable welds and restrained wear. No lettering from the logo reference. Extremely detailed poured concrete with formwork impressions, tie holes, mineral grain, damp patches and subtle edge chips; authentic rebar ribs, steel ties and fasteners. Grounded structural engineering: slabs rest on beams and upright supports. Wet ground and shallow uneven reflections, cool overcast evening sky and restrained warm construction strip lights, natural photographic exposure with visible midtone texture. Deep architectural focus, no stylized CGI, plastic smoothness, cartoon, fog wall, exaggerated bloom, people, plants, classical columns, UI, text, watermarks or invented brands. Landscape 16:9; the left 30% has quiet darker negative space for real HTML typography later, without a artificial flat black panel. ANCHOR 01 / ENTRY. Camera at 0.6m above the forecourt, 28mm tilt-corrected cinema lens. Red reflected light on wet concrete leads the eye to the WHOLE suspended A in the middle-right, entirely visible with breathing room above and below. Emblem about 42% of image height, monumental against the portal, full multi-storey structure in background. Right side reveals a physically open route past the A toward the reinforcement cage. Elegant low perspective, real contact shadows and immense weight. Do not make the sculpture so large that it crops or covers all of the building.",
+          "aspect_ratio": "16:9",
+          "medias": [
+            {
+              "role": "image",
+              "data": {
+                "id": "658b6fbf-87b6-482f-97a7-f88a29b26f43",
+                "type": "image_job",
+                "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_182103_658b6fbf-87b6-482f-97a7-f88a29b26f43.png"
+              }
+            },
+            {
+              "role": "image",
+              "data": {
+                "id": "913aee89-c7f8-40b3-b3e7-2425cadbfbdf",
+                "type": "media_input",
+                "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/913aee89-c7f8-40b3-b3e7-2425cadbfbdf.png"
+              }
+            }
+          ],
+          "width": 3840,
+          "height": 2160,
+          "quality": "max",
+          "resolution": "4k",
+          "model": "flare",
+          "remove_bg": false,
+          "reference_elements": []
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190448_761f4857-f6b4-4179-bff1-d3efaa286934.png"
+      },
+      {
+        "id": "16fd3ba7-05ab-4f31-bdb3-8a506b8d4659",
+        "model": "gpt_image_2_5",
+        "status": "completed",
+        "params": {
+          "prompt": "Create a single premium architectural cinema keyframe, photorealistic enough to pass for a large-format camera photograph. This is one location photographed from a new camera position, not a redesign of the reference. Reference 1 establishes the actual fixed space: a monumental suspended red tessellated A in a wet concrete forecourt, one rectangular reinforced-concrete entrance portal, a ribbed reinforcement cage on the right, and a contemporary multi-storey reinforced concrete frame behind. Maintain those physical relationships, construction scale and blue-hour lighting. Reference 2 is the ORIGINAL ADDUCO logo identity: preserve the A silhouette, its open center, the separate inner triangle, triangular panel layout and distinctly different dark burgundy, crimson and scarlet faces. Render the emblem as thick bolted enamelled steel, suspended on taut steel chains, with believable welds and restrained wear. No lettering from the logo reference. Extremely detailed poured concrete with formwork impressions, tie holes, mineral grain, damp patches and subtle edge chips; authentic rebar ribs, steel ties and fasteners. Grounded structural engineering: slabs rest on beams and upright supports. Wet ground and shallow uneven reflections, cool overcast evening sky and restrained warm construction strip lights, natural photographic exposure with visible midtone texture. Deep architectural focus, no stylized CGI, plastic smoothness, cartoon, fog wall, exaggerated bloom, people, plants, classical columns, UI, text, watermarks or invented brands. Landscape 16:9; the left 30% has quiet darker negative space for real HTML typography later, without a artificial flat black panel. ANCHOR 02 / MATERIAL DETAIL. Camera has moved forward and right along the clear route to roughly 1.4m eye height beside the right-hand concrete portal upright and rebar cage. Frame an intimate but spatially clear three-quarter view of the real wall edge and ribbed reinforcement in the RIGHT foreground, tactile formwork holes, steel ties and deep beam-to-column junction. The SAME whole suspended red A is visible farther behind toward the left-middle beyond this detail, smaller, naturally defocused only slightly; no second emblem. Maintain the open forecourt, same portal and storeys so viewers understand the travelled route. 35mm architectural lens, restrained depth of field, avoid macro abstraction. Let the left lower third remain quiet for typography.",
+          "aspect_ratio": "16:9",
+          "medias": [
+            {
+              "role": "image",
+              "data": {
+                "id": "658b6fbf-87b6-482f-97a7-f88a29b26f43",
+                "type": "image_job",
+                "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_182103_658b6fbf-87b6-482f-97a7-f88a29b26f43.png"
+              }
+            },
+            {
+              "role": "image",
+              "data": {
+                "id": "913aee89-c7f8-40b3-b3e7-2425cadbfbdf",
+                "type": "media_input",
+                "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/913aee89-c7f8-40b3-b3e7-2425cadbfbdf.png"
+              }
+            }
+          ],
+          "width": 3840,
+          "height": 2160,
+          "quality": "max",
+          "resolution": "4k",
+          "model": "flare",
+          "remove_bg": false,
+          "reference_elements": []
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190447_16fd3ba7-05ab-4f31-bdb3-8a506b8d4659.png"
+      },
+      {
+        "id": "1ebdf0c6-804a-4065-b3a4-2cbac2ab5012",
+        "model": "gpt_image_2_5",
+        "status": "completed",
+        "params": {
+          "prompt": "Edit the supplied photographic construction keyframe with one exact correction: REMOVE the enormous red A sculpture floating at the upper/right foreground, INCLUDING its two hanging chains and every piece of its separate inner triangle. Restore the naturally continuous concrete ceiling, beams, floor slabs and open building behind it. There must be ONLY ONE red A in the entire picture: KEEP the small distant original A low-left in the forecourt exactly as it is. Preserve every other detail, camera position, architecture, reinforcement cage on right, wet surfaces, original 16:9 composition, cool blue-hour sky and warm construction lights. Maximum photographic fidelity, no text, no UI. The image is now about the HEIGHT and structural detail of the multi-storey building, with the distant small emblem merely orienting the viewer.",
+          "aspect_ratio": "16:9",
+          "medias": [
+            {
+              "role": "image",
+              "data": {
+                "id": "97fd95a7-7e49-4d9c-8b21-f037a8e669ed",
+                "type": "image_job",
+                "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190448_97fd95a7-7e49-4d9c-8b21-f037a8e669ed.png"
+              }
+            }
+          ],
+          "width": 3840,
+          "height": 2160,
+          "quality": "max",
+          "resolution": "4k",
+          "model": "flare",
+          "remove_bg": false,
+          "reference_elements": []
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190636_1ebdf0c6-804a-4065-b3a4-2cbac2ab5012.png"
+      },
+      {
+        "id": "59b62325-b700-47ab-af10-44302040905f",
+        "model": "gpt_image_2_5",
+        "status": "completed",
+        "params": {
+          "prompt": "Photograph this EXACT contemporary reinforced-concrete construction site from a NEW elevated camera, creating the final keyframe of a luxury architectural film. Camera is outdoors at 8 metres height and 18 metres from the forecourt, at a three-quarter angle, looking gently DOWN toward the suspended A and wet forecourt. Crucially show visible TOP surfaces of the concrete podium, front portal beam and floor edges to prove the elevated camera. Show the four-storey concrete construction behind/right, believable supported slabs, and the whole original tessellated red A with its separate small center triangle in its original forecourt location, no duplicated emblem anywhere. The A is ONE physical sculpture, about 25 percent of frame height at right-center. Preserve its panel geometry and mixed burgundy/crimson/scarlet colors using the original logo reference, never include lettering. The open ground recedes diagonally across the left foreground as quiet dark negative space for later HTML copy. Highly detailed architectural photography of damp concrete, formwork, rebar, bolts, steel chains and red enamel, blue hour and original warm strip lights. A powerful sense of scale and a complete view of the structure, photographic exposure, realistic contact shadows and subtle reflections. 16:9, 35mm architectural lens with verticals corrected. No low ground-level camera, no drone-wide distant city panorama, no duplicated A, no plastic CGI, no fog, no text, no UI.",
+          "aspect_ratio": "16:9",
+          "medias": [
+            {
+              "role": "image",
+              "data": {
+                "id": "761f4857-f6b4-4179-bff1-d3efaa286934",
+                "type": "image_job",
+                "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190448_761f4857-f6b4-4179-bff1-d3efaa286934.png"
+              }
+            },
+            {
+              "role": "image",
+              "data": {
+                "id": "913aee89-c7f8-40b3-b3e7-2425cadbfbdf",
+                "type": "media_input",
+                "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/913aee89-c7f8-40b3-b3e7-2425cadbfbdf.png"
+              }
+            }
+          ],
+          "width": 3840,
+          "height": 2160,
+          "quality": "max",
+          "resolution": "4k",
+          "model": "flare",
+          "remove_bg": false,
+          "reference_elements": []
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190636_59b62325-b700-47ab-af10-44302040905f.png"
+      }
+    ],
+    "portrait": [
+      {
+        "id": "61e5f569-8ffa-4538-bf3e-b9893e808577",
+        "model": "gpt_image_2_5",
+        "status": "completed",
+        "params": {
+          "prompt": "Create a deliberately composed 9:16 VERTICAL cinematic keyframe for a premium mobile website, photographing the EXACT construction scene in reference 1. This is a new portrait camera framing of the same fixed location, not a center crop of a landscape picture. Preserve architecture, slab count, support locations, original A geometry and each triangular red shade, materials, lighting and atmosphere. Original logo reference 2 is identity only, never generate its lettering or white background. ONLY ONE suspended physical A with its separate inner triangle, steel thickness, bolts and taut lifting chains. Extremely realistic photographic wet poured concrete, rebar, authentic steel ties, pores, formwork, subtle wear and red enamel. Cool blue-hour ambient and restrained warm strip lighting; the scene looks monumental, modern and expensive, no plastic, no illustration, no excessive bloom. Fill the full vertical canvas with real scenery. Do not add text, UI, borders, watermarks or blank panels. ENTRY / frame 01. The complete red A occupies the central upper-middle, approximately x=52%, y=34%, with its full silhouette between 18% and 55% of image height. Both suspension chains continue upward. Concrete portal and storeys sit behind it; wet ground with beautiful red reflections occupies the lower 40%. Keep the very top 10% uncluttered for website navigation. The lower-left 35% is dark naturally textured ground where HTML text will sit, without making an empty flat band.",
+          "aspect_ratio": "9:16",
+          "medias": [
+            {
+              "role": "image",
+              "data": {
+                "id": "761f4857-f6b4-4179-bff1-d3efaa286934",
+                "type": "image_job",
+                "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190448_761f4857-f6b4-4179-bff1-d3efaa286934.png"
+              }
+            },
+            {
+              "role": "image",
+              "data": {
+                "id": "913aee89-c7f8-40b3-b3e7-2425cadbfbdf",
+                "type": "media_input",
+                "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/913aee89-c7f8-40b3-b3e7-2425cadbfbdf.png"
+              }
+            }
+          ],
+          "width": 2160,
+          "height": 3840,
+          "quality": "max",
+          "resolution": "4k",
+          "model": "flare",
+          "remove_bg": false,
+          "reference_elements": []
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190700_61e5f569-8ffa-4538-bf3e-b9893e808577.png"
+      },
+      {
+        "id": "6f49c5f7-85da-4bd9-a203-ff45ca0e5f89",
+        "model": "gpt_image_2_5",
+        "status": "completed",
+        "params": {
+          "prompt": "Create a deliberately composed 9:16 VERTICAL cinematic keyframe for a premium mobile website, photographing the EXACT construction scene in reference 1. This is a new portrait camera framing of the same fixed location, not a center crop of a landscape picture. Preserve architecture, slab count, support locations, original A geometry and each triangular red shade, materials, lighting and atmosphere. Original logo reference 2 is identity only, never generate its lettering or white background. ONLY ONE suspended physical A with its separate inner triangle, steel thickness, bolts and taut lifting chains. Extremely realistic photographic wet poured concrete, rebar, authentic steel ties, pores, formwork, subtle wear and red enamel. Cool blue-hour ambient and restrained warm strip lighting; the scene looks monumental, modern and expensive, no plastic, no illustration, no excessive bloom. Fill the full vertical canvas with real scenery. Do not add text, UI, borders, watermarks or blank panels. MATERIAL / frame 02. On the right half, tactile ribbed reinforcement and the raw concrete upright rise nearly the full height of the image. The same complete red A stays in the upper-left background, entirely visible and smaller, within 18-45% of image height. Wet concrete and reflections fill the lower portion, naturally dark enough for a short HTML heading. Keep rebar physically plausible and spatial continuity with the reference.",
+          "aspect_ratio": "9:16",
+          "medias": [
+            {
+              "role": "image",
+              "data": {
+                "id": "16fd3ba7-05ab-4f31-bdb3-8a506b8d4659",
+                "type": "image_job",
+                "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190447_16fd3ba7-05ab-4f31-bdb3-8a506b8d4659.png"
+              }
+            },
+            {
+              "role": "image",
+              "data": {
+                "id": "913aee89-c7f8-40b3-b3e7-2425cadbfbdf",
+                "type": "media_input",
+                "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/913aee89-c7f8-40b3-b3e7-2425cadbfbdf.png"
+              }
+            }
+          ],
+          "width": 2160,
+          "height": 3840,
+          "quality": "max",
+          "resolution": "4k",
+          "model": "flare",
+          "remove_bg": false,
+          "reference_elements": []
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190700_6f49c5f7-85da-4bd9-a203-ff45ca0e5f89.png"
+      },
+      {
+        "id": "1d84283b-50e4-4094-9054-f1acfc549935",
+        "model": "gpt_image_2_5",
+        "status": "completed",
+        "params": {
+          "prompt": "Compose a single 9:16 VERTICAL cinematic photograph for a premium mobile construction website, using reference 1 as the exact fixed scene and camera-height reference. Recompose the camera framing for the vertical format; do not merely crop. Keep the same supported slabs, frame positions, material grain, original A silhouette and red triangular shades, blue-hour exposure and warm lighting. Reference 2 is the original logo only, no lettering or white background. Ultra-photoreal concrete, rebar and steel, high dynamic range with real midtones, subtle reflections and microscopic material imperfections. Modern monumental architectural photography, not a game render. No text/UI, no borders or people, no extra symbols, no classical columns. HEIGHT / frame 03. The subject is the building height and the tactile structural frame. The right two-thirds show supported slabs, deep beams and aligned uprights rising through the vertical image. The camera is at first-floor height outside the open building edge. Keep ONLY the one small original A far down in the forecourt at lower-left or mid-left, subordinate to the architecture; no extra A close to the camera. Include enough sky and warm lit concrete depth for an immense sense of scale, with quiet dark lower-left space for a two-line heading.",
+          "aspect_ratio": "9:16",
+          "medias": [
+            {
+              "role": "image",
+              "data": {
+                "id": "1ebdf0c6-804a-4065-b3a4-2cbac2ab5012",
+                "type": "image_job",
+                "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190636_1ebdf0c6-804a-4065-b3a4-2cbac2ab5012.png"
+              }
+            },
+            {
+              "role": "image",
+              "data": {
+                "id": "913aee89-c7f8-40b3-b3e7-2425cadbfbdf",
+                "type": "media_input",
+                "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/913aee89-c7f8-40b3-b3e7-2425cadbfbdf.png"
+              }
+            }
+          ],
+          "width": 2160,
+          "height": 3840,
+          "quality": "max",
+          "resolution": "4k",
+          "model": "flare",
+          "remove_bg": false,
+          "reference_elements": []
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190905_1d84283b-50e4-4094-9054-f1acfc549935.png"
+      },
+      {
+        "id": "d004eba0-4eec-491a-bf46-cd7511b8c4ee",
+        "model": "gpt_image_2_5",
+        "status": "completed",
+        "params": {
+          "prompt": "Compose a single 9:16 VERTICAL cinematic photograph for a premium mobile construction website, using reference 1 as the exact fixed scene and camera-height reference. Recompose the camera framing for the vertical format; do not merely crop. Keep the same supported slabs, frame positions, material grain, original A silhouette and red triangular shades, blue-hour exposure and warm lighting. Reference 2 is the original logo only, no lettering or white background. Ultra-photoreal concrete, rebar and steel, high dynamic range with real midtones, subtle reflections and microscopic material imperfections. Modern monumental architectural photography, not a game render. No text/UI, no borders or people, no extra symbols, no classical columns. FINALE / frame 04. A calm elevated three-quarter camera looks gently down at the original A and forecourt, with visible TOP of its concrete podium. Whole A in the upper-middle (around y=37%, full silhouette within 20-52% of height), and several supported floors of the same structure rise behind it. Wet textured ground and restrained reflections fill the lower 40% with quiet space for contact typography. Keep the entire A visible, no duplicate, no zoomed crop, no flat empty bottom panel.",
+          "aspect_ratio": "9:16",
+          "medias": [
+            {
+              "role": "image",
+              "data": {
+                "id": "59b62325-b700-47ab-af10-44302040905f",
+                "type": "image_job",
+                "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190636_59b62325-b700-47ab-af10-44302040905f.png"
+              }
+            },
+            {
+              "role": "image",
+              "data": {
+                "id": "913aee89-c7f8-40b3-b3e7-2425cadbfbdf",
+                "type": "media_input",
+                "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/913aee89-c7f8-40b3-b3e7-2425cadbfbdf.png"
+              }
+            }
+          ],
+          "width": 2160,
+          "height": 3840,
+          "quality": "max",
+          "resolution": "4k",
+          "model": "flare",
+          "remove_bg": false,
+          "reference_elements": []
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190904_d004eba0-4eec-491a-bf46-cd7511b8c4ee.png"
+      }
+    ]
   },
-  "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_182349_19cdd0c5-d2e7-4a95-b3ae-f17fc80fa474.mp4",
+  "movies": [
+    {
+      "id": "83bee30f-abd2-4f75-9d09-5c1af2921dfa",
+      "model": "seedance_2_5",
+      "status": "completed",
+      "params": {
+        "prompt": "An unbroken eight-second hyperreal architectural cinema camera move between the EXACT supplied start and end photographs. Treat both images as photographs of ONE rigid construction site. Only the camera moves; the building, concrete portal, reinforcement cage, steel chains and single red tessellated A remain rigid and fixed in space. Preserve the A's original silhouette, separate inner triangular piece, panel triangulation and distinct burgundy/crimson/scarlet shades; no second A, no morphing or reassembly. Preserve supported slabs, concrete surface detail, bolts, rebar ribs and warm strip lighting with cool blue-hour sky. Powerful restrained motion-control photography, natural perspective and foreground parallax. Travel through open air around obstacles, never through walls, beams, slabs or the sculpture. No cuts, dissolves, optical zoom, shaking, focus pumping, text, UI or audio. Slow gently near both ends so adjacent shots can connect. Frame-by-frame photographic realism with coherent materials, nuanced reflections and exposure, no fake CGI sheen. SHOT 1 / ENTRY TO MATERIAL. Start low over wet concrete looking at the suspended A. Dolly gradually forward and slide RIGHT toward the right-side reinforcement cage, rising only from 0.6m to 1.4m. Finish beside the rough concrete upright and ribbed rebar, which fills the right foreground while the same A recedes to the left in the background. Strong realistic parallax, constant focal length, the steel A does not turn or move. Keep the left lower area quietly composed for HTML copy.",
+        "aspect_ratio": "16:9",
+        "duration": 8,
+        "medias": [
+          {
+            "role": "start_image",
+            "data": {
+              "id": "761f4857-f6b4-4179-bff1-d3efaa286934",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190448_761f4857-f6b4-4179-bff1-d3efaa286934.png"
+            }
+          },
+          {
+            "role": "end_image",
+            "data": {
+              "id": "16fd3ba7-05ab-4f31-bdb3-8a506b8d4659",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190447_16fd3ba7-05ab-4f31-bdb3-8a506b8d4659.png"
+            }
+          }
+        ],
+        "width": 1920,
+        "height": 1080,
+        "genre": "auto",
+        "resolution": "1080p",
+        "generate_audio": false,
+        "multi_shots": false,
+        "multi_shot_mode": "custom",
+        "multi_prompt": [],
+        "speedramp": "auto",
+        "reference_elements": [],
+        "prompt_language": "en",
+        "model": "default",
+        "extension_mode": null,
+        "bitrate_mode": "high"
+      },
+      "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190739_83bee30f-abd2-4f75-9d09-5c1af2921dfa.mp4",
+      "output": "public/assets/construction-landscape-0.mp4",
+      "mediaId": "cda8f06c-dde6-403b-833e-55ff012cccb8",
+      "bytes": 11218814,
+      "duration": 8.042,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "400576cb-2471-4ce8-bce0-4ebd5f8ac7f9",
+      "model": "seedance_2_5",
+      "status": "completed",
+      "params": {
+        "prompt": "An unbroken eight-second hyperreal architectural cinema camera move between the EXACT supplied start and end photographs. Treat both images as photographs of ONE rigid construction site. Only the camera moves; the building, concrete portal, reinforcement cage, steel chains and single red tessellated A remain rigid and fixed in space. Preserve the A's original silhouette, separate inner triangular piece, panel triangulation and distinct burgundy/crimson/scarlet shades; no second A, no morphing or reassembly. Preserve supported slabs, concrete surface detail, bolts, rebar ribs and warm strip lighting with cool blue-hour sky. Powerful restrained motion-control photography, natural perspective and foreground parallax. Travel through open air around obstacles, never through walls, beams, slabs or the sculpture. No cuts, dissolves, optical zoom, shaking, focus pumping, text, UI or audio. Slow gently near both ends so adjacent shots can connect. Frame-by-frame photographic realism with coherent materials, nuanced reflections and exposure, no fake CGI sheen. SHOT 2 / DETAIL TO HEIGHT. Start exactly beside the reinforcement cage and concrete upright. Move up and forward along the OPEN OUTER SIDE of the building, rising to first-floor height, looking diagonally across the supported slabs. The SINGLE A must stay behind/down in the forecourt and naturally shrink in perspective, ending as the small distant lower-left emblem in the supplied end photo. Never duplicate the A or carry it with the camera. Reveal four supported concrete levels and their immense depth. Camera travels outside the slabs, not through them. Keep rebar in the right foreground as a continuous visual guide.",
+        "aspect_ratio": "16:9",
+        "duration": 8,
+        "medias": [
+          {
+            "role": "start_image",
+            "data": {
+              "id": "16fd3ba7-05ab-4f31-bdb3-8a506b8d4659",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190447_16fd3ba7-05ab-4f31-bdb3-8a506b8d4659.png"
+            }
+          },
+          {
+            "role": "end_image",
+            "data": {
+              "id": "1ebdf0c6-804a-4065-b3a4-2cbac2ab5012",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190636_1ebdf0c6-804a-4065-b3a4-2cbac2ab5012.png"
+            }
+          }
+        ],
+        "width": 1920,
+        "height": 1080,
+        "genre": "auto",
+        "resolution": "1080p",
+        "generate_audio": false,
+        "multi_shots": false,
+        "multi_shot_mode": "custom",
+        "multi_prompt": [],
+        "speedramp": "auto",
+        "reference_elements": [],
+        "prompt_language": "en",
+        "model": "default",
+        "extension_mode": null,
+        "bitrate_mode": "high"
+      },
+      "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190908_400576cb-2471-4ce8-bce0-4ebd5f8ac7f9.mp4",
+      "output": "public/assets/construction-landscape-1.mp4",
+      "mediaId": "5ebb0791-6f15-4479-9339-0df7cb5d0e47",
+      "bytes": 12239532,
+      "duration": 8.042,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "c08b95fa-4934-4e1c-ac9b-c49fde6f0c16",
+      "model": "seedance_2_5",
+      "status": "completed",
+      "params": {
+        "prompt": "Create one continuous 8-second physically photographed architectural camera shot from the supplied start image to the supplied end image. The start and end show the SAME fixed site from different viewpoints. CRITICAL: do NOT crossfade, dissolve, ghost, morph or blend these two pictures. Preserve all concrete edges sharply. Use a motivated foreground occlusion to bridge the turn: in seconds 0-2.5 the camera moves outward along the open side of the building; at seconds 2.5-4 it passes VERY CLOSE BEHIND a thick real concrete upright whose dark textured face sweeps smoothly across the lens from right to left and briefly fills the frame; in seconds 4-8 it emerges into the wet forecourt and settles on the exact elevated end composition. The concrete upright is opaque with real pores and perspective, never transparent. This is a camera travelling around an architectural obstacle, never through solid concrete. A single fixed tessellated red steel A remains in the forecourt, same silhouette, inner triangle, burgundy/crimson/scarlet panels, bolts and chains; never move it, duplicate it or change its scale except by physical perspective. Rigid supported slabs and walls, natural parallax, actual concrete texture, blue-hour sky and warm strip lights, realistic wet reflections. Smooth expensive motion control, no shake or zoom, restrained ease at the final view. Keep the space for HTML text naturally dark; generate no lettering, UI or sound. LANDSCAPE 16:9 composition, quiet lower-left area at the end.",
+        "aspect_ratio": "16:9",
+        "duration": 8,
+        "medias": [
+          {
+            "role": "start_image",
+            "data": {
+              "id": "1ebdf0c6-804a-4065-b3a4-2cbac2ab5012",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190636_1ebdf0c6-804a-4065-b3a4-2cbac2ab5012.png"
+            }
+          },
+          {
+            "role": "end_image",
+            "data": {
+              "id": "59b62325-b700-47ab-af10-44302040905f",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190636_59b62325-b700-47ab-af10-44302040905f.png"
+            }
+          }
+        ],
+        "width": 1920,
+        "height": 1080,
+        "genre": "auto",
+        "resolution": "1080p",
+        "generate_audio": false,
+        "multi_shots": false,
+        "multi_shot_mode": "custom",
+        "multi_prompt": [],
+        "speedramp": "auto",
+        "reference_elements": [],
+        "prompt_language": "en",
+        "model": "default",
+        "extension_mode": null,
+        "bitrate_mode": "high"
+      },
+      "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_c08b95fa-4934-4e1c-ac9b-c49fde6f0c16.mp4",
+      "output": "public/assets/construction-landscape-2.mp4",
+      "mediaId": "70ea2b37-79ea-41a4-8468-0153883e8321",
+      "bytes": 10493213,
+      "duration": 8.042,
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "id": "6d658000-6802-4572-8356-74c5eb5b0138",
+      "model": "seedance_2_5",
+      "status": "completed",
+      "params": {
+        "prompt": "An unbroken eight-second hyperreal architectural cinema camera move between the EXACT supplied start and end photographs. Treat both images as photographs of ONE rigid construction site. Only the camera moves; the building, concrete portal, reinforcement cage, steel chains and single red tessellated A remain rigid and fixed in space. Preserve the A's original silhouette, separate inner triangular piece, panel triangulation and distinct burgundy/crimson/scarlet shades; no second A, no morphing or reassembly. Preserve supported slabs, concrete surface detail, bolts, rebar ribs and warm strip lighting with cool blue-hour sky. Powerful restrained motion-control photography, natural perspective and foreground parallax. Travel through open air around obstacles, never through walls, beams, slabs or the sculpture. No cuts, dissolves, optical zoom, shaking, focus pumping, text, UI or audio. Slow gently near both ends so adjacent shots can connect. Frame-by-frame photographic realism with coherent materials, nuanced reflections and exposure, no fake CGI sheen. SHOT 1 / ENTRY TO MATERIAL. Start low over wet concrete looking at the suspended A. Dolly gradually forward and slide RIGHT toward the right-side reinforcement cage, rising only from 0.6m to 1.4m. Finish beside the rough concrete upright and ribbed rebar, which fills the right foreground while the same A recedes to the left in the background. Strong realistic parallax, constant focal length, the steel A does not turn or move. Keep the left lower area quietly composed for HTML copy. VERTICAL MOBILE DIRECTION: The supplied portrait anchors are the authoritative composition. Maintain a 9:16 frame throughout, with meaningful upward framing of the structure and the whole A when present; do not crop a landscape shot or rotate the camera. The lower portion will receive concise HTML copy, so let it stay visually calm while preserving real material texture. Smooth restrained camera motion and exact start/end framing.",
+        "aspect_ratio": "9:16",
+        "duration": 8,
+        "medias": [
+          {
+            "role": "start_image",
+            "data": {
+              "id": "61e5f569-8ffa-4538-bf3e-b9893e808577",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190700_61e5f569-8ffa-4538-bf3e-b9893e808577.png"
+            }
+          },
+          {
+            "role": "end_image",
+            "data": {
+              "id": "6f49c5f7-85da-4bd9-a203-ff45ca0e5f89",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190700_6f49c5f7-85da-4bd9-a203-ff45ca0e5f89.png"
+            }
+          }
+        ],
+        "width": 1080,
+        "height": 1920,
+        "genre": "auto",
+        "resolution": "1080p",
+        "generate_audio": false,
+        "multi_shots": false,
+        "multi_shot_mode": "custom",
+        "multi_prompt": [],
+        "speedramp": "auto",
+        "reference_elements": [],
+        "prompt_language": "en",
+        "model": "default",
+        "extension_mode": null,
+        "bitrate_mode": "high"
+      },
+      "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_6d658000-6802-4572-8356-74c5eb5b0138.mp4",
+      "output": "public/assets/construction-portrait-0.mp4",
+      "mediaId": "3b7a614d-7071-4f1f-a6d2-63139312c03c",
+      "bytes": 8425709,
+      "duration": 8.042,
+      "width": 864,
+      "height": 1536
+    },
+    {
+      "id": "460f59fb-41bc-4318-94d6-47dd2111df4b",
+      "model": "seedance_2_5",
+      "status": "completed",
+      "params": {
+        "prompt": "An unbroken eight-second hyperreal architectural cinema camera move between the EXACT supplied start and end photographs. Treat both images as photographs of ONE rigid construction site. Only the camera moves; the building, concrete portal, reinforcement cage, steel chains and single red tessellated A remain rigid and fixed in space. Preserve the A's original silhouette, separate inner triangular piece, panel triangulation and distinct burgundy/crimson/scarlet shades; no second A, no morphing or reassembly. Preserve supported slabs, concrete surface detail, bolts, rebar ribs and warm strip lighting with cool blue-hour sky. Powerful restrained motion-control photography, natural perspective and foreground parallax. Travel through open air around obstacles, never through walls, beams, slabs or the sculpture. No cuts, dissolves, optical zoom, shaking, focus pumping, text, UI or audio. Slow gently near both ends so adjacent shots can connect. Frame-by-frame photographic realism with coherent materials, nuanced reflections and exposure, no fake CGI sheen. SHOT 2 / DETAIL TO HEIGHT. Start exactly beside the reinforcement cage and concrete upright. Move up and forward along the OPEN OUTER SIDE of the building, rising to first-floor height, looking diagonally across the supported slabs. The SINGLE A must stay behind/down in the forecourt and naturally shrink in perspective, ending as the small distant lower-left emblem in the supplied end photo. Never duplicate the A or carry it with the camera. Reveal four supported concrete levels and their immense depth. Camera travels outside the slabs, not through them. Keep rebar in the right foreground as a continuous visual guide. VERTICAL MOBILE DIRECTION: The supplied portrait anchors are the authoritative composition. Maintain a 9:16 frame throughout, with meaningful upward framing of the structure and the whole A when present; do not crop a landscape shot or rotate the camera. The lower portion will receive concise HTML copy, so let it stay visually calm while preserving real material texture. Smooth restrained camera motion and exact start/end framing.",
+        "aspect_ratio": "9:16",
+        "duration": 8,
+        "medias": [
+          {
+            "role": "start_image",
+            "data": {
+              "id": "6f49c5f7-85da-4bd9-a203-ff45ca0e5f89",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190700_6f49c5f7-85da-4bd9-a203-ff45ca0e5f89.png"
+            }
+          },
+          {
+            "role": "end_image",
+            "data": {
+              "id": "1d84283b-50e4-4094-9054-f1acfc549935",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190905_1d84283b-50e4-4094-9054-f1acfc549935.png"
+            }
+          }
+        ],
+        "width": 1080,
+        "height": 1920,
+        "genre": "auto",
+        "resolution": "1080p",
+        "generate_audio": false,
+        "multi_shots": false,
+        "multi_shot_mode": "custom",
+        "multi_prompt": [],
+        "speedramp": "auto",
+        "reference_elements": [],
+        "prompt_language": "en",
+        "model": "default",
+        "extension_mode": null,
+        "bitrate_mode": "high"
+      },
+      "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_460f59fb-41bc-4318-94d6-47dd2111df4b.mp4",
+      "output": "public/assets/construction-portrait-1.mp4",
+      "mediaId": "bbedc3f0-074f-4ae2-8cea-558d608ab1d6",
+      "bytes": 7836658,
+      "duration": 8.042,
+      "width": 864,
+      "height": 1536
+    },
+    {
+      "id": "a0a77647-21b8-4282-b9ea-dc9aa09b36d1",
+      "model": "seedance_2_5",
+      "status": "completed",
+      "params": {
+        "prompt": "Create one continuous 8-second physically photographed architectural camera shot from the supplied start image to the supplied end image. The start and end show the SAME fixed site from different viewpoints. CRITICAL: do NOT crossfade, dissolve, ghost, morph or blend these two pictures. Preserve all concrete edges sharply. Use a motivated foreground occlusion to bridge the turn: in seconds 0-2.5 the camera moves outward along the open side of the building; at seconds 2.5-4 it passes VERY CLOSE BEHIND a thick real concrete upright whose dark textured face sweeps smoothly across the lens from right to left and briefly fills the frame; in seconds 4-8 it emerges into the wet forecourt and settles on the exact elevated end composition. The concrete upright is opaque with real pores and perspective, never transparent. This is a camera travelling around an architectural obstacle, never through solid concrete. A single fixed tessellated red steel A remains in the forecourt, same silhouette, inner triangle, burgundy/crimson/scarlet panels, bolts and chains; never move it, duplicate it or change its scale except by physical perspective. Rigid supported slabs and walls, natural parallax, actual concrete texture, blue-hour sky and warm strip lights, realistic wet reflections. Smooth expensive motion control, no shake or zoom, restrained ease at the final view. Keep the space for HTML text naturally dark; generate no lettering, UI or sound. Purpose-composed VERTICAL 9:16 photography; preserve the portrait framing and whole A in the ending upper-middle.",
+        "aspect_ratio": "9:16",
+        "duration": 8,
+        "medias": [
+          {
+            "role": "start_image",
+            "data": {
+              "id": "1d84283b-50e4-4094-9054-f1acfc549935",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190905_1d84283b-50e4-4094-9054-f1acfc549935.png"
+            }
+          },
+          {
+            "role": "end_image",
+            "data": {
+              "id": "d004eba0-4eec-491a-bf46-cd7511b8c4ee",
+              "type": "image_job",
+              "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190904_d004eba0-4eec-491a-bf46-cd7511b8c4ee.png"
+            }
+          }
+        ],
+        "width": 1080,
+        "height": 1920,
+        "genre": "auto",
+        "resolution": "1080p",
+        "generate_audio": false,
+        "multi_shots": false,
+        "multi_shot_mode": "custom",
+        "multi_prompt": [],
+        "speedramp": "auto",
+        "reference_elements": [],
+        "prompt_language": "en",
+        "model": "default",
+        "extension_mode": null,
+        "bitrate_mode": "high"
+      },
+      "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_a0a77647-21b8-4282-b9ea-dc9aa09b36d1.mp4",
+      "output": "public/assets/construction-portrait-2.mp4",
+      "mediaId": "a39d786f-fd9d-4e0c-80b0-adcdda15ab6f",
+      "bytes": 7460058,
+      "duration": 8.042,
+      "width": 864,
+      "height": 1536
+    }
+  ],
+  "rejected": [
+    {
+      "id": "97fd95a7-7e49-4d9c-8b21-f037a8e669ed",
+      "reason": "Duplicate large and distant A"
+    },
+    {
+      "id": "2a115a5c-37c0-4a36-9ad7-262f46d99235",
+      "reason": "Finale camera was not elevated"
+    },
+    {
+      "id": "1021617d-854e-4278-88e1-1e14c8aa3529",
+      "reason": "Dissolve between perspectives"
+    },
+    {
+      "id": "14be8124-bc79-49c6-b74f-ae42ad56092e",
+      "reason": "Blend during turn replaced with concrete foreground occlusion"
+    }
+  ],
   "encoding": {
-    "desktop": {
-      "codec": "libx264",
-      "preset": "medium",
-      "crf": 18,
-      "keyint": 6,
-      "bframes": 0,
-      "pixelFormat": "yuv420p",
-      "movflags": "+faststart",
-      "audio": false
-    },
-    "mobile": {
-      "width": 1280,
-      "crf": 20
-    },
+    "codec": "libx264",
+    "preset": "medium",
+    "crf": 20,
+    "fps": 24,
+    "keyint": 12,
+    "minKeyint": 12,
+    "scenecut": 0,
+    "bframes": 0,
+    "pixelFormat": "yuv420p",
+    "movflags": "+faststart",
+    "audio": false,
     "stills": {
-      "timeRule": "(source duration - 0.15) * chapter index / 3",
-      "widths": [1600, 1024, 780],
-      "webpQuality": 86
+      "source": "Accepted 4K framing anchors",
+      "landscape": [
+        {
+          "width": 1600,
+          "height": 900
+        },
+        {
+          "width": 1024,
+          "height": 576
+        }
+      ],
+      "portrait": [
+        {
+          "width": 780,
+          "height": 1387
+        },
+        {
+          "width": 1024,
+          "height": 1820
+        }
+      ],
+      "quality": 86,
+      "phoneAvif": {
+        "width": 780,
+        "height": 1387,
+        "quality": 55,
+        "speed": 5,
+        "mediaArchiveId": "2fa0b927-ec43-4e97-93b6-ca429531430a",
+        "bytes": [
+          115369,
+          143367,
+          131268,
+          171160
+        ]
+      }
     }
   },
-  "processing": "Higgsfield sandbox ffmpeg / Pillow"
+  "processing": "Higgsfield sandbox ffmpeg / Pillow. Native sources retained in Higgsfield.",
+  "costs": {
+    "images": 10,
+    "imageCreditsEach": 16,
+    "videos": 8,
+    "videoCreditsEach": 72,
+    "totalCredits": 736,
+    "verifiedBalanceAfter": 1064
+  },
+  "playback": {
+    "segmentsPerOrientation": 3,
+    "nominalSeconds": 24,
+    "mode": "Native scroll paused seeking; current and direction-adjacent move only; hold decoded frame until incoming move is ready",
+    "portraitMediaQuery": "(max-aspect-ratio: 9/10)",
+    "narrowAndTouchDefault": "Composed stills; opt-in motion",
+    "hostWithoutByteRanges": "Same-origin Blob per segment"
+  }
 }

@@ -161,6 +161,7 @@ svg {
   background: #111e2b;
 }
 .world-stills,
+.world-film-stage,
 .world-film,
 .world-wash {
   position: absolute;
@@ -172,11 +173,15 @@ svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 64% center;
   opacity: 0;
   transition: opacity 0.5s;
 }
 .world-stills img.active {
   opacity: 1;
+}
+.world-film-stage {
+  z-index: 1;
 }
 .world-film {
   display: block;
@@ -185,12 +190,13 @@ svg {
   object-fit: cover;
   object-position: 64% center;
   opacity: 0;
-  transition: opacity 0.6s;
 }
 .world-film.ready {
   opacity: 1;
+  z-index: 1;
 }
 .world-wash {
+  z-index: 2;
   background:
     linear-gradient(90deg, #09111ce0 0%, #09111ca0 26%, #09111c00 54%),
     linear-gradient(0deg, #09111c80, transparent 18%);
@@ -840,23 +846,19 @@ footer > a:not(:first-child) {
     vertical-align: top;
   }
 }
-@media (max-aspect-ratio: 11/10) {
+@media (max-aspect-ratio: 9/10) {
   .world-film,
-  .world-stills {
-    top: 72px;
-    height: min(65svh, 95vw);
-    object-position: 70% center;
-    mask-image: linear-gradient(transparent, #000 3%, #000 72%, transparent);
-  }
   .world-stills img {
-    object-position: 70% center;
+    object-position: center 35%;
   }
+}
+@media (max-aspect-ratio: 11/10) {
   .world-wash {
     background: linear-gradient(
       0deg,
-      #0b1422fa 0%,
-      #0b1422d9 27%,
-      #0b142200 62%
+      #09111cf0 0%,
+      #09111ca8 27%,
+      #09111c00 62%
     );
   }
   .is-ready .chapter-content {
@@ -1012,10 +1014,10 @@ footer > a:not(:first-child) {
   .world-wash {
     background: linear-gradient(
       0deg,
-      #0b1422fc 0%,
-      #0b1422ee 24%,
-      #0b142290 40%,
-      #0b142200 66%
+      #09111cf5 0%,
+      #09111cba 24%,
+      #09111c55 43%,
+      #09111c00 65%
     );
   }
   .panel-shell {
