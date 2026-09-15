@@ -1,5 +1,11 @@
 # Vertical implementation slices
 
+## Mobile toolbar and late-load correction
+
+- VP1 — AFK, complete locally: reproduce `#vizija` rewinding from 950px to 0 when a delayed image finishes loading. Restore the initial fragment in a layout effect only after the enhanced layout commits. Chrome and WebKit regression failed before removal of the late-load restoration and passed afterward. Direct-chapter testing also exposed a startup frame running before enhanced heights existed (1400px instead of 3220px); all eight repeated Chrome checks passed after tying restoration to the committed layout.
+- VP2 — AFK, complete locally; depends on VP1: keep film, stills and wash on one top-anchored `100lvh` surface. A controlled small/large viewport model reproduced cover-crop resizing at 700→729px before the change, then verified stable 758px artwork through address-bar expansion/retraction. Actual Android compositor behavior still requires device confirmation; desktop emulation cannot reproduce native browser chrome.
+- VP3 — AFK, local QA complete; depends on VP2: all 51 browser checks and four component tests passed, along with typecheck, lint and production build. Verified direct chapter loading, opening and reverse scroll, reduced motion, rotation, 390/768/1440px layouts, contact and PDF. Compared the phone toolbar-model screenshots with stable artwork and complete bottom coverage. Ready for the existing owner-private Sites publication; physical Android confirmation remains outstanding.
+
 ## Opening handoff follow-up
 
 - OP1 — AFK, complete: reproduce the opening still/video discontinuity and replace all opening poster variants with the matching delivered movie's decoded first frame. Regression through browser image comparison.

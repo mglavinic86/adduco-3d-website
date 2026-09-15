@@ -155,7 +155,10 @@ svg {
 }
 .world {
   position: fixed;
-  inset: 0;
+  inset: 0 0 auto;
+  /* Keep the same cover crop while mobile browser toolbars retract. The
+     extra bottom area is already painted before it becomes visible. */
+  height: 100lvh;
   z-index: -1;
   overflow: hidden;
   background: #111e2b;

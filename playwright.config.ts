@@ -11,7 +11,11 @@ export default defineConfig({
     },
     {
       name: "webkit",
-      testMatch: ["**/webkit-film.spec.ts", "**/opening.spec.ts"],
+      testMatch: [
+        "**/webkit-film.spec.ts",
+        "**/opening.spec.ts",
+        "**/viewport.spec.ts",
+      ],
       use: {
         browserName: "webkit",
         viewport: { width: 390, height: 844 },

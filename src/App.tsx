@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   useCallback,
@@ -171,24 +172,24 @@ export default function App() {
       setPanel(id in detailTitles ? (id as Detail) : null);
     };
     route();
-    const restore = () => {
-      const id = location.hash.slice(1);
-      if (id in detailTitles) window.scrollTo({ top: 0, behavior: "instant" });
-      else if (chapters.some((c) => c.id === id))
-        document.getElementById(id)?.scrollIntoView({ behavior: "instant" });
-    };
-    const initial = requestAnimationFrame(restore);
-    window.addEventListener("load", restore, { once: true });
     window.addEventListener("hashchange", route);
     window.addEventListener("popstate", route);
     return () => {
-      cancelAnimationFrame(initial);
-      window.removeEventListener("load", restore);
       mq.removeEventListener("change", motion);
       window.removeEventListener("hashchange", route);
       window.removeEventListener("popstate", route);
     };
   }, []);
+  useLayoutEffect(() => {
+    if (!ready) return;
+    // Run once, after the enhanced chapter heights exist and before paint.
+    // A frame scheduled from the startup effect can precede that commit;
+    // window.load can arrive after the visitor has already moved the camera.
+    const id = location.hash.slice(1);
+    if (id in detailTitles) window.scrollTo({ top: 0, behavior: "instant" });
+    else if (chapters.some((c) => c.id === id))
+      document.getElementById(id)?.scrollIntoView({ behavior: "instant" });
+  }, [ready]);
   useEffect(() => {
     let frame = 0;
     const update = () => {
