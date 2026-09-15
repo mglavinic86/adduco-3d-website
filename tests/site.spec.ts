@@ -79,7 +79,7 @@ test("cinematic film follows native scrolling in both directions", async ({
     .toBeLessThan(0.1);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 });
-test("tablet starts in the lighter presentation without requesting the movie", async ({
+test("touch tablet automatically follows the portrait film without playback controls", async ({
   browser,
 }) => {
   const context = await browser.newContext({
@@ -87,21 +87,19 @@ test("tablet starts in the lighter presentation without requesting the movie", a
     hasTouch: true,
   });
   const page = await context.newPage();
-  const models: string[] = [];
-  const stills: string[] = [];
+  const movies: string[] = [];
   page.on("request", (request) => {
-    if (request.url().endsWith(".mp4")) models.push(request.url());
-    if (/chapter(?:-mobile|-tablet|-portrait)?-\d\.webp$/.test(request.url()))
-      stills.push(request.url());
+    if (request.url().endsWith(".mp4")) movies.push(request.url());
   });
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Pokreni animaciju" }),
-  ).toBeVisible();
-  await page.waitForTimeout(500);
-  expect(models).toEqual([]);
-  expect(stills).toHaveLength(1);
+    page.getByRole("button", { name: /Pokreni animaciju|Zaustavi animaciju/ }),
+  ).toHaveCount(0);
+  await expect(page.locator("video.ready")).toBeVisible();
+  expect(movies.every((url) => url.includes("construction-portrait-"))).toBe(
+    true,
+  );
   await page.locator('.journey-dock a[href="#povjerenje"]').click();
   await expect(page.locator(".world-stills img.active")).toHaveAttribute(
     "src",
@@ -112,9 +110,6 @@ test("tablet starts in the lighter presentation without requesting the movie", a
     "src",
     /chapter-0.webp$/,
   );
-  await page.getByRole("button", { name: "Pokreni animaciju" }).click();
-  await expect(page.locator("video.ready")).toBeVisible();
-  expect(models.length).toBeGreaterThan(0);
   await page.locator('.journey-dock a[href="#projekt"]').click();
   await expect
     .poll(() =>
@@ -127,12 +122,11 @@ test("tablet starts in the lighter presentation without requesting the movie", a
   await context.close();
 });
 
-test("phone can opt into the film and return from a detail panel", async ({
+test("phone automatically animates and returns from a detail panel", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Pokreni animaciju" }).click();
   await expect(page.locator("video.ready")).toBeVisible();
   await page.locator('.journey-dock a[href="#projekt"]').click();
   await expect

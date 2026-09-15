@@ -1,51 +1,47 @@
-# Cinematic acceptance report
+# QA — mobile scroll smoothness
 
-Verified 15 September 2026 at http://127.0.0.1:5184/. Current direction: Od temelja do stvarnosti, with separately directed desktop and portrait footage. The owner funded production and authorized the existing private Sites update.
+15 September 2026. Continuation of the accepted dark, photoreal construction journey. The owner approved the diagnosed smoothness fixes and automatic mobile motion without a playback button.
 
-## Behavior and accessibility
+## Behavior and regression evidence
 
-- 4 component tests and 21 Chrome behavior checks passed across the full 19-test run and two additional loading/failure/rotation cases. The phone composition check passed again after AVIF optimization.
-- TypeScript, ESLint, production build and the strict design artifact audit passed. The focused five-test film suite passed after the final movie-promotion adjustment.
-- Real-browser visual review at 390×844, 768×1024, 1440×900 and the actual 1013×941 in-app window. Entry, reinforcement, height and final contact compositions inspected. No horizontal overflow; Axe WCAG 2/2.1 A/AA found no violations in entry/contact at 390, 768 and 1440px.
-- Native scroll changes video time in both directions across all three segments. Direct jumps and reverse movement settle on the correct segment. No wheel interception or permanent animation loop. Incoming decoded movies become visible in one paint to avoid exposing a poster between segments.
-- Initial desktop request loads only landscape segment 0. Phone/touch tablet requests one composed still and no movie until explicit start. Portrait uses its own film and still artwork; rotation changes orientation and releases the old movie. An explicit pause survives resize.
-- A delayed later move keeps a decoded frame visible. A failed current move returns to composed stills and keeps contact usable. No-byte-range hosting recovery is covered through the page, using a same-origin Blob per segment.
-- Reduced motion, unavailable video, no-JavaScript essential content, direct detail fragments, Escape, browser Back, focus return, inquiry validation and PDF HTTP/download passed. Services retains a preparation link. The inquiry creates a reviewable email draft; no message was sent.
+- Mobile and touch-tablet motion follows native scrolling automatically. The film stays paused; scroll selects frames. No playback control is exposed on phone or touch viewports. Desktop keeps its explicit pause control.
+- Abrupt input eases through intermediate frames with a 100 ms time constant. Time spent idle is excluded from the first gesture step. Seeking is serialized and quantized to the source's 24 fps.
+- Adjacent moves prepare after 30% progress, including Blob recovery when HTTP media has no seekable ranges. Previously decoded movies remain available for reverse scrolling. The cache holds at most three movies per orientation; old composition resources are released after the new frame is available.
+- `requestVideoFrameCallback` supplies the caption clock. Older browsers fall back to completed seeks. A stalled decoder keeps the caption associated with the last displayed image. Rotation does not expose a new movie's unrequested first frame.
+- Meaningful regressions were observed failing before the respective fixes: mobile playback button/opt-in, late next-film preparation, abrupt seeking, caption advance during a decoder stall, first-frame flash on rotation, and the excessive first step after idle.
+- 4 component behavior tests and 28 real Chrome browser checks cover these cases, both scroll directions, 390/768/1440px layouts, direct fragments, reduced motion, unavailable media, no-range hosting, no-JavaScript content, keyboard focus, contact validation and PDF download. The inquiry remains a reviewable email draft; no inquiry was sent.
+- TypeScript, ESLint, production build and strict design-artifact audit are required before release. Only the existing DESIGN.md is the visual contract.
 
-## Film and visual evidence
+## Visual and motion inspection
 
-Eight accepted 4K framing anchors were generated using Higgsfield GPT Image 2.5 Flare: four 3840×2160 landscape and four 2160×3840 portrait. Six accepted silent Seedance 2.5 movies provide three connected eight-second moves per orientation. Each native file is 8.042 seconds at 24fps; displayed timeline covers roughly 24 seconds. The camera moves from the suspended A to reinforcement detail, rises alongside several supported floors, then reveals the entire forecourt and structure.
+The in-app browser was inspected at 390×844, 768×1024 and 1440×900. Mobile opening, reinforcement detail, height and contact compositions retain legible overlays and clear primary actions. Desktop retains the landscape film. No page errors or warnings were observed in the local visual review.
 
-All eight accepted framing images and nine sampled frames per movie were inspected, along with actual website motion. Two initial images were rejected for a duplicate emblem and wrong final camera height. Two final-transition movies were replaced because they blended viewpoints. Accepted final moves use an opaque foreground concrete upright to conceal the viewpoint change; this is intentional cinematic construction, not a literal surveyed camera trajectory. Generated geometry can vary; these assets are conceptual brand artwork and do not document an Adduco project. The sculptural A preserves differentiated red plates; the header uses the faithful supplied logo.
+A six-second scripted forward/reverse native scroll at 390×844 produced 300 presented-frame callbacks in the Chrome lab: 148 during three seconds forward and 137 in the measured 2.7-second reverse window. Median callback interval was 16.7 ms, 95th percentile 33.4 ms; the longest 100 ms interval includes the slowing/settling part of the sequence. These are presented-frame observations at that scroll speed, not a claim of 60 fps or physical-phone performance. Report: `/tmp/adduco-smooth-timing-report.json`.
 
-Generation used 736 credits: ten images at 16 credits and eight movies at 72 credits, including rejected variants. Higgsfield reported 1,064 credits afterward. No purchase or credit transfer was made. Exact prompts, accepted/rejected IDs and media provenance are in scripts/cinema.json.
+Physical iPhone/Safari and Android hardware have not been tested. Evidence uses Chrome viewport/touch emulation and the in-app browser. The source films still contain deliberate foreground rebar and concrete occlusions; they can darken or briefly obscure the scene. Those camera moves were retained, rather than generating a new visual direction.
 
-## Delivery and loading
+## Mobile media preparation
 
-Higgsfield ffmpeg produced H.264/yuv420p, CRF 20, 24fps, 12-frame keyframes, no B-frames, no audio and fast-start metadata. Desktop 1920×1080 segments: 11,218,814 / 12,239,532 / 10,493,213 bytes. Portrait 864×1536: 8,425,709 / 7,836,658 / 7,460,058 bytes. Current and adjacent movies load progressively, without downloading the other orientation; obsolete movies and Blob URLs are released.
+Higgsfield ffmpeg re-encoded the three accepted native 1080p portrait movies at 720×1280, CRF 20, H.264/yuv420p, 24 fps, a keyframe every three frames, no B-frames, no audio and fast-start metadata. Files are versioned to avoid stale browser media. Native-source frames were compared with 720px and 864px alternatives at 390px display width. The chosen output preserves visible concrete, rebar, reflections and emblem detail; contact sheets of the complete second and third moves were also inspected.
 
-Sixteen WebP images come from accepted framing anchors. Four phone AVIF alternatives retain the 780×1387 composition with smaller transfers: 115,369 / 143,367 / 131,268 / 171,160 bytes. WebP remains a compatibility fallback. The original phone poster was 252,466 bytes before AVIF optimization. Images and content appear before movie decoding; constrained-device defaults do not request movies until the visitor starts motion.
+New portrait bytes: 10,390,329 / 9,672,984 / 10,055,558. Previous portrait: 8,425,709 / 7,836,658 / 7,460,058, at 864×1536 with twelve-frame keyframes. The new output decodes 31% fewer pixels per frame and places seek entry points every 0.125 seconds instead of 0.5 seconds. The trade-off is a larger compressed download (about 30.1 MB across all three portrait moves). These figures do not imply proportional device speedups.
 
-Hosts without byte ranges require the selected movie to finish downloading before seeking becomes available. The prior frame or poster remains visible during that work. These movies prioritize surface detail and backward seeking over minimal transfer. Physical iPhone/Safari hardware decoding has not been tested; mobile evidence uses Chrome viewport/touch emulation and the in-app browser.
+Desktop movies, all stills, logo, camera choreography and business copy are unchanged. No new image/video generation was required. Provenance and exact encoding parameters are in scripts/cinema.json. Source movies, comparison candidates, contact sheets and screenshots stay outside tracked source. The superseded portrait web files are removed.
 
-## Performance
+## Initial loading measurement
 
-Local Lighthouse 13.4.1 / Chrome 153 lab measurements, not field Core Web Vitals. Phone: 412×823, 4× CPU, 150ms RTT, 1.64Mbps. Desktop: 1350×940, 1× CPU, 40ms RTT, 10.24Mbps.
+Local Lighthouse mobile simulation, 15 September 2026 at 20:05:56 UTC, with automatic film loading enabled:
 
-| Metric | Mobile | Desktop |
-| --- | ---: | ---: |
-| Performance | 96/100 | 100/100 |
-| Accessibility | 100/100 | 100/100 |
-| Best practices | 100/100 | 100/100 |
-| First contentful paint | 1.51s | 0.37s |
-| Largest contentful paint | 2.63s | 0.67s |
-| Total blocking time | 0ms | 0ms |
-| Cumulative layout shift | 0 | 0.0000023 |
+| Metric | Result |
+| --- | ---: |
+| Performance | 97/100 |
+| First contentful paint | 1.51 s |
+| Largest contentful paint | 2.56 s |
+| Total blocking time | 0 ms |
+| Cumulative layout shift | 0 |
 
-Phone LCP improved from 3.15s to 2.63s after image optimization; it remains above the 2.5s good threshold under this simulated slow connection. These checks measure initial presentation, not full movie download, hosted Blob recovery or sustained decoding on every device. INP was not measured. SEO is 69 because the private preview intentionally blocks indexing. Reports: /tmp/adduco-monumental/lighthouse-mobile-final.json (19:32:07 UTC) and lighthouse-desktop.json (19:30:07 UTC).
+Report: `/tmp/adduco-smooth-lighthouse.json`. This is a lab initial-load result, not field Core Web Vitals, sustained device decoding, or hosted Blob recovery. LCP remains slightly above the 2.5-second good threshold in this simulation. INP was not measured. Reduced-motion, data-saving and explicit fallback visits retain still imagery.
 
-## Release and cleanup
+## Release boundary
 
-The owner-private Site update is authorized; keep its existing audience. Actual hosted forward/reverse motion and portrait selection must be verified after publication. The old seven-second web movies are removed. Source footage, contact sheets, screenshots, compression previews and rejected variants remain outside the repository. Intentional deliverables are the app, behavior tests, configuration, single DESIGN.md, project/content/QA documentation, generation provenance, optimized media, PDF and supplied logo.
-
-Approved real project photos, final public-launch copy, recipient confirmation and privacy/domain setup remain pending. Those do not block the authorized owner-private preview.
+Use the already authorized owner-private Sites project and preserve its current audience. Verify actual hosted portrait selection, automatic motion without playback controls, frame advance, reverse seeking and contact after publication. Public launch still depends on approved company/project material and launch configuration described in AGENTS.md. Conceptual cinematic artwork must not be presented as portfolio photography.

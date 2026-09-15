@@ -475,12 +475,17 @@
         "bitrate_mode": "high"
       },
       "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_6d658000-6802-4572-8356-74c5eb5b0138.mp4",
-      "output": "public/assets/construction-portrait-0.mp4",
-      "mediaId": "3b7a614d-7071-4f1f-a6d2-63139312c03c",
-      "bytes": 8425709,
+      "output": "public/assets/construction-portrait-v2-0.mp4",
+      "mediaId": "101cffe5-1d38-4e93-a7c4-f9ea9906451c",
+      "bytes": 10390329,
       "duration": 8.042,
-      "width": 864,
-      "height": 1536
+      "width": 720,
+      "height": 1280,
+      "encodingOverride": {
+        "keyint": 3,
+        "minKeyint": 3,
+        "crf": 20
+      }
     },
     {
       "id": "460f59fb-41bc-4318-94d6-47dd2111df4b",
@@ -524,12 +529,17 @@
         "bitrate_mode": "high"
       },
       "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_460f59fb-41bc-4318-94d6-47dd2111df4b.mp4",
-      "output": "public/assets/construction-portrait-1.mp4",
-      "mediaId": "bbedc3f0-074f-4ae2-8cea-558d608ab1d6",
-      "bytes": 7836658,
+      "output": "public/assets/construction-portrait-v2-1.mp4",
+      "mediaId": "3f6d1cda-3bdb-4587-a743-3c3fbf5aed4a",
+      "bytes": 9672984,
       "duration": 8.042,
-      "width": 864,
-      "height": 1536
+      "width": 720,
+      "height": 1280,
+      "encodingOverride": {
+        "keyint": 3,
+        "minKeyint": 3,
+        "crf": 20
+      }
     },
     {
       "id": "a0a77647-21b8-4282-b9ea-dc9aa09b36d1",
@@ -573,12 +583,17 @@
         "bitrate_mode": "high"
       },
       "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_a0a77647-21b8-4282-b9ea-dc9aa09b36d1.mp4",
-      "output": "public/assets/construction-portrait-2.mp4",
-      "mediaId": "a39d786f-fd9d-4e0c-80b0-adcdda15ab6f",
-      "bytes": 7460058,
+      "output": "public/assets/construction-portrait-v2-2.mp4",
+      "mediaId": "15155649-439a-42b9-a673-bbdb3511a15f",
+      "bytes": 10055558,
       "duration": 8.042,
-      "width": 864,
-      "height": 1536
+      "width": 720,
+      "height": 1280,
+      "encodingOverride": {
+        "keyint": 3,
+        "minKeyint": 3,
+        "crf": 20
+      }
     }
   ],
   "rejected": [
@@ -647,6 +662,14 @@
           171160
         ]
       }
+    },
+    "portraitOverride": {
+      "width": 720,
+      "height": 1280,
+      "keyint": 3,
+      "minKeyint": 3,
+      "crf": 20,
+      "note": "Re-encoded from native 1080p sources through Higgsfield; 720/GOP3 versus 864/GOP3 and source compared at 390px. Original camera movement preserved."
     }
   },
   "processing": "Higgsfield sandbox ffmpeg / Pillow. Native sources retained in Higgsfield.",
@@ -661,9 +684,12 @@
   "playback": {
     "segmentsPerOrientation": 3,
     "nominalSeconds": 24,
-    "mode": "Native scroll paused seeking; current and direction-adjacent move only; hold decoded frame until incoming move is ready",
+    "mode": "Native scroll, 100ms exponential smoothing and 24fps quantized serialized seeks; decoded frame clock for captions",
     "portraitMediaQuery": "(max-aspect-ratio: 9/10)",
-    "narrowAndTouchDefault": "Composed stills; opt-in motion",
-    "hostWithoutByteRanges": "Same-origin Blob per segment"
+    "narrowAndTouchDefault": "Automatic scroll-controlled motion; no playback button",
+    "hostWithoutByteRanges": "Prepare same-origin Blob for current and prefetched moves before crossing",
+    "cache": "Retain up to three prepared moves per orientation; release old orientation after replacement frame is decoded",
+    "prefetch": "Next directional move after 30% progress; first move only on entry",
+    "reducedMotion": "Composed stills; also used for data saving, explicit fallback or video failure"
   }
 }

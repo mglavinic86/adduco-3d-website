@@ -1157,3 +1157,8 @@ footer > a:not(:first-child) {
     width: auto !important;
   }
 }
+@media (max-width: 767px), (pointer: coarse) {
+  .mode-button {
+    display: none;
+  }
+}

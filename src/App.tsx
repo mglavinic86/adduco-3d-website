@@ -69,10 +69,12 @@ function Experience({
   still,
   active,
   onFail,
+  onFrame,
 }: {
   still: boolean;
   active: number;
   onFail: () => void;
+  onFrame: (progress: number | null) => void;
 }) {
   const [loadedStills, setLoadedStills] = useState([true, false, false, false]);
   const [shownStill, setShownStill] = useState(0);
@@ -126,7 +128,7 @@ function Experience({
             ),
         )}
       </div>
-      {!still && <CinematicFilm onFail={onFail} />}
+      {!still && <CinematicFilm onFail={onFail} onFrame={onFrame} />}
       <div className="world-wash" />
     </div>
   );
@@ -134,7 +136,10 @@ function Experience({
 export default function App() {
   const [ready, setReady] = useState(false);
   const [still, setStill] = useState(true);
-  const [progress, setProgress] = useState(0);
+  const [scrollProgress, setProgress] = useState(0);
+  const [filmProgress, setFilmProgress] = useState<number | null>(null);
+  const progress =
+    !still && filmProgress !== null ? filmProgress : scrollProgress;
   const active = Math.round(progress);
   const [menu, setMenu] = useState(false);
   const [panel, setPanel] = useState<Detail | null>(null);
@@ -151,14 +156,10 @@ export default function App() {
     const mq = matchMedia("(prefers-reduced-motion: reduce)");
     const device = navigator as Navigator & {
       connection?: { saveData?: boolean };
-      deviceMemory?: number;
     };
     setStill(
       mq.matches ||
-        innerWidth < 768 ||
-        (innerWidth < 1024 && matchMedia("(pointer: coarse)").matches) ||
         Boolean(device.connection?.saveData) ||
-        (device.deviceMemory ?? 8) <= 4 ||
         new URLSearchParams(location.search).has("fallback"),
     );
     const motion = () => setStill(mq.matches);
@@ -267,7 +268,12 @@ export default function App() {
       <a className="skip" href="#o-nama">
         Preskoči na sadržaj
       </a>
-      <Experience still={still} active={active} onFail={fail} />
+      <Experience
+        still={still}
+        active={active}
+        onFail={fail}
+        onFrame={setFilmProgress}
+      />
       <header className="header">
         <a href="#vizija" className="brand" aria-label="Adduco — početna">
           <Wordmark />

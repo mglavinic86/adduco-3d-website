@@ -1,5 +1,14 @@
 # Vertical implementation slices
 
+## Mobile smoothness pass — approved 15 September 2026
+
+- SM1 — AFK, complete. Automatic native-scroll motion on phone/touch tablet, no mobile play/pause control, reduced-motion and failure access retained. Browser regression failed before the change, then passed.
+- SM2 — AFK, complete; depends on SM1. Early adjacent preparation, proactive no-range Blob recovery and retained previous movie for reverse movement. Observable media/network regression verified.
+- SM3 — AFK, complete; depends on SM2. Short smoothing with a fresh clock after idle; captions follow decoded frames; rotation waits for the requested frame. Regression tests verified red then green.
+- SM4 — AFK, complete local production; depends on SM3. Re-encode native portrait footage through Higgsfield for rapid seeking, compare detail visually, verify 390/768/1440px, old-browser/reduced-motion paths, contact and PDF. Publish through the already authorized owner-private Site and verify hosted forward/reverse frames. No new scene generation.
+
+Earlier production phases below record the accepted history. Their mobile opt-in behavior is superseded by SM1.
+
 ## Current pass — monumental construction journey
 
 ### M0 — Resolve generation resources and inspect framing anchors

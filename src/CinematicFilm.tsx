@@ -8,11 +8,22 @@ type Film = {
   objectUrl?: string;
   recovering: boolean;
   failed: boolean;
+  key: string;
+  index: number;
+  requestedTime: number;
+  presentedTime?: number;
+  frameRequest?: number;
   dispose: () => void;
 };
 
-/** Paused, independently loaded camera moves share the native document clock. */
-export default function CinematicFilm({ onFail }: { onFail: () => void }) {
+/** Native scroll chooses the destination; decoded frames drive the HTML captions. */
+export default function CinematicFilm({
+  onFail,
+  onFrame,
+}: {
+  onFail: () => void;
+  onFrame: (progress: number | null) => void;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const stage = ref.current!;
@@ -23,10 +34,38 @@ export default function CinematicFilm({ onFail }: { onFail: () => void }) {
     let shown: string | undefined;
     let target = "";
     let previous = journeyProgress();
+    let eased = previous;
+    let lastTick = 0;
     let direction = 1;
 
     function schedule() {
       if (!disposed && !frame) frame = requestAnimationFrame(update);
+    }
+
+    function present(film: Film, time: number) {
+      if (disposed || film.request.signal.aborted) return;
+      film.presentedTime = time;
+      if (
+        film.key !== target ||
+        !Number.isFinite(film.requestedTime) ||
+        Math.abs(time - film.requestedTime) > 1 / 24
+      )
+        return;
+      if (film.recovering && !film.objectUrl) return;
+      if (shown !== target) {
+        if (shown) films.get(shown)?.video.classList.remove("ready");
+        film.video.classList.add("ready");
+        shown = target;
+        const orientation = film.video.dataset.orientation;
+        retain(
+          [...films.keys()].filter((key) => key.startsWith(`${orientation}:`)),
+        );
+      }
+      film.video.dataset.presentedTime = String(time);
+      onFrame(
+        film.index +
+          Math.min(1, time / Math.max(1 / 24, film.video.duration - 1 / 24)),
+      );
     }
 
     function ensure(key: string, index: number, orientation: string) {
@@ -41,8 +80,29 @@ export default function CinematicFilm({ onFail }: { onFail: () => void }) {
       video.preload = "auto";
       video.disablePictureInPicture = true;
       video.tabIndex = -1;
-      const source = `/assets/construction-${orientation}-${index}.mp4`;
+      const version = orientation === "portrait" ? "-v2" : "";
+      const source = `/assets/construction-${orientation}${version}-${index}.mp4`;
       const request = new AbortController();
+      const frameCallbacks =
+        typeof video.requestVideoFrameCallback === "function";
+      const prepared = () => {
+        if (
+          video.readyState >= 2 &&
+          !film.objectUrl &&
+          !film.recovering &&
+          (!video.seekable.length ||
+            video.seekable.end(video.seekable.length - 1) === 0)
+        ) {
+          void recoverSeeking(film);
+        }
+        if (!frameCallbacks) film.presentedTime = video.currentTime;
+        schedule();
+      };
+      const seeked = () => {
+        // Browsers without frame callbacks still expose a completed, decoded seek.
+        if (!frameCallbacks) present(film, video.currentTime);
+        schedule();
+      };
       const failed = () => {
         film.failed = true;
         if (!disposed && target === key) onFail();
@@ -53,11 +113,16 @@ export default function CinematicFilm({ onFail }: { onFail: () => void }) {
         request,
         recovering: false,
         failed: false,
+        key,
+        index,
+        requestedTime: NaN,
         dispose() {
           request.abort();
-          video.removeEventListener("loadeddata", schedule);
-          video.removeEventListener("canplay", schedule);
-          video.removeEventListener("seeked", schedule);
+          if (film.frameRequest !== undefined)
+            video.cancelVideoFrameCallback(film.frameRequest);
+          video.removeEventListener("loadeddata", prepared);
+          video.removeEventListener("canplay", prepared);
+          video.removeEventListener("seeked", seeked);
           video.removeEventListener("error", failed);
           video.removeAttribute("src");
           video.load();
@@ -66,11 +131,20 @@ export default function CinematicFilm({ onFail }: { onFail: () => void }) {
         },
       };
       films.set(key, film);
-      video.addEventListener("loadeddata", schedule);
-      video.addEventListener("canplay", schedule);
-      video.addEventListener("seeked", schedule);
+      video.addEventListener("loadeddata", prepared);
+      video.addEventListener("canplay", prepared);
+      video.addEventListener("seeked", seeked);
       video.addEventListener("error", failed);
       stage.append(video);
+      if (frameCallbacks) {
+        const decoded: VideoFrameRequestCallback = (_, metadata) => {
+          present(film, metadata.mediaTime);
+          if (disposed || request.signal.aborted) return;
+          film.frameRequest = video.requestVideoFrameCallback(decoded);
+          schedule();
+        };
+        film.frameRequest = video.requestVideoFrameCallback(decoded);
+      }
       video.src = source;
       return film;
     }
@@ -88,6 +162,7 @@ export default function CinematicFilm({ onFail }: { onFail: () => void }) {
         film.objectUrl = URL.createObjectURL(
           new Blob([bytes], { type: "video/mp4" }),
         );
+        film.presentedTime = undefined;
         film.video.src = film.objectUrl;
       } catch {
         if (!disposed && !film.request.signal.aborted) {
@@ -106,35 +181,44 @@ export default function CinematicFilm({ onFail }: { onFail: () => void }) {
       }
     }
 
-    function update() {
+    function update(now: number) {
       frame = 0;
       if (disposed || document.hidden) return;
-      let progress = journeyProgress();
+      let destination = journeyProgress();
       // Settle on the shared anchor despite subpixel scroll rounding.
-      if (Math.abs(progress - Math.round(progress)) < 0.002)
-        progress = Math.round(progress);
-      if (Math.abs(progress - previous) > 0.002)
-        direction = Math.sign(progress - previous);
-      previous = progress;
+      if (Math.abs(destination - Math.round(destination)) < 0.002)
+        destination = Math.round(destination);
+      if (Math.abs(destination - previous) > 0.002)
+        direction = Math.sign(destination - previous);
+      previous = destination;
+      // Start a fresh gesture gently; time spent idle is not animation time.
+      const elapsed = lastTick && now - lastTick < 80 ? now - lastTick : 16;
+      lastTick = now;
+      eased += (destination - eased) * (1 - Math.exp(-elapsed / 100));
+      if (Math.abs(destination - eased) < 0.001) eased = destination;
+      else schedule();
+      const progress = eased;
       const index = Math.min(2, Math.floor(progress));
       const position = progress - index;
       const orientation = portrait.matches ? "portrait" : "landscape";
       target = `${orientation}:${index}`;
       const next =
-        direction > 0 && position > 0.62
+        direction > 0 && position > 0.3
           ? index + 1
-          : direction < 0 && position < 0.38
+          : direction < 0 && position < 0.7
             ? index - 1
             : -1;
       const neighbor =
         next >= 0 && next <= 2 ? `${orientation}:${next}` : undefined;
-      // Keep the last visible frame and an already requested adjacent move.
+      // Keep prepared moves in this orientation for immediate reverse scrolling.
+      // There are only three; release the other composition after rotation.
       retain([
         target,
         ...(shown ? [shown] : []),
-        ...(neighbor ? [neighbor] : []),
+        ...[...films.keys()].filter((key) => key.startsWith(`${orientation}:`)),
       ]);
       const film = ensure(target, index, orientation);
+      if (neighbor) ensure(neighbor, next, orientation);
       if (film.failed) {
         onFail();
         return;
@@ -150,18 +234,15 @@ export default function CinematicFilm({ onFail }: { onFail: () => void }) {
         return;
       }
       if (video.seeking) return;
-      const time = position * Math.max(0, video.duration - 1 / 24);
+      const time =
+        Math.round(position * Math.max(0, video.duration - 1 / 24) * 24) / 24;
       if (Math.abs(video.currentTime - time) > 1 / 48) {
+        film.requestedTime = time;
         video.currentTime = time;
         return;
       }
-      if (shown !== target) {
-        if (shown) films.get(shown)?.video.classList.remove("ready");
-        video.classList.add("ready");
-        shown = target;
-      }
-      retain([target, ...(neighbor ? [neighbor] : [])]);
-      if (neighbor) ensure(neighbor, next, orientation);
+      film.requestedTime = time;
+      if (film.presentedTime !== undefined) present(film, film.presentedTime);
     }
 
     window.addEventListener("scroll", schedule, { passive: true });
@@ -177,7 +258,8 @@ export default function CinematicFilm({ onFail }: { onFail: () => void }) {
       document.removeEventListener("visibilitychange", schedule);
       portrait.removeEventListener("change", schedule);
       retain([]);
+      onFrame(null);
     };
-  }, [onFail]);
+  }, [onFail, onFrame]);
   return <div ref={ref} className="world-film-stage" />;
 }
