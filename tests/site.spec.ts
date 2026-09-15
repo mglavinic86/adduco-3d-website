@@ -1,5 +1,51 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+test("film remains reversible when hosting reports no seekable byte ranges", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const time = Object.getOwnPropertyDescriptor(
+      HTMLMediaElement.prototype,
+      "currentTime",
+    )!;
+    const ranges = Object.getOwnPropertyDescriptor(
+      HTMLMediaElement.prototype,
+      "seekable",
+    )!;
+    // Reproduce the hosted response: a fully buffered HTTP movie reports [0, 0]
+    // and ignores seeks. Locally loaded media has its normal browser behavior.
+    Object.defineProperty(HTMLMediaElement.prototype, "seekable", {
+      get() {
+        return this.currentSrc.startsWith("http")
+          ? { length: 1, start: () => 0, end: () => 0 }
+          : ranges.get!.call(this);
+      },
+    });
+    Object.defineProperty(HTMLMediaElement.prototype, "currentTime", {
+      get() {
+        return time.get!.call(this);
+      },
+      set(value) {
+        if (!this.currentSrc.startsWith("http")) time.set!.call(this, value);
+      },
+    });
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await expect(page.locator("video.ready")).toBeVisible();
+  await page.locator('.journey-dock a[href="#preciznost"]').click();
+  await expect
+    .poll(() =>
+      page.locator("video").evaluate((v: HTMLVideoElement) => v.currentTime),
+    )
+    .toBeGreaterThan(4.5);
+  await page.locator('.journey-dock a[href="#vizija"]').click();
+  await expect
+    .poll(() =>
+      page.locator("video").evaluate((v: HTMLVideoElement) => v.currentTime),
+    )
+    .toBeLessThan(0.1);
+});
 test("cinematic film follows native scrolling in both directions", async ({
   page,
 }) => {
@@ -68,7 +114,7 @@ test("tablet starts in the lighter presentation without requesting the movie", a
         .locator("video")
         .evaluate((video: HTMLVideoElement) => video.currentTime),
     )
-    .toBeGreaterThan(6.7);
+    .toBeGreaterThan(6.99);
   await page.screenshot({ path: "/tmp/adduco-qa/cinema-tablet-end.png" });
   await context.close();
 });
@@ -87,7 +133,7 @@ test("phone can opt into the film and return from a detail panel", async ({
         .locator("video")
         .evaluate((video: HTMLVideoElement) => video.currentTime),
     )
-    .toBeGreaterThan(6.7);
+    .toBeGreaterThan(6.99);
   await page.screenshot({ path: "/tmp/adduco-qa/cinema-mobile-end.png" });
   const time = await page
     .locator("video")

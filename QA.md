@@ -4,7 +4,7 @@ Verified 15 September 2026 at http://127.0.0.1:5184/. Current direction: a photo
 
 ## Checks
 
-- 4 component tests and 15 Chrome behavior tests passed; the 5 responsive/opt-in checks passed again after the final portrait framing adjustment.
+- 4 component tests and 16 Chrome behavior tests passed; the 5 responsive/opt-in checks passed again after the final portrait framing adjustment.
 - TypeScript, ESLint, production build and the design artifact audit passed.
 - Reviewed 390, 768, 1440px and the actual 1013px in-app window. No horizontal overflow. Axe WCAG 2/2.1 A/AA found no violations in entry/contact at all three widths.
 - Video time advances with native scrolling and returns near zero in reverse; readyState 4 was observed in the in-app browser. The first regression failed against the old video-free page, then passed after implementation.
@@ -37,6 +37,10 @@ Local Lighthouse 13.4.1 / Chrome 153 lab measurements, not field Core Web Vitals
 | Cumulative layout shift | 0 | 0.0000023 |
 
 These measure initial presentation, not full movie download or sustained decoding on every device. INP was not measured. SEO is 69 because the private preview intentionally blocks indexing. Reports: /tmp/adduco-qa/lighthouse-cinema-mobile-final.json (18:36:16 UTC), /tmp/adduco-qa/lighthouse-cinema-desktop-final.json (18:36:26 UTC). Screenshots, contact sheets and raw media remain outside the repository.
+
+## Hosted media compatibility
+
+The initial hosted verification found a fully buffered movie with seekable range [0, 0]; timeline writes stayed at zero even though the local server worked. The renderer now detects this response, downloads the same-origin movie and uses a local Blob URL with working seeking. The fallback request is aborted and the object URL released on teardown. A regression reproducing the observed browser behavior failed first and passed after the fix. On affected hosts the complete movie must download before motion becomes available; the composed image and all business content remain usable. The local Lighthouse measurements above do not measure this hosted recovery path.
 
 ## Delivery boundaries
 

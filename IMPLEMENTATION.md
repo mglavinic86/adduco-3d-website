@@ -4,7 +4,7 @@
 - C1 — Complete. AFK: photographic master and seven-second Seedance 2.5 film generated and visually inspected from the supplied logo and approved reference.
 - C2 — Complete. AFK, C1 satisfied: native-scroll film seeking in both directions, captions and detail overlays; regression verified red then green.
 - C3 — Complete. AFK, C2 satisfied: responsive frames, motion controls, media failure/reduced motion, opt-in and complete emblem in portrait.
-- C4 — Implementation and QA complete. AFK, C3 satisfied: 4 component tests, 15 browser checks, responsive/accessibility review and Lighthouse. Publish through the authorized private Sites workflow.
+- C4 — Implementation and QA complete. AFK, C3 satisfied: 4 component tests, 16 browser checks, responsive/accessibility review and Lighthouse. Publish through the authorized private Sites workflow.
 - HITL: a longer 24-second film needs additional Higgsfield credits; no purchase is authorized.
 
 ## Filmska šetnja slices
