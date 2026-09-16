@@ -258,7 +258,18 @@ test("a sharp scroll eases through intermediate frames", async ({ page }) => {
     samples.values.filter((time) => time > 0.1 && time < 5).length,
   ).toBeGreaterThan(3);
   expect(samples.values[0]).toBeLessThan(2);
-  expect(samples.end).toBeGreaterThan(5.4);
+  // A fling is paced instead of racing through 5.6 source seconds in 700ms.
+  expect(samples.end).toBeGreaterThan(1);
+  await expect
+    .poll(
+      () =>
+        page
+          .locator("video.ready")
+          .getAttribute("data-presented-time")
+          .then(Number),
+      { timeout: 3000 },
+    )
+    .toBeGreaterThan(5.4);
 });
 
 test("caption stays with the last decoded image when the decoder stalls", async ({

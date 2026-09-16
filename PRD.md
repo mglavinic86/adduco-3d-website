@@ -1,5 +1,9 @@
 # Adduco — local website
 
+## Rapid direction changes — 16 September 2026
+
+The owner still sees glitches during fast up/down scrolling. Reproduction in Chrome/WebKit shows large jumps between displayed movie frames, exacerbated by delayed media seeks. Keep native scrolling responsive, but bound camera speed and each decoded step; do not advance the camera clock while its requested image is pending. Always use the latest scroll destination and settle precisely after input stops. Preserve artwork, opening, shared joins, cached films, reduced motion and business access. Test rapid reversals with actual decoding and with delayed media seeks before publishing. The owner explicitly made the existing Site public on 16 September; preserve that public audience for this and future releases.
+
 ## Loading and return resilience — 16 September 2026
 
 The owner approved a finish pass focused on the opening, resource use, returning from another app or a locked screen, and link-preview metadata. Preserve the accepted imagery, native scroll, private Sites audience and contact behavior.

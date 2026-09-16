@@ -11,6 +11,7 @@ type Film = {
   key: string;
   index: number;
   requestedTime: number;
+  awaitingFrame: boolean;
   presentedTime?: number;
   frameRequest?: number;
   dispose: () => void;
@@ -57,6 +58,7 @@ export default function CinematicFilm({
       )
         return;
       if (film.recovering && !film.objectUrl) return;
+      film.awaitingFrame = false;
       if (shown !== target) {
         if (shown) films.get(shown)?.video.classList.remove("ready");
         film.video.classList.add("ready");
@@ -135,6 +137,7 @@ export default function CinematicFilm({
         key,
         index,
         requestedTime: NaN,
+        awaitingFrame: false,
         dispose() {
           request.abort();
           if (film.frameRequest !== undefined)
@@ -210,11 +213,30 @@ export default function CinematicFilm({
       if (Math.abs(destination - previous) > 0.002)
         direction = Math.sign(destination - previous);
       previous = destination;
+      // Do not advance the camera clock while its requested image is still
+      // decoding. On a slow device that would turn a brief wait into a leap.
+      const pending = films.get(target);
+      if (pending?.video.seeking || pending?.awaitingFrame) return;
       // Start a fresh gesture gently; time spent idle is not animation time.
       const elapsed = lastTick && now - lastTick < 80 ? now - lastTick : 16;
       lastTick = now;
       if (!openingPending) {
-        eased += (destination - eased) * (1 - Math.exp(-elapsed / 100));
+        const delta = (destination - eased) * (1 - Math.exp(-elapsed / 100));
+        // Six source seconds per second bounds a fling's camera speed. Also
+        // limit each decoded step to four source frames, even after a stall.
+        const step = Math.min((elapsed / 1000) * (6 / 8), 4 / 192);
+        eased += Math.max(-step, Math.min(step, delta));
+        const visible = shown ? films.get(shown) : undefined;
+        if (visible?.presentedTime !== undefined) {
+          const displayed =
+            visible.index +
+            visible.presentedTime /
+              Math.max(1 / 24, visible.video.duration - 1 / 24);
+          eased = Math.max(
+            displayed - 4 / 192,
+            Math.min(displayed + 4 / 192, eased),
+          );
+        }
         if (Math.abs(destination - eased) < 0.001) {
           eased = destination;
           lastTick = 0;
@@ -264,6 +286,7 @@ export default function CinematicFilm({
       const time = Math.min(video.duration - 0.001, frameStart + 1 / 48);
       if (Math.abs(video.currentTime - time) > 1 / 48) {
         film.requestedTime = time;
+        film.awaitingFrame = true;
         video.currentTime = time;
         return;
       }

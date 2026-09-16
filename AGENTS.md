@@ -20,3 +20,5 @@ The cinematic environment is original conceptual artwork generated through Higgs
 
 ## Boundaries
 The user authorized publication through Sites on 15 September 2026. Preserve the Site's current audience; new Sites start owner-private. Sites publication includes the source push and version required by its hosting workflow. Do not publish to other providers, create remote issues, send inquiries or change the audience without explicit permission. The form creates a reviewable mailto draft; do not replace that behavior with a false success message. Broader public launch still needs confirmed recipient, approved project photos/copy, production metadata and privacy/integration configuration.
+
+On 16 September 2026 the owner explicitly requested public access. The existing Site is now public, verified without authentication. Preserve that public audience on future releases; use the public-capable Sites deployment operation. The remaining content/integration items above do not block the owner's authorized public publication. Search indexing remains separately configured in the page/robots metadata.

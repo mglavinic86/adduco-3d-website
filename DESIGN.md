@@ -71,6 +71,9 @@ Use the accepted UI-free framing anchors as responsive fallback images. Phone AV
 
 ## Motion and resilience
 
+### Rapid scroll reversals — 16 September 2026
+Keep the established camera path and native scrolling. Rapid up/down input selects the latest destination without queuing earlier gestures. Pace camera advancement against completed decoded frames, cap travel speed and bound each visible step so a delayed decoder cannot trigger a catch-up leap. A large fling may take a short time to settle; contact and navigation stay immediately usable. Preserve the opening handoff, frame-aligned seeking, prepared movies and no mobile playback button.
+
 ### Loading and return — corrected after regression, 16 September 2026
 The owner reported new scroll glitches after the loading/resource optimization. Restore the complete previously accepted playback implementation: preserve prepared movies in the selected orientation, including across brief interruptions; do not gate film startup behind the poster or force a shared Blob strategy. Keep text/contact available and the original opening handoff intact. The approved sharing preview and metadata remain independent of playback. No scene, logo, layout or palette redesign is part of this correction.
 

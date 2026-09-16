@@ -1,5 +1,11 @@
 # Vertical implementation slices
 
+## Rapid reversal correction — current
+
+- RC1 — AFK, complete: rapid up/down input reproduced 0.58–0.63s camera jumps in Chrome/WebKit; modeled 90ms media delay produced 1.46s jumps. Bounded camera steps and advancement synchronized with decoded frames pass the regression in both engines.
+- RC2 — AFK, complete; RC1 satisfied: verified repeated direction changes around both joins, correct final settling, opening, no media controls on phone, reduced motion, prepared-scene continuity and contact. Accepted films and cache behavior remain.
+- RC3 — AFK, local QA complete; RC2 satisfied: 74 Chrome/WebKit checks, four component tests, typecheck/lint/build and strict design audit pass. Visually checked mobile/tablet/desktop and rapid reversals in the local browser without errors. Ready for publication through the existing Sites project with its explicitly authorized public audience. Physical-device confirmation remains outstanding.
+
 ## Scroll regression recovery — current
 
 - RR1 — AFK, mitigation complete: immediately redeploy the accepted interface-finish version after the owner reports new scroll glitches.

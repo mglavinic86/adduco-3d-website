@@ -18,6 +18,7 @@ export default defineConfig({
         "**/interface.spec.ts",
         "**/loading.spec.ts",
         "**/resume.spec.ts",
+        "**/rapid-scroll.spec.ts",
       ],
       use: {
         browserName: "webkit",

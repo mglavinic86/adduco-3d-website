@@ -1,5 +1,17 @@
 # QA — mobile scroll smoothness
 
+## Rapid up/down correction — 16 September 2026
+
+The owner reports rapid direction changes still glitch after restoring the accepted baseline. A new test repeatedly changes native scroll direction every 160ms, observing actually presented frame timestamps. Chrome/WebKit reproduce maximum camera jumps of 0.58/0.63 source seconds on the original implementation, and 1.46 seconds with a modeled 90ms delay before each real media seek. The delay wraps browser media APIs while retaining actual decoding and frame callbacks; it is a controlled stress model, not physical-phone evidence.
+
+The camera clock now waits for its requested decoded frame, bounds travel speed to six source seconds per wall second and caps a requested step at four source frames relative to the last decoded scene. The latest native scroll destination remains authoritative; there is no gesture queue. Initial loading, retained movie cache, source films and opening handoff are unchanged. One seek already in progress can finish after a direction change; subsequent requests use the latest destination. A large fling deliberately settles more gradually instead of skipping most of the scene. The previous sharp-scroll test's requirement to cover 5.6 source seconds within 700ms is replaced by bounded catch-up with a three-second completion deadline; intermediate-frame and final-destination checks remain.
+
+Initial corrected stress results: maximum observed step 0.125 source seconds in both engines, with and without the 90ms delay. Additional tests explicitly cross both movie joins while reversing repeatedly and confirm correct final position and no mobile playback button. The direction assertion allows one in-flight obsolete frame per gesture, not an impossible guarantee that no already-decoding image ever completes after a new gesture.
+
+All 74 Chrome/WebKit browser checks passed sequentially, including eight new rapid-reversal scenarios, plus four component tests, typecheck, lint, production build and strict design-artifact audit. Inspected 390/768/1440px screenshots and the in-app browser during forward/reverse input, with no console errors. Detailed stress samples are in `/tmp/adduco-rapid-verified.json`. No physical Android/iPhone testing is claimed; these checks cannot guarantee every device's decode rate.
+
+Public access was explicitly authorized on 16 September and verified without login. This release preserves that audience. The retained CSS, stills and movie assets remain unchanged; no new generation or processing was needed.
+
 ## Scroll regression recovery — 16 September 2026
 
 The owner reported new glitches immediately after the loading/resource pass. The prior accepted release was redeployed first. The complete playback implementation is restored from commit 61a12c02b019b9632138162e569698fb1823e85f; interface polish and sharing metadata remain.
