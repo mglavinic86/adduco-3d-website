@@ -71,6 +71,9 @@ Use the accepted UI-free framing anchors as responsive fallback images. Phone AV
 
 ## Motion and resilience
 
+### Direct portrait response — current, 16 September 2026
+The prepared portrait sequence follows native scroll directly. Remove the extra easing clock and speed cap from this path so a rapid reversal does not keep the camera moving in the previous direction. If the exact image is still preparing, use the nearest prepared image between the displayed pose and current destination, without overshooting. Keep the bitmap memory bound and prioritize preparation by current scroll speed/direction. Captions remain aligned to the displayed image, with React updates only at their existing reading boundaries. Opening holds its exact first image during the existing 180ms fade, then selects the current scroll position. This supersedes the bounded portrait catch-up below; landscape/legacy movie motion is unchanged. No artwork, typography, spacing, scroll distance or media quality change is part of this slice.
+
 ### Prepared mobile frames — 16 September 2026
 Portrait motion uses the exact accepted movie images as a progressively loaded frame sequence, presented on one canvas. This changes delivery only: retain the artwork, camera path, 24fps source timing, responsive framing and HTML interface. Prepared frames can be selected in either direction without repeated video seeking. Keep only a bounded neighborhood decoded; retain compressed packets for reverse travel. Do not expose an old asynchronous result after the destination changes. Keep the old scene visible until an orientation replacement is ready. Landscape and unsupported browsers retain the existing movie engine. Opening and failure behavior remain consistent with the accepted design.
 

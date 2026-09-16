@@ -20,16 +20,18 @@ export function createFrameSequence(
   const context = canvas.getContext("2d", { alpha: false })!;
   stage.append(canvas);
   const store = createFrameStore(options.schedule);
-  let cursor = options.start * 192;
+  const start = Math.round(options.start * 192);
+  let previousTarget = start;
+  let previousInputTime = 0;
+  let stride = 1;
+  let direction = 1;
   let drawn = -1;
   let ready = false;
   let opening = options.opening;
-  let lastTick = 0;
   let disposed = false;
   const reveal = () => {
     canvas.classList.remove("opening");
     opening = false;
-    lastTick = 0;
     options.schedule();
   };
   canvas.addEventListener("animationend", reveal);
@@ -40,28 +42,30 @@ export function createFrameSequence(
     update(now: number, destination: number) {
       if (disposed) return;
       const target = Math.max(0, Math.min(576, destination * 192));
-      const elapsed = lastTick && now - lastTick < 80 ? now - lastTick : 16;
-      lastTick = now;
-      const difference = target - cursor;
-      const step = Math.min(4, elapsed * 0.144);
-      let next =
-        !ready || opening
-          ? cursor
-          : cursor +
-            Math.max(
-              -step,
-              Math.min(step, difference * (1 - Math.exp(-elapsed / 100))),
-            );
-      if (ready && !opening && Math.abs(next - target) < 0.1) next = target;
-      const index = Math.round(next);
-      store.prepare(index, difference < 0 ? -1 : 1);
-      const image = store.get(index);
-      if (!image) {
-        lastTick = 0;
-        if (store.failed(index)) options.onFail();
+      if (target !== previousTarget) {
+        direction = Math.sign(target - previousTarget);
+        const elapsed = Math.max(16, now - previousInputTime);
+        stride = Math.min(
+          8,
+          Math.max(
+            1,
+            Math.round((Math.abs(target - previousTarget) * 16) / elapsed),
+          ),
+        );
+        previousInputTime = now;
+      }
+      previousTarget = target;
+      // Native scrolling already supplies motion and momentum. A second eased
+      // clock lags behind it and can keep moving forward after a reverse gesture.
+      const requested = opening ? start : Math.round(target);
+      store.prepare(requested, direction, stride);
+      if (store.failed(requested)) {
+        options.onFail();
         return;
       }
-      cursor = next;
+      const prepared = store.get(requested, drawn < 0 ? requested : drawn);
+      if (!prepared) return;
+      const { index, image } = prepared;
       if (drawn !== index) {
         context.drawImage(image, 0, 0);
         drawn = index;
@@ -77,8 +81,6 @@ export function createFrameSequence(
         if (opening) canvas.classList.add("opening");
         options.onReady();
       }
-      if (!opening && Math.abs(target - cursor) > 0.1) options.schedule();
-      else lastTick = 0;
     },
     dispose() {
       disposed = true;

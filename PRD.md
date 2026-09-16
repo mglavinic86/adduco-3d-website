@@ -1,5 +1,9 @@
 # Adduco — local website
 
+## Direct portrait response — 16 September 2026
+
+The owner accepted the research-led next pass after persistent mobile judder. First isolate input response: prepared portrait frames follow the current native scroll position without the 100ms easing plus camera-speed cap, which reproduced continued forward camera motion after scroll reversal. Decode completion may schedule selection from the latest input, never present an obsolete request. Prioritize the next likely frame from gesture speed while retaining the same bounded image memory. React captions update only when their visibility, drift or active chapter changes. Preserve the opening pose during its fade, then follow current scroll; preserve all artwork, both compositions, contact access and reduced-motion behavior. The previous bounded-speed contract continues only for landscape/legacy movies. Validate this slice before considering Worker rendering, codecs or new interpolated media. Physical-phone confirmation is a separate HITL gate; draw timestamps are not compositor presentation evidence.
+
 ## Mobile frame sequence — 16 September 2026
 
 The owner reports improvement but still sees judder. Bounded MP4 seeks reduce jump size but remain subject to variable media-decoder latency. Use independently prepared, cached WebP frames for portrait motion on capable browsers; retain video for landscape and browsers without ImageBitmap. Preserve the delivered 720×1280 footage, 24fps camera path, opening pose, logo, overlays, native scroll and public access. Generate derivatives through Higgsfield, load frame packets progressively and bound decoded-image memory. Latest scroll intent alone selects what is drawn; pending decoding may never repaint an obsolete frame. Verify cold/delayed loading, reverse scrubbing, both joins, orientation handoff, failure/reduced motion and business access. Report the additional compressed bytes and real-device limits honestly.

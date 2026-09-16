@@ -68,6 +68,15 @@ const chapters = [
 ];
 const stillFrame = (index: number) => (index === 0 ? "v2-0" : String(index));
 
+function captionState(progress: number) {
+  const active = Math.round(progress);
+  return {
+    active,
+    visible: Math.abs(progress - active) < 0.46 ? active : -1,
+    passed: Math.floor(progress),
+  };
+}
+
 function Experience({
   still,
   active,
@@ -149,11 +158,27 @@ function Experience({
 export default function App() {
   const [ready, setReady] = useState(false);
   const [still, setStill] = useState(true);
-  const [scrollProgress, setProgress] = useState(0);
-  const [filmProgress, setFilmProgress] = useState<number | null>(null);
-  const progress =
-    !still && filmProgress !== null ? filmProgress : scrollProgress;
-  const active = Math.round(progress);
+  const [captions, setCaptions] = useState(() => captionState(0));
+  const currentCaptions = useRef(captions);
+  const active = captions.active;
+  const present = useCallback((progress: number) => {
+    const next = captionState(progress);
+    const previous = currentCaptions.current;
+    if (
+      previous.active === next.active &&
+      previous.visible === next.visible &&
+      previous.passed === next.passed
+    )
+      return;
+    currentCaptions.current = next;
+    setCaptions(next);
+  }, []);
+  const onFrame = useCallback(
+    (progress: number | null) => {
+      present(progress ?? journeyProgress());
+    },
+    [present],
+  );
   const [menu, setMenu] = useState(false);
   const [panel, setPanel] = useState<Detail | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -202,10 +227,12 @@ export default function App() {
       document.getElementById(id)?.scrollIntoView({ behavior: "instant" });
   }, [ready]);
   useEffect(() => {
+    if (!still) return;
     let frame = 0;
     const update = () => {
       frame = 0;
-      setProgress(journeyProgress());
+      // During motion, only the displayed movie frame updates captions.
+      present(journeyProgress());
     };
     const scroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -218,7 +245,7 @@ export default function App() {
       window.removeEventListener("scroll", scroll);
       window.removeEventListener("resize", scroll);
     };
-  }, []);
+  }, [present, still]);
   const panelOpen = panel !== null;
   useEffect(() => {
     if (!panelOpen) return;
@@ -301,7 +328,7 @@ export default function App() {
         still={still}
         active={active}
         onFail={fail}
-        onFrame={setFilmProgress}
+        onFrame={onFrame}
       />
       <header className="header">
         <a href="#vizija" className="brand" aria-label="Adduco — početna">
@@ -366,7 +393,7 @@ export default function App() {
       </header>
       <main id="sadrzaj" className="journey">
         {chapters.map((chapter, i) => {
-          const visible = Math.abs(progress - i) < 0.46;
+          const visible = captions.visible === i;
           return (
             <section
               key={chapter.id}
@@ -382,7 +409,7 @@ export default function App() {
                     "--caption-opacity": visible ? 1 : 0,
                     "--caption-drift": visible
                       ? "0px"
-                      : progress > i
+                      : captions.passed >= i
                         ? "-10px"
                         : "10px",
                   } as CSSProperties

@@ -109,10 +109,27 @@ export function createFrameStore(changed: () => void) {
   }
 
   return {
-    get: (frame: number) => images.get(frame),
+    get(frame: number, from: number) {
+      const exact = images.get(frame);
+      if (exact) return { index: frame, image: exact };
+      // Decoding may finish between scroll samples. Use the nearest prepared
+      // image on the way to the current target instead of starving the canvas
+      // while every new exact target is still being decoded. Never overshoot.
+      let index = from;
+      for (const candidate of images.keys()) {
+        if (
+          (candidate - from) * (frame - from) > 0 &&
+          (frame - candidate) * (frame - from) >= 0 &&
+          Math.abs(candidate - frame) < Math.abs(index - frame)
+        )
+          index = candidate;
+      }
+      const image = images.get(index);
+      return image ? { index, image } : undefined;
+    },
     failed: (frame: number) =>
       failed.has(frame) || failedPackets.has(Math.floor(frame / PACKET_FRAMES)),
-    prepare(frame: number, direction: number) {
+    prepare(frame: number, direction: number, stride = 1) {
       center = frame;
       for (const [index, image] of images) {
         if (Math.abs(index - center) > RADIUS) {
@@ -120,10 +137,12 @@ export function createFrameStore(changed: () => void) {
           images.delete(index);
         }
       }
-      const order = [frame];
+      // Spend the next decode slot on the likely next displayed pose, instead
+      // of an adjacent image that a fast gesture will already have skipped.
+      const order = [frame, frame + direction * stride];
       for (let offset = 1; offset <= RADIUS; offset++)
         order.push(frame + direction * offset, frame - direction * offset);
-      queue = order.filter(
+      queue = [...new Set(order)].filter(
         (index) =>
           index >= 0 &&
           index <= LAST_FRAME &&

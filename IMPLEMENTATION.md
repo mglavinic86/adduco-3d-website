@@ -1,5 +1,11 @@
 # Vertical implementation slices
 
+## Direct portrait response — current
+
+- DR1 — AFK, complete: reproduce camera movement against the actual scroll direction, remove the portrait catch-up clock, prioritize likely next images with the existing memory bound, verify final settling and loading/reversal behavior.
+- DR2 — AFK, complete; depends on DR1: keep caption state discrete and eliminate the competing animation-path scroll listener; verify unchanged caption/contact behavior and reduced-motion fallback.
+- DR3 — HITL, pending; depends on DR1/DR2: review the isolated improved response on the owner's physical phone. Worker/OffscreenCanvas and interpolation remain later experiments if measurements justify them; no promise of perfect device frame rate.
+
 ## Prepared portrait frames — current
 
 - SQ1 — AFK, complete: independent 720px WebP frame decode and cached reverse presentation measured before implementation. First vertical slice: portrait opening, automatic scroll and contact without MP4 requests.
