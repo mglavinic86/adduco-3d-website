@@ -756,5 +756,34 @@
     "format": "JPEG",
     "quality": 88,
     "processing": "Higgsfield sandbox Pillow ImageOps.fit, Lanczos, centered crop, RGB, optimized JPEG. Faithful derivative of the approved landscape anchor; no new generation or project-photo claim."
+  },
+  "portraitFrameSequence": {
+    "date": "2026-09-16",
+    "processor": "Higgsfield sandbox ffmpeg",
+    "confirmedArchiveMediaId": "932f54a1-5e39-4bde-b52b-444de82c8af3",
+    "sourceFiles": [
+      "construction-portrait-v2-0.mp4",
+      "construction-portrait-v3-1.mp4",
+      "construction-portrait-v3-2.mp4"
+    ],
+    "path": "public/assets/sequence/portrait-v1",
+    "frames": 577,
+    "fps": 24,
+    "width": 720,
+    "height": 1280,
+    "codec": "WebP quality 78 compression 4",
+    "filter": "scale=720:1280:in_color_matrix=bt709:out_range=pc,format=bgra",
+    "clipFrameCounts": [
+      192,
+      192,
+      193
+    ],
+    "packetFrames": 12,
+    "packets": 49,
+    "packetBytes": 45633782,
+    "originalPortraitMovieBytes": 30081106,
+    "format": "ADFC magic; uint32LE frame count; count+1 uint32LE payload-relative offsets; concatenated independent WebP images",
+    "opening": "opening.webp is the unchanged first WebP payload from 000.bin, unpacked locally; replaces the three old portrait/mobile opening variants to ensure the exact same pixels and color at handoff.",
+    "note": "Existing accepted footage, including repaired joins. No new generation or frame interpolation. Progressive packet loading; bounded decoded cache; video retained for landscape/unsupported ImageBitmap."
   }
 }

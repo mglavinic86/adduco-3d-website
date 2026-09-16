@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./video-fallback";
 
 for (const scenario of [
   { seekDelay: 0, anchor: 1, offset: 0.15, interval: 160 },

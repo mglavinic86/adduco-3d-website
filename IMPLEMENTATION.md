@@ -1,5 +1,11 @@
 # Vertical implementation slices
 
+## Prepared portrait frames — current
+
+- SQ1 — AFK, complete: independent 720px WebP frame decode and cached reverse presentation measured before implementation. First vertical slice: portrait opening, automatic scroll and contact without MP4 requests.
+- SQ2 — AFK, complete; SQ1 satisfied: complete frame packets, bounded bitmap cache, delayed/missing packets, latest-intent drawing, both joins and retained compressed reverse access.
+- SQ3 — AFK, local QA complete; SQ2 satisfied: portrait/landscape handoff, opening image continuity, reduced motion and legacy-engine coverage; full responsive/browser QA complete (92-case coverage plus the passing eight-case viewport rerun), ready to publish to the existing public Site.
+
 ## Rapid reversal correction — current
 
 - RC1 — AFK, complete: rapid up/down input reproduced 0.58–0.63s camera jumps in Chrome/WebKit; modeled 90ms media delay produced 1.46s jumps. Bounded camera steps and advancement synchronized with decoded frames pass the regression in both engines.

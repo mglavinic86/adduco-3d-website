@@ -13,14 +13,14 @@ test("late loading cannot undo the visitor's first scroll", async ({
     await route.continue();
   });
   await page.goto("/#vizija", { waitUntil: "domcontentloaded" });
-  await expect(page.locator("video.ready")).toBeVisible();
-  await expect(page.locator("video.ready")).not.toHaveClass(/opening/);
+  await expect(page.locator(".world-film.ready")).toBeVisible();
+  await expect(page.locator(".world-film.ready")).not.toHaveClass(/opening/);
   await page.evaluate(() => window.scrollTo({ top: 950, behavior: "instant" }));
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(950);
   await expect
     .poll(() =>
       page
-        .locator("video.ready")
+        .locator(".world-film.ready")
         .getAttribute("data-presented-time")
         .then(Number),
     )
@@ -38,7 +38,7 @@ test("late loading cannot undo the visitor's first scroll", async ({
   await expect
     .poll(() =>
       page
-        .locator("video.ready")
+        .locator(".world-film.ready")
         .getAttribute("data-presented-time")
         .then(Number),
     )
@@ -58,7 +58,7 @@ test("a direct chapter URL opens at its scene before and after loading", async (
     await route.continue();
   });
   await page.goto("/#preciznost", { waitUntil: "domcontentloaded" });
-  await expect(page.locator("video.ready")).toBeVisible();
+  await expect(page.locator(".world-film.ready")).toBeVisible();
   await expect(
     page.locator('.journey-dock a[href="#preciznost"]'),
   ).toHaveAttribute("aria-current", "step");
@@ -66,10 +66,28 @@ test("a direct chapter URL opens at its scene before and after loading", async (
   const position = await page
     .locator("#preciznost")
     .evaluate((el: HTMLElement) => el.offsetTop);
-  expect(await page.evaluate(() => scrollY)).toBe(position);
+  // Fragment restoration may round by two CSS pixels in Chromium. The camera
+  // must still settle at the exact shared anchor, before and after late load.
+  expect(
+    Math.abs((await page.evaluate(() => scrollY)) - position),
+  ).toBeLessThanOrEqual(2);
+  await expect(page.locator(".world-film.ready")).toHaveAttribute(
+    "data-segment",
+    "2",
+  );
+  await expect(page.locator(".world-film.ready")).toHaveAttribute(
+    "data-presented-time",
+    "0",
+  );
   release();
   await page.waitForLoadState("load");
-  expect(await page.evaluate(() => scrollY)).toBe(position);
+  expect(
+    Math.abs((await page.evaluate(() => scrollY)) - position),
+  ).toBeLessThanOrEqual(2);
+  await expect(page.locator(".world-film.ready")).toHaveAttribute(
+    "data-presented-time",
+    "0",
+  );
 });
 
 for (const fallback of [false, true]) {
@@ -93,7 +111,7 @@ for (const fallback of [false, true]) {
     await page.setViewportSize({ width: 390, height: smallHeight });
     await page.goto(fallback ? "/?fallback" : "/");
     const artwork = page.locator(
-      fallback ? ".world-stills img.active" : "video.ready",
+      fallback ? ".world-stills img.active" : ".world-film.ready",
     );
     await expect(artwork).toBeVisible();
     if (!fallback) await expect(artwork).not.toHaveClass(/opening/);

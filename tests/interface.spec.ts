@@ -53,7 +53,7 @@ test("captions settle at full contrast when scrolling stops between anchors", as
 }) => {
   await page.setViewportSize({ width: 390, height: 700 });
   await page.goto("/");
-  await expect(page.locator("video.ready")).toBeVisible();
+  await expect(page.locator(".world-film.ready")).toBeVisible();
   for (const progress of [0.4, 0.6, 1.4, 1.6, 0.6, 0.4, 0]) {
     await page.evaluate(
       (progress) =>

@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./video-fallback";
 import { writeFile } from "node:fs/promises";
 
 for (const width of [390, 768, 1440]) {

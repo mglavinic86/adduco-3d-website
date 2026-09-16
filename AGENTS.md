@@ -3,7 +3,7 @@
 Read PRD.md, DESIGN.md, CONTENT-SOURCES.md and IMPLEMENTATION.md before changes. DESIGN.md is the only visual contract. The user selected Gallery Journey, then a cinematic continuous journey with dark realistic contemporary construction, and confirmed ADDUCO d.o.o., Metković, OIB 40912050957.
 
 ## Stack and checks
-React, TypeScript and Vite. A Higgsfield-generated film supplies the cinematic world, with native scroll controlling paused video seeking. Package versions in package.json are authoritative.
+React, TypeScript and Vite. A Higgsfield-generated film supplies the cinematic world, with native scroll selecting cached portrait images or paused landscape/legacy video frames. Package versions in package.json are authoritative.
 - `npm test`: investor behavior tests.
 - `npm run typecheck`: TypeScript.
 - `npm run lint`: ESLint.

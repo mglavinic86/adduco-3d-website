@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./video-fallback";
 
 test("prepared scenes remain scrollable after interruption when further downloads fail", async ({
   page,

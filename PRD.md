@@ -1,5 +1,9 @@
 # Adduco — local website
 
+## Mobile frame sequence — 16 September 2026
+
+The owner reports improvement but still sees judder. Bounded MP4 seeks reduce jump size but remain subject to variable media-decoder latency. Use independently prepared, cached WebP frames for portrait motion on capable browsers; retain video for landscape and browsers without ImageBitmap. Preserve the delivered 720×1280 footage, 24fps camera path, opening pose, logo, overlays, native scroll and public access. Generate derivatives through Higgsfield, load frame packets progressively and bound decoded-image memory. Latest scroll intent alone selects what is drawn; pending decoding may never repaint an obsolete frame. Verify cold/delayed loading, reverse scrubbing, both joins, orientation handoff, failure/reduced motion and business access. Report the additional compressed bytes and real-device limits honestly.
+
 ## Rapid direction changes — 16 September 2026
 
 The owner still sees glitches during fast up/down scrolling. Reproduction in Chrome/WebKit shows large jumps between displayed movie frames, exacerbated by delayed media seeks. Keep native scrolling responsive, but bound camera speed and each decoded step; do not advance the camera clock while its requested image is pending. Always use the latest scroll destination and settle precisely after input stops. Preserve artwork, opening, shared joins, cached films, reduced motion and business access. Test rapid reversals with actual decoding and with delayed media seeks before publishing. The owner explicitly made the existing Site public on 16 September; preserve that public audience for this and future releases.

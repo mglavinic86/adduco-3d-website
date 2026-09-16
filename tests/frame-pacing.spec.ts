@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./video-fallback";
 
 test("adjacent scroll positions settle on consecutive source frames", async ({
   page,

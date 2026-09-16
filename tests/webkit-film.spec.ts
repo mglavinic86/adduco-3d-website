@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./video-fallback";
 
 test("WebKit phone presents requested frames, crosses scenes and returns without playback controls", async ({
   page,

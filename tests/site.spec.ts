@@ -32,12 +32,12 @@ test("film remains reversible when hosting reports no seekable byte ranges", asy
   });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await expect(page.locator("video.ready")).toBeVisible();
+  await expect(page.locator(".world-film.ready")).toBeVisible();
   await page.locator('.journey-dock a[href="#preciznost"]').click();
   await expect
     .poll(() =>
       page
-        .locator("video.ready")
+        .locator(".world-film.ready")
         .evaluate(
           (v: HTMLVideoElement) =>
             Number(v.dataset.segment) + v.currentTime / v.duration,
@@ -48,8 +48,8 @@ test("film remains reversible when hosting reports no seekable byte ranges", asy
   await expect
     .poll(() =>
       page
-        .locator("video.ready")
-        .evaluate((v: HTMLVideoElement) => v.currentTime),
+        .locator(".world-film.ready")
+        .evaluate((v: HTMLElement) => Number(v.dataset.presentedTime)),
     )
     .toBeLessThan(0.1);
 });
@@ -58,7 +58,7 @@ test("cinematic film follows native scrolling in both directions", async ({
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  const film = page.locator("video.ready");
+  const film = page.locator(".world-film.ready");
   await expect(film).toBeVisible({ timeout: 30000 });
   await expect
     .poll(() => film.evaluate((video: HTMLVideoElement) => video.readyState))
@@ -75,7 +75,11 @@ test("cinematic film follows native scrolling in both directions", async ({
   await expect(page.locator("#preciznost .chapter-content")).toBeInViewport();
   await page.locator('.journey-dock a[href="#vizija"]').click();
   await expect
-    .poll(() => film.evaluate((video: HTMLVideoElement) => video.currentTime))
+    .poll(() =>
+      film.evaluate((video: HTMLElement) =>
+        Number(video.dataset.presentedTime),
+      ),
+    )
     .toBeLessThan(0.1);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 });
@@ -96,7 +100,7 @@ test("touch tablet automatically follows the portrait film without playback cont
   await expect(
     page.getByRole("button", { name: /Pokreni animaciju|Zaustavi animaciju/ }),
   ).toHaveCount(0);
-  await expect(page.locator("video.ready")).toBeVisible();
+  await expect(page.locator(".world-film.ready")).toBeVisible();
   expect(movies.every((url) => url.includes("construction-portrait-"))).toBe(
     true,
   );
@@ -114,8 +118,8 @@ test("touch tablet automatically follows the portrait film without playback cont
   await expect
     .poll(() =>
       page
-        .locator("video.ready")
-        .evaluate((video: HTMLVideoElement) => video.currentTime),
+        .locator(".world-film.ready")
+        .evaluate((video: HTMLElement) => Number(video.dataset.presentedTime)),
     )
     .toBeGreaterThan(7.98);
   await page.screenshot({ path: "/tmp/adduco-qa/cinema-tablet-end.png" });
@@ -127,33 +131,33 @@ test("phone automatically animates and returns from a detail panel", async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await expect(page.locator("video.ready")).toBeVisible();
+  await expect(page.locator(".world-film.ready")).toBeVisible();
   await page.locator('.journey-dock a[href="#projekt"]').click();
   await expect
     .poll(() =>
       page
-        .locator("video.ready")
-        .evaluate((video: HTMLVideoElement) => video.currentTime),
+        .locator(".world-film.ready")
+        .evaluate((video: HTMLElement) => Number(video.dataset.presentedTime)),
     )
     .toBeGreaterThan(7.98);
   await page.screenshot({ path: "/tmp/adduco-qa/cinema-mobile-end.png" });
   const time = await page
-    .locator("video.ready")
-    .evaluate((video: HTMLVideoElement) => video.currentTime);
+    .locator(".world-film.ready")
+    .evaluate((video: HTMLElement) => Number(video.dataset.presentedTime));
   await page.locator(".header-cta").click();
   await expect(page.getByLabel("Ime i prezime *")).toBeInViewport();
   await page.getByRole("button", { name: "Natrag u priču" }).click();
   expect(
     await page
-      .locator("video.ready")
-      .evaluate((video: HTMLVideoElement) => video.currentTime),
+      .locator(".world-film.ready")
+      .evaluate((video: HTMLElement) => Number(video.dataset.presentedTime)),
   ).toBeCloseTo(time, 1);
   await page.locator('.journey-dock a[href="#vizija"]').click();
   await expect
     .poll(() =>
       page
-        .locator("video.ready")
-        .evaluate((video: HTMLVideoElement) => video.currentTime),
+        .locator(".world-film.ready")
+        .evaluate((video: HTMLElement) => Number(video.dataset.presentedTime)),
     )
     .toBeLessThan(0.1);
 });
@@ -162,25 +166,29 @@ test("a narrow desktop opens the cinematic film and preserves an explicit pause 
 }) => {
   await page.setViewportSize({ width: 1013, height: 941 });
   await page.goto("/");
-  await expect(page.locator("video.ready")).toBeVisible({ timeout: 30000 });
+  await expect(page.locator(".world-film.ready")).toBeVisible({
+    timeout: 30000,
+  });
   await expect(
     page.getByRole("button", { name: "Zaustavi animaciju" }),
   ).toBeVisible();
-  const firstChapter = await page.locator("video.ready").screenshot();
+  const firstChapter = await page.locator(".world-film.ready").screenshot();
   await page.locator('.journey-dock a[href="#povjerenje"]').click();
   await expect(page.locator("#povjerenje .chapter-content")).toBeInViewport();
-  expect(await page.locator("video.ready").screenshot()).not.toEqual(
+  expect(await page.locator(".world-film.ready").screenshot()).not.toEqual(
     firstChapter,
   );
   await page.getByRole("button", { name: "Zaustavi animaciju" }).click();
-  await expect(page.locator("video.ready")).toHaveCount(0);
+  await expect(page.locator(".world-film.ready")).toHaveCount(0);
   await page.setViewportSize({ width: 1440, height: 900 });
   await expect(
     page.getByRole("button", { name: "Pokreni animaciju" }),
   ).toBeVisible();
-  await expect(page.locator("video.ready")).toHaveCount(0);
+  await expect(page.locator(".world-film.ready")).toHaveCount(0);
   await page.getByRole("button", { name: "Pokreni animaciju" }).click();
-  await expect(page.locator("video.ready")).toBeVisible({ timeout: 30000 });
+  await expect(page.locator(".world-film.ready")).toBeVisible({
+    timeout: 30000,
+  });
 });
 test("checklist download returns a real PDF without an email gate", async ({
   request,
@@ -266,7 +274,9 @@ test("all chapters work forward and backward with native scroll", async ({
   });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await expect(page.locator("video.ready")).toBeVisible({ timeout: 30000 });
+  await expect(page.locator(".world-film.ready")).toBeVisible({
+    timeout: 30000,
+  });
   const ids = [
     "vizija",
     "povjerenje",
@@ -383,15 +393,19 @@ test("mode changes and keyboard access preserve a working page", async ({
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await expect(page.locator("video.ready")).toBeVisible({ timeout: 30000 });
+  await expect(page.locator(".world-film.ready")).toBeVisible({
+    timeout: 30000,
+  });
   await page.getByRole("button", { name: "Zaustavi animaciju" }).click();
-  await expect(page.locator("video.ready")).toHaveCount(0);
+  await expect(page.locator(".world-film.ready")).toHaveCount(0);
   await expect(
     page.getByRole("button", { name: "Pokreni animaciju" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Pokreni animaciju" }).click();
-  await expect(page.locator("video.ready")).toBeVisible({ timeout: 30000 });
-  await expect(page.locator("video.ready")).toHaveCount(1);
+  await expect(page.locator(".world-film.ready")).toBeVisible({
+    timeout: 30000,
+  });
+  await expect(page.locator(".world-film.ready")).toHaveCount(1);
   await page.goto("/?fallback");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await page.keyboard.press("Tab");
@@ -405,7 +419,9 @@ test("continuous scene keeps its caption framed and details return to the same c
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await expect(page.locator("video.ready")).toBeVisible({ timeout: 30000 });
+  await expect(page.locator(".world-film.ready")).toBeVisible({
+    timeout: 30000,
+  });
   const caption = page.locator("#vizija .chapter-content");
   const before = await caption.boundingBox();
   await page.mouse.wheel(0, 260);

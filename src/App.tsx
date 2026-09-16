@@ -91,19 +91,29 @@ function Experience({
           (c, i) =>
             (loadedStills[i] || active === i) && (
               <picture key={c.id}>
-                <source
-                  type="image/avif"
-                  media="(max-width: 767px) and (max-aspect-ratio: 9/10)"
-                  srcSet={`/assets/chapter-mobile-${stillFrame(i)}.avif`}
-                />
-                <source
-                  media="(max-width: 767px) and (max-aspect-ratio: 9/10)"
-                  srcSet={`/assets/chapter-mobile-${stillFrame(i)}.webp`}
-                />
-                <source
-                  media="(max-aspect-ratio: 9/10)"
-                  srcSet={`/assets/chapter-portrait-${stillFrame(i)}.webp`}
-                />
+                {i === 0 && (
+                  <source
+                    media="(max-aspect-ratio: 9/10)"
+                    srcSet="/assets/sequence/portrait-v1/opening.webp"
+                  />
+                )}
+                {i !== 0 && (
+                  <>
+                    <source
+                      type="image/avif"
+                      media="(max-width: 767px) and (max-aspect-ratio: 9/10)"
+                      srcSet={`/assets/chapter-mobile-${stillFrame(i)}.avif`}
+                    />
+                    <source
+                      media="(max-width: 767px) and (max-aspect-ratio: 9/10)"
+                      srcSet={`/assets/chapter-mobile-${stillFrame(i)}.webp`}
+                    />
+                    <source
+                      media="(max-aspect-ratio: 9/10)"
+                      srcSet={`/assets/chapter-portrait-${stillFrame(i)}.webp`}
+                    />
+                  </>
+                )}
                 <source
                   media="(max-width: 1023px)"
                   srcSet={`/assets/chapter-tablet-${stillFrame(i)}.webp`}

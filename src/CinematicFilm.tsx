@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { journeyProgress } from "./journey";
+import { createFrameSequence } from "./frameSequence";
 
 type Film = {
   video: HTMLVideoElement;
@@ -42,6 +43,8 @@ export default function CinematicFilm({
       previous === 0 && (!location.hash || location.hash === "#vizija");
     let lastTick = 0;
     let direction = 1;
+    let sequence: ReturnType<typeof createFrameSequence> | undefined;
+    let sequenceActive = false;
     if (openingPending) onFrame(0);
 
     function schedule() {
@@ -52,13 +55,15 @@ export default function CinematicFilm({
       if (disposed || film.request.signal.aborted) return;
       film.presentedTime = time;
       if (
-        film.key !== target ||
         !Number.isFinite(film.requestedTime) ||
         Math.abs(time - film.requestedTime) > 1 / 24
       )
         return;
       if (film.recovering && !film.objectUrl) return;
       film.awaitingFrame = false;
+      if (film.key !== target || sequenceActive) return;
+      sequence?.dispose();
+      sequence = undefined;
       if (shown !== target) {
         if (shown) films.get(shown)?.video.classList.remove("ready");
         film.video.classList.add("ready");
@@ -121,7 +126,10 @@ export default function CinematicFilm({
       };
       const seeked = () => {
         // Browsers without frame callbacks still expose a completed, decoded seek.
-        if (!frameCallbacks) present(film, video.currentTime);
+        // The portrait canvas may also occlude a newly rotated movie, delaying
+        // its presentation callback. A completed seek can safely reveal it.
+        if (!frameCallbacks || (sequence && !sequenceActive))
+          present(film, video.currentTime);
         schedule();
       };
       const failed = () => {
@@ -210,6 +218,29 @@ export default function CinematicFilm({
       // Settle on the shared anchor despite subpixel scroll rounding.
       if (Math.abs(destination - Math.round(destination)) < 0.002)
         destination = Math.round(destination);
+      if (portrait.matches && typeof createImageBitmap === "function") {
+        sequenceActive = true;
+        target = "";
+        sequence ??= createFrameSequence(stage, {
+          start: openingPending ? 0 : eased,
+          opening: openingPending,
+          schedule,
+          onFrame,
+          onFail,
+          onReady() {
+            retain([]);
+            shown = undefined;
+            openingPending = false;
+          },
+        });
+        sequence.update(now, destination);
+        return;
+      }
+      if (sequenceActive) {
+        eased = sequence!.progress;
+        lastTick = 0;
+        sequenceActive = false;
+      }
       if (Math.abs(destination - previous) > 0.002)
         direction = Math.sign(destination - previous);
       previous = destination;
@@ -307,6 +338,7 @@ export default function CinematicFilm({
       document.removeEventListener("visibilitychange", schedule);
       portrait.removeEventListener("change", schedule);
       retain([]);
+      sequence?.dispose();
       onFrame(null);
     };
   }, [onFail, onFrame]);

@@ -71,6 +71,9 @@ Use the accepted UI-free framing anchors as responsive fallback images. Phone AV
 
 ## Motion and resilience
 
+### Prepared mobile frames — 16 September 2026
+Portrait motion uses the exact accepted movie images as a progressively loaded frame sequence, presented on one canvas. This changes delivery only: retain the artwork, camera path, 24fps source timing, responsive framing and HTML interface. Prepared frames can be selected in either direction without repeated video seeking. Keep only a bounded neighborhood decoded; retain compressed packets for reverse travel. Do not expose an old asynchronous result after the destination changes. Keep the old scene visible until an orientation replacement is ready. Landscape and unsupported browsers retain the existing movie engine. Opening and failure behavior remain consistent with the accepted design.
+
 ### Rapid scroll reversals — 16 September 2026
 Keep the established camera path and native scrolling. Rapid up/down input selects the latest destination without queuing earlier gestures. Pace camera advancement against completed decoded frames, cap travel speed and bound each visible step so a delayed decoder cannot trigger a catch-up leap. A large fling may take a short time to settle; contact and navigation stay immediately usable. Preserve the opening handoff, frame-aligned seeking, prepared movies and no mobile playback button.
 
@@ -98,3 +101,5 @@ The current journey uses three eight-second movies per orientation, with common 
 Prerendered semantic content, one h1, skip link, visible focus, named controls, AA contrast, 44px targets and Croatian inline errors. Essential content and direct contact survive without JavaScript/WebGL. Escape closes menu and restores focus.
 
 Verify 390/768/1440px, both directions, all CTAs, image loading, keyboard, mode changes, reduced motion, WebGL fallback, PDF download and honest email draft. Measure production performance as local lab results. Keep screenshots and rejected concepts outside the repo; this is the only visual contract.
+
+The mobile opening still is the exact first WebP image from the prepared sequence. Use it in portrait at all widths so the opening fade changes neither geometry nor color; retired portrait/mobile opening variants are removed. Later still anchors and landscape imagery remain unchanged.

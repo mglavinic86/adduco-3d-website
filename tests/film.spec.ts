@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./video-fallback";
 
 test("a near-square desktop keeps the landscape composition", async ({
   page,
@@ -406,6 +406,7 @@ test("older browsers animate without frame callbacks and reduced-motion phones k
     hasTouch: true,
   });
   await context.addInitScript(() => {
+    Object.defineProperty(window, "createImageBitmap", { value: undefined });
     Object.defineProperty(
       HTMLVideoElement.prototype,
       "requestVideoFrameCallback",
