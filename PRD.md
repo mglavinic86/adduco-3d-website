@@ -1,5 +1,14 @@
 # Adduco — local website
 
+## Loading and return resilience — 16 September 2026
+
+The owner approved a finish pass focused on the opening, resource use, returning from another app or a locked screen, and link-preview metadata. Preserve the accepted imagery, native scroll, private Sites audience and contact behavior.
+
+- Prioritize the responsive opening still before requesting the heavier film; text and contact must remain immediately usable while it loads or fails.
+- Prepare adjacent moves during active use, but release off-screen movie resources and stop new work while the page is hidden. Return to the retained camera pose and support forward/reverse scrolling after resume and page-cache restoration.
+- Verify resource lifetimes, Blob recovery, delayed images, media errors and reduced motion through Chrome/WebKit behavior checks. Report device emulation and lab performance honestly.
+- Supply Croatian Open Graph/Twitter title, description and a faithful derivative of the approved scene. Retain noindex and owner-only hosting; external messaging services cannot fetch a private page's preview until its audience permits it.
+
 ## Monumental construction journey — current accepted pass
 
 The owner approved a cinematic passage through an already built construction frame after reviewing the seven-second film. The result communicates physical material detail and the scale of visokogradnja through a roughly 24-second native-scroll journey, with scene-specific Croatian HTML captions and a separately composed portrait version. The storyboard and exact visual constraints live only in DESIGN.md.

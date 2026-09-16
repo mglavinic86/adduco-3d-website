@@ -1,5 +1,11 @@
 # Vertical implementation slices
 
+## Loading and return resilience
+
+- LR1 — AFK, complete: delayed-artwork test failed with movie requests before the still finished, then passed with image load/error gating. Contact remains available, including failed-image and cached-complete paths. Opening intent is captured before the wait.
+- LR2 — AFK, complete; LR1 satisfied: hidden-page regression failed with three retained movies, then passed with one displayed pose and revoked unused Blob URLs. Added persisted page-event/frozen-opening and reverse-scroll checks. No-range-host test reproduced redundant native requests; later movies now use the known Blob path directly, with no change to source films.
+- LR3 — AFK, local QA complete; LR2 satisfied: complete Croatian sharing metadata and approved-scene JPEG. All 72 Chrome/WebKit checks and four component tests pass, alongside typecheck/lint/build. Visually inspected 390/768/1440px and the in-app preview, with no console errors. Local Lighthouse stays at 95/100, LCP 2.93s, TBT/CLS zero; no speedup is inferred from this unchanged lab score. Ready for the existing owner-private Sites publication. Real phone screen-lock behavior and external social previews remain subject to device/public-access verification respectively.
+
 ## Overlay and interface finish
 
 - UI1 — AFK, complete: captions settle at full opacity with a 160ms transition and at most 10px of movement. Chrome and WebKit regressions reproduced stalled partial opacity and initial overlapping titles before the fixes. Keep layout centering separate from the animated translation to avoid an initial vertical jump. Decoded-film progress remains the caption source; movies and camera seeking are unchanged.

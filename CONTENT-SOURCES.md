@@ -22,6 +22,8 @@ Checked 15 September 2026. User confirmed the Metković company (OIB 40912050957
 ## Asset distinction
 Higgsfield construction films and still imagery are original conceptual illustrations. They must never be presented as photographs of Adduco projects. Publicly accessible news images are not assumed licensed. No stock or AI-built villa may stand in for a portfolio project.
 
+Sharing preview, 16 September 2026: `public/assets/adduco-share.jpg` is a 1200×630 JPEG crop of approved landscape anchor `761f4857-f6b4-4179-bff1-d3efaa286934`, processed through Higgsfield without new generation. Confirmed media `ed8bd348-1d91-4697-ab52-1f3c08746645`. Its metadata describes a cinematic visualization, not a completed project. Owner-private Sites access and noindex remain in place; external social crawlers cannot fetch the private preview.
+
 Current film provenance:
 - Approved master: Higgsfield GPT Image 2.5 Flare, 3840×2160, generation `658b6fbf-87b6-482f-97a7-f88a29b26f43`; original logo reference `913aee89-c7f8-40b3-b3e7-2425cadbfbdf` and owner's dark reference `ea667f0a-c0b9-44eb-beba-b500fc4e4107`.
 - Eight accepted 4K anchor images: four landscape and four independently composed portrait frames. Six accepted Seedance 2.5 films, each eight seconds, 1080p, high bitrate, silent. Full prompts, references, accepted IDs, rejected variants and output sizes are in `scripts/cinema.json`.

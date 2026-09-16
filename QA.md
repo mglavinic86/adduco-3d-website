@@ -1,5 +1,27 @@
 # QA — mobile scroll smoothness
 
+## Loading and return resilience — 16 September 2026
+
+- Delayed-opening regression reproduced movie requests competing with a held initial still in both Chrome and WebKit. The film now waits for that image's load/error while HTML navigation and contact remain usable. Opening intent is captured before the wait, retaining the original-pose handoff if a visitor scrolls early.
+- A controlled hidden-page test initially retained all three movie elements. It now retains the displayed element and pose, disposes the other two decoders, aborts their pending fetches and revokes their Blob URLs. Forward/reverse movement works after resume. This verifies resource lifetimes, not a measured percentage reduction in device RAM.
+- Visibility and persisted pagehide/pageshow events stop new work and resume from the retained pose. A frozen opening-animation event is explicitly tested so return cannot leave the first scroll stuck. One already queued frame callback can finish recording an in-flight seek; no new callback is scheduled while hidden. Lifecycle events are modeled in desktop Chrome/WebKit; physical screen-lock behavior remains unverified.
+- A no-range-host regression observed a native media request followed by a full fetch for the next movie (plus a WebKit probe). The page now remembers the required Blob path for that film session, cancels an unused initial native request and fetches later segments once. Source quality, movie files and camera choreography are unchanged.
+- Croatian Open Graph/Twitter tags ship in initial HTML with a 1200×630 JPEG derived through Higgsfield from the approved anchor. Metadata/image checks run without JavaScript. Private hosting/noindex remain; external sharing previews require a future authorized audience change.
+
+Local mobile Lighthouse, same command and production preview, one run before and after:
+
+| Metric | Before | After |
+| --- | ---: | ---: |
+| Performance | 95/100 | 95/100 |
+| First contentful paint | 1.51 s | 1.51 s |
+| Largest contentful paint | 2.93 s | 2.93 s |
+| Total blocking time | 0 ms | 0 ms |
+| Cumulative layout shift | 0 | 0 |
+
+Reports: `/tmp/adduco-loading-before.json` and `/tmp/adduco-loading-after.json`. No measurable initial-load score improvement is claimed. The demonstrated gains are download ordering, fewer redundant movie requests and release of unused resources in the background. These local lab numbers do not measure hosted Blob-download latency or real phones.
+
+Final local validation: 72 Chrome/WebKit browser tests passed with one worker, four component tests passed, and typecheck/lint/build passed. Inspected the 390/768/1440px screenshots and in-app preview with no visual change or console errors. Strict design-artifact audit passed; only the existing unrelated missing-CLAUDE.md warning remains.
+
 15 September 2026. Continuation of the accepted dark, photoreal construction journey. The owner approved the diagnosed smoothness fixes and automatic mobile motion without a playback button.
 
 ## Behavior and regression evidence

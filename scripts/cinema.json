@@ -745,5 +745,16 @@
     "reducedMotion": "Composed stills; also used for data saving, explicit fallback or video failure",
     "seekPosition": "Midpoint of quantized 24fps frame interval to avoid boundary rounding selecting a previous frame",
     "opening": "Hold opening pose and caption while first film prepares; 180ms same-pose opacity handoff, then smooth toward pending native scroll destination."
+  },
+  "sharing": {
+    "date": "2026-09-16",
+    "sourceAnchorId": "761f4857-f6b4-4179-bff1-d3efaa286934",
+    "mediaId": "ed8bd348-1d91-4697-ab52-1f3c08746645",
+    "path": "public/assets/adduco-share.jpg",
+    "width": 1200,
+    "height": 630,
+    "format": "JPEG",
+    "quality": 88,
+    "processing": "Higgsfield sandbox Pillow ImageOps.fit, Lanczos, centered crop, RGB, optimized JPEG. Faithful derivative of the approved landscape anchor; no new generation or project-photo claim."
   }
 }
