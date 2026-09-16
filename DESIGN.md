@@ -71,8 +71,8 @@ Use the accepted UI-free framing anchors as responsive fallback images. Phone AV
 
 ## Motion and resilience
 
-### Loading and return — approved 16 September 2026
-The responsive opening artwork takes priority over movie downloads. Keep text and contact available throughout loading. Hidden pages retain the displayed movie pose and release other movie resources; returning resumes the same native-scroll experience without a new intro. Sharing previews reuse the approved dark construction scene and the existing Croatian identity. No scene, logo, layout or palette redesign is part of this pass.
+### Loading and return — corrected after regression, 16 September 2026
+The owner reported new scroll glitches after the loading/resource optimization. Restore the complete previously accepted playback implementation: preserve prepared movies in the selected orientation, including across brief interruptions; do not gate film startup behind the poster or force a shared Blob strategy. Keep text/contact available and the original opening handoff intact. The approved sharing preview and metadata remain independent of playback. No scene, logo, layout or palette redesign is part of this correction.
 
 ### Overlay and interface finish — approved follow-up
 Keep the accepted films, camera seeking and stable viewport unchanged. Captions have a fully opaque reading hold around their framing anchor, then a short 160ms entrance/exit with at most 10px of movement. Opacity must settle even when the visitor stops scrolling midway between anchors; only the currently relevant caption is interactive. Use a soft, localized reading scrim and a lighter full-scene wash to preserve concrete and reflections. Compact phone layouts reserve space for the artwork, keep the action and chapter navigation apart, and account for lower viewport heights.

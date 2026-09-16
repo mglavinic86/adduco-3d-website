@@ -1,6 +1,14 @@
 # Vertical implementation slices
 
-## Loading and return resilience
+## Scroll regression recovery — current
+
+- RR1 — AFK, mitigation complete: immediately redeploy the accepted interface-finish version after the owner reports new scroll glitches.
+- RR2 — AFK, complete; RR1 satisfied: reproduced loss of prepared-scene scrolling after a brief hidden interval with subsequent movie downloads failing. Both Chrome/WebKit failed on the optimized implementation and passed on the restored accepted CinematicFilm implementation. Keep sharing metadata/image and interface finish.
+- RR3 — AFK, local QA complete; RR2 satisfied: all 66 Chrome/WebKit browser checks, four component tests, typecheck, lint and build pass. Source and compiled JavaScript match the accepted playback exactly. Ready to publish the corrected source to the existing private Site. The previous resource-count/request-count tests are retired because their optimization requirements are withdrawn; prepared-scene continuity replaces them.
+
+## Loading and return resilience — playback changes withdrawn
+
+The following records the attempted pass, not the current playback contract. The user subsequently reported regression; RR1–RR3 above supersede LR1/LR2. Sharing metadata from LR3 is retained.
 
 - LR1 — AFK, complete: delayed-artwork test failed with movie requests before the still finished, then passed with image load/error gating. Contact remains available, including failed-image and cached-complete paths. Opening intent is captured before the wait.
 - LR2 — AFK, complete; LR1 satisfied: hidden-page regression failed with three retained movies, then passed with one displayed pose and revoked unused Blob URLs. Added persisted page-event/frozen-opening and reverse-scroll checks. No-range-host test reproduced redundant native requests; later movies now use the known Blob path directly, with no change to source films.

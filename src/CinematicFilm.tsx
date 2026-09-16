@@ -27,16 +27,10 @@ export default function CinematicFilm({
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const stage = ref.current!;
-    const poster = stage.parentElement?.querySelector<HTMLImageElement>(
-      ".world-stills img.active",
-    );
-    let posterReady = !poster || poster.complete;
     const portrait = matchMedia("(max-aspect-ratio: 9/10)");
     const films = new Map<string, Film>();
     let frame = 0;
     let disposed = false;
-    let suspended = document.hidden;
-    let blobSources = false;
     let shown: string | undefined;
     let target = "";
     let previous = journeyProgress();
@@ -47,23 +41,15 @@ export default function CinematicFilm({
       previous === 0 && (!location.hash || location.hash === "#vizija");
     let lastTick = 0;
     let direction = 1;
-    let revealOpening: (() => void) | undefined;
     if (openingPending) onFrame(0);
 
     function schedule() {
-      if (!disposed && !suspended && !frame)
-        frame = requestAnimationFrame(update);
-    }
-
-    function openingReady() {
-      posterReady = true;
-      schedule();
+      if (!disposed && !frame) frame = requestAnimationFrame(update);
     }
 
     function present(film: Film, time: number) {
       if (disposed || film.request.signal.aborted) return;
       film.presentedTime = time;
-      if (suspended) return;
       if (
         film.key !== target ||
         !Number.isFinite(film.requestedTime) ||
@@ -81,14 +67,11 @@ export default function CinematicFilm({
           film.video.classList.add("opening");
           const reveal = () => {
             if (disposed || film.request.signal.aborted) return;
-            film.video.removeEventListener("animationend", reveal);
             film.video.classList.remove("opening");
             openingPending = false;
-            revealOpening = undefined;
             lastTick = 0;
             schedule();
           };
-          revealOpening = reveal;
           film.video.addEventListener("animationend", reveal, { once: true });
         }
         const orientation = film.video.dataset.orientation;
@@ -100,25 +83,6 @@ export default function CinematicFilm({
       onFrame(
         film.index +
           Math.min(1, time / Math.max(1 / 24, film.video.duration - 1 / 24)),
-      );
-    }
-
-    function watchFrame(film: Film) {
-      if (
-        suspended ||
-        film.request.signal.aborted ||
-        film.frameRequest !== undefined ||
-        typeof film.video.requestVideoFrameCallback !== "function"
-      )
-        return;
-      film.frameRequest = film.video.requestVideoFrameCallback(
-        (_, metadata) => {
-          film.frameRequest = undefined;
-          present(film, metadata.mediaTime);
-          if (disposed || film.request.signal.aborted) return;
-          watchFrame(film);
-          schedule();
-        },
       );
     }
 
@@ -191,21 +155,21 @@ export default function CinematicFilm({
       video.addEventListener("seeked", seeked);
       video.addEventListener("error", failed);
       stage.append(video);
-      watchFrame(film);
-      if (blobSources) void recoverSeeking(film);
-      else video.src = source;
+      if (frameCallbacks) {
+        const decoded: VideoFrameRequestCallback = (_, metadata) => {
+          present(film, metadata.mediaTime);
+          if (disposed || request.signal.aborted) return;
+          film.frameRequest = video.requestVideoFrameCallback(decoded);
+          schedule();
+        };
+        film.frameRequest = video.requestVideoFrameCallback(decoded);
+      }
+      video.src = source;
       return film;
     }
 
     async function recoverSeeking(film: Film) {
-      blobSources = true;
       film.recovering = true;
-      // Once this host requires complete files, use that path for later moves.
-      // Cancel the unused native request instead of downloading both paths.
-      if (shown !== film.key) {
-        film.video.removeAttribute("src");
-        film.video.load();
-      }
       try {
         // A local Blob restores seeking when a host serves no media byte ranges.
         const response = await fetch(film.source, {
@@ -238,7 +202,7 @@ export default function CinematicFilm({
 
     function update(now: number) {
       frame = 0;
-      if (disposed || suspended || document.hidden || !posterReady) return;
+      if (disposed || document.hidden) return;
       let destination = journeyProgress();
       // Settle on the shared anchor despite subpixel scroll rounding.
       if (Math.abs(destination - Math.round(destination)) < 0.002)
@@ -307,53 +271,18 @@ export default function CinematicFilm({
       if (film.presentedTime !== undefined) present(film, film.presentedTime);
     }
 
-    function suspend() {
-      suspended = true;
-      cancelAnimationFrame(frame);
-      frame = 0;
-      lastTick = 0;
-      // Keep the visible pose, release speculative/previous decoders and Blobs.
-      retain(shown ? [shown] : []);
-      // Let an already queued callback record an in-flight seek's completion.
-      // watchFrame will not register another callback until the page resumes.
-    }
-
-    function resume() {
-      if (document.hidden || !suspended) return;
-      suspended = false;
-      lastTick = 0;
-      // A tab can be hidden midway through the one-time still/video handoff.
-      // Resume that same decoded pose without depending on an animation event
-      // that may have been skipped while the browser suspended the page.
-      revealOpening?.();
-      for (const film of films.values()) watchFrame(film);
-      schedule();
-    }
-
-    const visibility = () => (document.hidden ? suspend() : resume());
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
-    document.addEventListener("visibilitychange", visibility);
-    window.addEventListener("pagehide", suspend);
-    window.addEventListener("pageshow", resume);
+    document.addEventListener("visibilitychange", schedule);
     portrait.addEventListener("change", schedule);
-    // Let the small responsive artwork finish before starting a movie download.
-    // Capture openingPending above so scrolling during this wait still blends
-    // from the original pose. A failed image must not prevent the film loading.
-    poster?.addEventListener("load", openingReady);
-    poster?.addEventListener("error", openingReady);
     schedule();
     return () => {
       disposed = true;
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
-      document.removeEventListener("visibilitychange", visibility);
-      window.removeEventListener("pagehide", suspend);
-      window.removeEventListener("pageshow", resume);
+      document.removeEventListener("visibilitychange", schedule);
       portrait.removeEventListener("change", schedule);
-      poster?.removeEventListener("load", openingReady);
-      poster?.removeEventListener("error", openingReady);
       retain([]);
       onFrame(null);
     };

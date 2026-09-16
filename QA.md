@@ -1,6 +1,18 @@
 # QA — mobile scroll smoothness
 
-## Loading and return resilience — 16 September 2026
+## Scroll regression recovery — 16 September 2026
+
+The owner reported new glitches immediately after the loading/resource pass. The prior accepted release was redeployed first. The complete playback implementation is restored from commit 61a12c02b019b9632138162e569698fb1823e85f; interface polish and sharing metadata remain.
+
+A new public-behavior regression prepares all three portrait movies, models a brief visibility interruption, then rejects subsequent movie downloads while scrolling backward and forward. The optimized implementation fails in both Chrome and WebKit; the exact accepted baseline passes in both. Discarded prepared movies must be fetched again, and scroll falls back or remains on the wrong move. This is a reproduced failure mechanism, not proof that it explains every physical-device glitch the owner saw. The earlier tests only checked resource removal and successful return on a fast connection, so they missed this continuity trade-off. Playwright's global offline switch also stalled Blob seeking on the accepted WebKit baseline; the regression therefore isolates failed subsequent downloads instead of changing the browser's global network state.
+
+The image gate, hidden-page resource eviction, callback refactor and session-wide Blob shortcut are withdrawn together to recover the exact accepted playback baseline. Tests requiring those withdrawn optimizations are removed; image-failure/early-scroll and sharing checks remain. No new source videos, CSS, captions or artwork are introduced. Physical-device confirmation of the owner's exact symptom remains necessary.
+
+Final local validation: all 66 Chrome/WebKit browser checks passed sequentially, plus four component tests, typecheck, lint, build and strict design-artifact audit. The restored CinematicFilm source matches the accepted commit exactly, and compiled `index-Cc8QJQ6L.js` is byte-identical to the accepted release archive (SHA-256 `8171f7752988459879a47a08383c4cc8a2fc8f9286a6167dc3c94b455afbad2c`). This includes opening, movie joins, forward/reverse scrolling, interrupted loading, viewport changes and business access. The previous accepted release was successfully restored on the hosted site during mitigation and its JavaScript identity verified there. The corrected source retains the independently tested sharing metadata.
+
+## Loading and return resilience — superseded playback experiment
+
+The evidence below describes the withdrawn optimization release. It is retained as historical context; the recovery section above is the current playback behavior.
 
 - Delayed-opening regression reproduced movie requests competing with a held initial still in both Chrome and WebKit. The film now waits for that image's load/error while HTML navigation and contact remain usable. Opening intent is captured before the wait, retaining the original-pose handoff if a visitor scrolls early.
 - A controlled hidden-page test initially retained all three movie elements. It now retains the displayed element and pose, disposes the other two decoders, aborts their pending fetches and revokes their Blob URLs. Forward/reverse movement works after resume. This verifies resource lifetimes, not a measured percentage reduction in device RAM.

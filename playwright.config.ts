@@ -17,6 +17,7 @@ export default defineConfig({
         "**/viewport.spec.ts",
         "**/interface.spec.ts",
         "**/loading.spec.ts",
+        "**/resume.spec.ts",
       ],
       use: {
         browserName: "webkit",

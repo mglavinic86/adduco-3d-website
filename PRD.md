@@ -4,8 +4,8 @@
 
 The owner approved a finish pass focused on the opening, resource use, returning from another app or a locked screen, and link-preview metadata. Preserve the accepted imagery, native scroll, private Sites audience and contact behavior.
 
-- Prioritize the responsive opening still before requesting the heavier film; text and contact must remain immediately usable while it loads or fails.
-- Prepare adjacent moves during active use, but release off-screen movie resources and stop new work while the page is hidden. Return to the retained camera pose and support forward/reverse scrolling after resume and page-cache restoration.
+- Recovery after the owner reported new scroll glitches: restore the complete playback implementation from the accepted interface-finish release. Withdraw the experimental image gate, background eviction, callback changes and session-wide Blob loading shortcut. Smoothness takes priority over speculative request/resource reductions.
+- Keep text/contact available and retain already prepared movies in the selected orientation through brief interruptions. Forward/reverse movement through those prepared scenes must still work without another network download.
 - Verify resource lifetimes, Blob recovery, delayed images, media errors and reduced motion through Chrome/WebKit behavior checks. Report device emulation and lab performance honestly.
 - Supply Croatian Open Graph/Twitter title, description and a faithful derivative of the approved scene. Retain noindex and owner-only hosting; external messaging services cannot fetch a private page's preview until its audience permits it.
 
