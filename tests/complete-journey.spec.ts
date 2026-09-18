@@ -66,6 +66,9 @@ test("later films load only next to the current scene and do not play on arrival
   await expect(page.getByRole("heading", { name: captions[1] })).toBeVisible({
     timeout: 7000,
   });
+  await expect(
+    page.locator('video[data-transition="1"][data-direction="forward"]'),
+  ).toHaveJSProperty("ended", true);
   await page.waitForLoadState("networkidle");
   expect(
     requested.some(

@@ -199,6 +199,9 @@ test("a failed partial playback can later restart from its first frame", async (
   await expect(
     page.getByRole("heading", { name: "Od vizije do stvarnosti." }),
   ).toBeVisible({ timeout: 7000 });
+  await expect(
+    page.locator('video[data-transition="1"][data-direction="reverse"]'),
+  ).toHaveJSProperty("ended", true);
   await page.keyboard.press("PageDown");
   await expect.poll(() => forward.getAttribute("data-starts")).toBe("[0,0]");
 });

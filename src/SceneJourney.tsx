@@ -3,7 +3,7 @@ import { attachSceneGestures } from "./sceneGestures";
 import { Arrow } from "./ui";
 import { scenes, sceneMedia, sceneStill } from "./scenes";
 
-type View = { scene: number; busy: boolean; film: string | null };
+type View = { scene: number; caption: number | null; film: string | null };
 const hashes = scenes.map((scene) => `#${scene.id}`);
 
 /** Stationary scene anchors connected by complete native forward/reverse films. */
@@ -11,7 +11,7 @@ export default function SceneJourney() {
   const section = useRef<HTMLElement>(null);
   const videoRefs = useRef(new Map<string, HTMLVideoElement>());
   const request = useRef<(scene: number) => void>(() => {});
-  const [view, setView] = useState<View>({ scene: 0, busy: false, film: null });
+  const [view, setView] = useState<View>({ scene: 0, caption: 0, film: null });
 
   useEffect(() => {
     const stage = section.current!;
@@ -26,12 +26,13 @@ export default function SceneJourney() {
     ).connection;
     const stillOnly = () => motion.matches || !!connection?.saveData;
     let scene = Math.max(0, hashes.indexOf(location.hash));
+    let caption: number | null = scene;
     let pending: { destination: number; clip: (typeof films)[number] } | null =
       null;
     let visibleFilm: string | null = null;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let disposed = false;
-    const update = () => setView({ scene, busy: !!pending, film: visibleFilm });
+    const update = () => setView({ scene, caption, film: visibleFilm });
     const prepare = (clip: (typeof films)[number]) => {
       const film = clip.video;
       const src = `/assets/transition-${clip.segment}/${portrait.matches ? "portrait" : "landscape"}-${clip.direction}.mp4`;
@@ -66,8 +67,10 @@ export default function SceneJourney() {
       for (const { video } of films)
         if (video.hasAttribute("src")) video.pause();
       scene = destination;
+      caption = destination;
       visibleFilm = film;
-      if (changeHash) history.replaceState(null, "", hashes[scene]);
+      if (changeHash && location.hash !== hashes[scene])
+        history.replaceState(null, "", hashes[scene]);
       update();
       observeScene();
     };
@@ -86,6 +89,7 @@ export default function SceneJourney() {
       )!;
       const transition = { destination, clip };
       pending = transition;
+      caption = null;
       update();
       const film = prepare(clip);
       if ((!film.ended && film.currentTime > 0) || film.error) film.load();
@@ -111,15 +115,31 @@ export default function SceneJourney() {
         if (pending?.clip !== clip) return;
         settle(pending.destination, clip.key);
       };
+      const progress = () => {
+        // Reveal once halfway through actual native playback; never move its clock.
+        if (
+          pending?.clip !== clip ||
+          visibleFilm !== clip.key ||
+          caption !== null ||
+          film.paused ||
+          film.currentTime < 1.5
+        )
+          return;
+        caption = pending.destination;
+        history.replaceState(null, "", hashes[caption]);
+        update();
+      };
       const error = () => {
         if (pending?.clip === clip) settle(pending.destination);
       };
       film.addEventListener("playing", playing);
       film.addEventListener("ended", ended);
+      film.addEventListener("timeupdate", progress);
       film.addEventListener("error", error);
       return () => {
         film.removeEventListener("playing", playing);
         film.removeEventListener("ended", ended);
+        film.removeEventListener("timeupdate", progress);
         film.removeEventListener("error", error);
       };
     });
@@ -190,6 +210,7 @@ export default function SceneJourney() {
     };
   }, []);
 
+  const displayedScene = view.caption ?? view.scene;
   return (
     <section
       id="vizija"
@@ -246,9 +267,9 @@ export default function SceneJourney() {
           <div
             key={scene.id}
             className="chapter-content"
-            data-visible={view.scene === index && !view.busy}
-            inert={view.scene !== index || view.busy}
-            aria-hidden={view.scene !== index || view.busy}
+            data-visible={view.caption === index}
+            inert={view.caption !== index}
+            aria-hidden={view.caption !== index}
           >
             <p className="eyebrow">{scene.label}</p>
             <Heading>
@@ -271,7 +292,7 @@ export default function SceneJourney() {
         );
       })}
       <p className="chapter-hint">
-        {view.scene < scenes.length - 1
+        {displayedScene < scenes.length - 1
           ? "Pomaknite se i zakoračite u priču"
           : "Nastavite i upoznajte naš rad"}{" "}
         <span aria-hidden="true">↓</span>
@@ -282,7 +303,7 @@ export default function SceneJourney() {
             key={name}
             href={hashes[index]}
             aria-label={`${index + 1} — ${name}`}
-            aria-current={view.scene === index ? "step" : undefined}
+            aria-current={displayedScene === index ? "step" : undefined}
             onClick={(event) => {
               if (
                 event.ctrlKey ||

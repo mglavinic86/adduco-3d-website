@@ -1,11 +1,15 @@
 # Vertical implementation slices
 
+## Earlier caption entrance — 18 September 2026
+
+- EC1 — AFK, verified; release prepared: decouple caption visibility from film completion, reveal during actual playback, verify forward/reverse timing, non-overlap, gesture locking, early business actions and stalled playback. Publish the verified correction to the existing public Site.
+
 ## Complete four-scene journey — 18 September 2026
 
 - CJ1 — HITL, complete: owner accepted ST3 and approved completing the full experience.
 - CJ2 — AFK, complete; blocked by CJ1 (satisfied): prepare exact-join transitions 2–3 in both orientations and directions, extend the accepted native player and verify full forward/reverse travel.
 - CJ3 — AFK, complete; CJ2 satisfied: validate interruption, loading, all hash destinations, responsive captions, accessibility and cold/full transfer budgets.
-- CJ4 — AFK, release prepared; CJ3 satisfied, publication authorized: publish the exact verified source through the existing public Sites project and synchronize the public GitHub repository. Verify the published page.
+- CJ4 — AFK, complete; public release and published-page checks passed: publish the exact verified source through the existing public Sites project and synchronize the public GitHub repository. Verify the published page.
 
 ## Corrected scene-transition checkpoint — 18 September 2026
 

@@ -66,10 +66,14 @@ test("rapid opposite inputs during playback do not queue another transition", as
     page.locator('video[data-transition="1"][data-direction="reverse"]'),
   ).toHaveJSProperty("currentTime", 0);
   expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  await expect(forward).toHaveJSProperty("ended", true);
   await page.keyboard.press("PageUp");
   await expect(
     page.getByRole("heading", { name: "Od vizije do stvarnosti." }),
   ).toBeVisible({ timeout: 7000 });
+  await expect(
+    page.locator('video[data-transition="1"][data-direction="reverse"]'),
+  ).toHaveJSProperty("ended", true);
   await page.keyboard.press("PageDown");
   await expect
     .poll(() => forward.evaluate((v: HTMLVideoElement) => v.currentTime))

@@ -1,5 +1,22 @@
 # QA — mobile scroll smoothness
 
+## Earlier caption entrance — 18 September 2026
+
+The owner accepts the films and requests earlier text. Destination captions now begin their existing 260 ms fade after approximately 1.5 seconds of actual native playback, in all three transitions and both directions. The movie continues to its unchanged three-second ending. Only one caption is visible, its action is immediately usable, and the displayed scene indicator/hash follows it. Completion retains the text without restarting its fade; gesture locking still lasts until the film ends. Fallbacks and direct navigation remain immediate. No films, artwork, CSS, wording or DESIGN.md changed.
+
+TDD first reproduced text appearing only after `ended`, then passed the early-reading assertions. A second regression reproduced Back returning to the previous caption after an early contact action; updating the current caption's hash fixed the return while leaving playback locked. A stalled-before-halfway check confirms that caption timing follows the movie, not a wall-clock delay. Existing tests now explicitly await native completion before requesting another transition.
+
+Final complete browser run: **86 passed, four expected skips**, covering Chrome and mobile WebKit. The six new checks confirm early readable text, locked gestures, correct Back navigation after early actions and progress-based timing during a stall. TypeScript, ESLint, four component tests and the production/SSR build pass. Visual inspection of the early-caption frames confirms readable, non-overlapping text over moving landscape and portrait artwork. The visual-contract audit passes, with the existing optional CLAUDE.md warning.
+
+Cold-cache production-preview transfer remains within budget, including all forward/reverse films and business sections:
+
+| Orientation | First view (bytes) | Full page, both directions (bytes) |
+| --- | ---: | ---: |
+| Portrait | 1,204,417 | 4,202,181 |
+| Landscape | 1,472,369 | 4,805,863 |
+
+The media files, sizes and encoding remain exactly as recorded in the previous release below.
+
 ## Complete four-scene release — 18 September 2026
 
 The owner accepted the first-transition preview and authorized completing the entire experience and its existing public Sites release. All four approved captions and the dark visual contract remain unchanged. Three native three-second moves connect the stationary scenes in either direction. Forward and reverse movies are separate H.264 assets in landscape and purpose-composed portrait versions. Only adjacent clips prepare when the active scene intersects the viewport; the initial frame stays paused. Direct scene links jump to the requested still without chaining playback. O nama, Usluge, Priprema, Projekti and Kontakt remain normal document sections.
