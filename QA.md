@@ -2,6 +2,8 @@
 
 ## Native video preparation — 18 September 2026
 
+**Published successfully:** https://adduco-crveni-monolit.mglavinic.chatgpt.site/ — Sites version21, application source `3ff139cef9ae6451214734a781ddf06f8376e03c`, deployment `appgdep_6aad08c3bbe88191a0643f552d9824a3`. The measured public bundle is `index-C66FVxC3.js`, matching the tested local build. Native preparation and transfer acceptance pass. The opening-paint≤1s target is **not consistently met** because one of the three new portrait cold samples waited1.724s for the initial HTML response; this remaining delivery latency is disclosed below.
+
 The owner approved preparing the persistent native video elements instead of the rejected fetch/cache bridge and explicitly authorized public publication. The opening-image slice below had already been published separately as Sites version20. DESIGN.md, captions, all accepted media and three-second playback remain unchanged. No tempo variant or Batch2 implementation is included.
 
 After opening `canplaythrough`, the sequence is forward2, reverse1, forward3, reverse2, reverse3. Each element retains its own source and buffer and stays paused until requested. Only one background movie prepares at a time. The queue waits for the complete native buffered range before advancing: `canplaythrough` predicts uninterrupted playback, rather than proving that the response is complete. [HTML media readiness specification](https://html.spec.whatwg.org/multipage/media.html#dom-media-have_enough_data)
@@ -31,7 +33,44 @@ The independent local cache-disabled regression, including mobile menu and all b
 
 TDD: delaying forward2 reproduced the absence of preparation in both engines, then verified the exact sequence with no third request while that response was held. Added tests cover orientation replacement, no autoplay, selected-image correctness and reuse without requests on playback. The final138-case inventory comprises **134 passing cases and four expected WebKit skips**, verified by a132-pass full run followed by a2-pass focused rerun after updating the old adjacent-only loading expectation to the owner's newly approved all-six preparation. Both logs are retained; the earlier obsolete assertions are not hidden. Typecheck, ESLint, four unit tests and production/SSR build pass. Screenshots at390/768/1440 were inspected; header/exit and original caption composition are preserved. Artifact audit passes with the existing optional CLAUDE.md warning.
 
-Evidence directory: `/Users/mato/.codex/visualizations/2026/09/15/01a0a34a-e6c7-7e73-8127-ac8e619655f2/native-preparation-2026-09-18/`. Published timing and exact Chrome/WebKit movie-payload measurements will be recorded here after the authorized release. The payload ceilings are **3,407,812 bytes portrait /3,792,329 bytes landscape**, the exact sums of the six unchanged MP4 files; HTTP/protocol overhead is reported separately from movie payload.
+Evidence directory: `/Users/mato/.codex/visualizations/2026/09/15/01a0a34a-e6c7-7e73-8127-ac8e619655f2/native-preparation-2026-09-18/`. It contains the complete live/local JSON waterfalls, initial-response studies, native-response payload audit, production build log, full regression log plus the focused rerun, and playback screenshots. The payload ceilings are **3,407,812 bytes portrait /3,792,329 bytes landscape**, the exact sums of the six unchanged MP4 files; HTTP/protocol overhead is reported separately from movie payload.
+
+### Published Chrome 4G: before and after
+
+These are **lab measurements on the live URL**, Chrome153.0.8010.48, no CPU throttling, the same documented DevTools4G profile. Browser cache is cleared at each navigation and allowed afterwards; the remote delivery/cache state is not controlled. Before is the original single-sample Gate1 baseline. After comprises three cold contexts per orientation, with no preload wait artificially inserted before the first gesture: start as soon as the first canplaythrough occurs, then request each next scene immediately after its predecessor ends. Use medians for opening/first-ready and the worst later latency over all three runs; retain ranges and every sample instead of discarding the slow response.
+
+| Orientation | Opening before (ms) | Opening after median [min–max] (ms) | First ready before (ms) | First ready after median [min–max] (ms) | Worst later before → after (ms) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| portrait | 2,276 | 700 [692–2,216] | 2,543.5 | 944.7 [938.6–2,481.8] | 562.3 →14.2 |
+| landscape | 752 | 752 [748–756] | 965.4 | 965.2 [962.8–970.2] | 1,788.3 →14.3 |
+
+All later movies in the4G samples were fully buffered at their gestures. Their request order is exactly forward1, forward2, reverse1, forward3, reverse2, reverse3 in both orientations. The waterfall confirms no overlap between these movie transfers: the smallest next-request start minus prior-response finish across the six runs is0.9ms. The first-ready≤2.5s and later-start≤200ms targets pass all six4G runs. All landscape opening samples and two of three portrait samples pass1s; the first portrait opening at2,216ms fails. Its initial document response is1,724.2ms, versus201.8ms for the first landscape run. The orientation query/currentSrc remains correct throughout. No claim is made that frontend changes fixed this initial-response delay or that the1s target passes every cold navigation.
+
+| Public profile / sample | Orientation | Opening paint (ms) | First canplaythrough (ms) | Worst later start (ms) | Complete transfer (bytes) |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 4G /1 | portrait | 2,216 | 2,481.8 | 11.7 | 4,094,966 |
+| 4G /1 | landscape | 752 | 965.2 | 14.1 | 4,693,139 |
+| 4G /2 | portrait | 700 | 944.7 | 14.2 | 4,094,772 |
+| 4G /2 | landscape | 756 | 970.2 | 13.8 | 4,692,848 |
+| 4G /3 | portrait | 692 | 938.6 | 14.1 | 4,095,069 |
+| 4G /3 | landscape | 748 | 962.8 | 14.3 | 4,692,869 |
+| Fast3G /1 | portrait | 2,844 | 4,000.5 | 2,797.5 | 4,095,059 |
+| Fast3G /1 | landscape | 3,124 | 4,173.1 | 4,241.0 | 4,693,060 |
+
+The current complete-transfer scope includes all six movies, mobile menu and every business section; optional PDF excluded. These are CDP encoded HTTP totals including repeated requests and platform-injected resources. The earlier baseline timing script omitted opening the mobile menu, so its transfer total is not an identical-scope comparator. **Every current sample remains below5,000,000 bytes.** Fast3G uses180,000B/s down,84,375B/s up,562.5ms latency. On that slower cold profile, forward2/3 and reverse3 were not cached at their gestures; preparation cannot guarantee200ms before the data arrives. Fast3G therefore still has visible waits, shown above, while already prepared reverse1/2 start within13ms. The1s/2.5s/200ms acceptance targets were specified for4G, not Fast3G.
+
+### Published native video payload — Chrome and WebKit
+
+Measured on the live version21 URL in fresh contexts, **without fetch, routes, cache prewarming, response substitution or a proxy**. Chrome153.0.8010.48 and WebKit26.6 (touch/mobile emulation), each orientation. Wait for all six native buffers, traverse all three forward and three reverse films, then replay forward1. Compare completed MP4 response-body lengths to actual on-disk file bytes. Read response bodies through browser instrumentation, which issues no extra HTTP request. Also retain Playwright's reported HTTP-size fields; those include overhead and cannot be compared as raw MP4 file sizes.
+
+| Engine | Orientation | On-disk MP4 bytes | Received MP4 payload bytes | Reported HTTP bytes, incl. overhead | Initial responses | Playback/replay responses |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Chrome | portrait | 3,407,812 | 3,407,812 | 3,412,127 | 6 | 0 |
+| Chrome | landscape | 3,792,329 | 3,792,329 | 3,797,048 | 6 | 0 |
+| WebKit | portrait | 3,407,812 | 3,407,812 | 3,412,133 | 6 | 0 |
+| WebKit | landscape | 3,792,329 | 3,792,329 | 3,797,057 | 6 | 0 |
+
+All24 responses are HTTP200 containing the complete corresponding file; no failed/aborted movie requests. Each context receives precisely its six selected-orientation clips once, with **zero duplicated MP4 payload**. The same six video DOM elements remain throughout playback/replay. This passes the on-disk payload ceiling in both engines. HTTP framing/headers add about4–5KB and are separately disclosed rather than falsely described as video duplication. These measurements cover a normal full journey plus replay, not all possible cache eviction, interrupted reload or orientation-switch scenarios on physical phones.
 
 ## Cold-load ordering — 18 September 2026 (stopped before publication)
 

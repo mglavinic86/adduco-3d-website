@@ -4,8 +4,8 @@
 
 - NP1 — implemented and focused browser tests pass: retain the six native video elements; after the first canplaythrough, fully buffer one movie at a time in the approved order. Reuse those elements for playback. No fetch/preload bridge or media changes.
 - NP2 — verified: matching HTML preload and picture selection in both orientations and engines; only the correct opening image is requested. Reversing measurement order moves the slow first response to landscape as well. The prior portrait timing difference is not an orientation-selection failure; response latency before frontend execution remains separately reported.
-- NP3 — local verification complete: all134 applicable browser cases pass across the full run and updated-expectation rerun; four expected skips. Local4G later starts13.3ms portrait /12.1ms landscape; complete transfers under5MB. Live movie-payload and timing measurement follows publication. Gate 1 gestures, early captions, still fallbacks and navigation are preserved.
-- NP4 — authorized: publish through the existing public Sites project, then measure on the actual live URL. Report slow initial responses honestly. The optional tempo experiment and Batch 2 are outside this pass.
+- NP3 — verified: all134 applicable browser cases pass across the full run and updated-expectation rerun; four expected skips. Typecheck/lint/unit/build pass. Public Chrome and WebKit each receive exactly3,407,812 portrait /3,792,329 landscape MP4 payload bytes, with no playback/replay requests. Complete public transfers stay under5MB. Gate 1 gestures, early captions, still fallbacks and navigation are preserved.
+- NP4 — published and measured: public Sites version21, source3ff139cef9ae6451214734a781ddf06f8376e03c. Live4G later starts≤14.3ms; first-ready≤2.5s in all six samples. Opening paint median700ms portrait /752ms landscape, but one portrait sample is2,216ms after a1,724ms initial HTML response. The≤1s opening target is not consistently met; this delivery limitation and slower Fast3G waits remain explicit in QA.md. The optional tempo experiment and Batch 2 remain outside this pass.
 
 ## Cold-load ordering — 18 September 2026
 

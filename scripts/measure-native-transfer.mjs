@@ -14,6 +14,7 @@ for (const [engine, type] of Object.entries({ chrome: chromium, webkit })) {
   try {
     for (const orientation of ["portrait", "landscape"]) {
       const context = await browser.newContext({
+        ...(engine === "webkit" ? { isMobile: true, hasTouch: true } : {}),
         viewport:
           orientation === "portrait"
             ? { width: 390, height: 844 }
@@ -108,6 +109,7 @@ for (const [engine, type] of Object.entries({ chrome: chromium, webkit })) {
       const payloadBytes = received.reduce((sum, r) => sum + r.payloadBytes, 0);
       const result = {
         engine,
+        engineVersion: browser.version(),
         orientation,
         url: base,
         profile:
