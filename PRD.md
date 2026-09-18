@@ -1,5 +1,39 @@
 # Adduco — local website
 
+## Gate 1 encoding correction approved — 18 September 2026
+
+This owner-approved correction supersedes the CRF and media-continuity constraints in the amendment below. The rest of Gate 1, the accepted scene interaction and the unchanged DESIGN.md remain binding. It does not authorize Batch 2 or publication.
+
+- Keep all six accepted forward MP4s byte-for-byte unchanged. Re-encode all six reverse clips only from original source frames, using the accepted forward encoder settings: two-pass libx264 slow, 1500 kbps portrait / 1650 kbps landscape, 24 fps, 72 frames / three seconds, initial keyframe and fast-start. Portrait limit is 1,000,000 bytes; landscape limit is 1,200,000 bytes. The CRF ≤18 requirement is withdrawn.
+- Regenerate all eight scene stills from decoded accepted forward clips, WebP quality ≥85, portrait ≤200,000 bytes. Scene 0 uses the first forward clip's first frame; scenes 1–3 use the respective forward clip's last frame. The shared scene still is also the following forward clip's origin; measure any difference between those independently encoded endpoints honestly without changing the forward films or adding scene assets.
+- Report all 24 endpoint RMS measurements at 640px comparison size. Reverse first frames compare to the corresponding forward destination still; reverse last frames compare to the forward origin scene still. Target RMS ≤3.0; report actual forward values as well, including lossy WebP and shared-anchor differences.
+- If a reverse join still exceeds RMS 3.0 after those changes, do not chase CRF further. Hold the video's decoded final frame while its destination still fades over it for 150 ms at settlement; report exactly which joins require this compensation and retain their raw RMS values. Keep early captions, immediate navigation, reduced-motion handling and the no-blank fallback.
+- Repeat Gate 1 checks, byte/transfer measurements, waterfall and playback screenshots. Stop with a concrete local preview and report for owner approval before Batch 2. Do not publish.
+
+## Transition polish and launch readiness — 18 September 2026
+
+This owner-requested amendment takes precedence over earlier release authorization and loading behavior. Preserve the accepted interaction: one vertical gesture inside the stage starts one complete native three-second forward/reverse MP4 transition; never scrub `currentTime`, queue gestures or capture scrolling outside the stage. DESIGN.md is unchanged: artwork, dark direction, layout and caption wording remain the visual contract. Keep the accepted destination-caption entrance at 1.5 seconds of actual playback. No new video generation or services beyond the specified future webhook.
+
+### Batch 1 — transition polish (authorized now)
+
+- Re-encode all six reverse MP4s from original source frames, never compressed forward MP4s. Preserve dimensions, 24 fps and three-second duration; H.264 CRF ≤18, initial keyframe, fast-start, portrait files ≤1,000,000 bytes. Compare the first and last decoded frames of every forward/reverse clip with their origin/destination stills at 640-pixel comparison size. Every RMS must be ≤3.0; report all 24 measurements, method and exact byte sizes in QA.md.
+- Retain the outgoing caption while the requested clip loads. Hide it only on `playing`. Show a thin progress indicator from the DESIGN.md palette after more than 300 ms of buffering. Preserve the 6.5-second stall fallback; destination still and caption appear together, with no blank frame.
+- Every scene still except index 0 uses `loading="lazy"` and `fetchpriority="low"`. Before the first gesture, the network waterfall must contain only one scene still and one clip.
+- Add browser behavior coverage for continuous trackpad momentum for 1.2 seconds (one transition), ignored two-finger/pinch input, touch starting inside and ending outside, ignored rapid reversal during playback, Space/PageDown and uncaptured overscroll at scene 0.
+- Keep the header Razgovarajmo and scene-nav O nama exits visible and tappable with targets ≥44 px during playback at 390, 768 and 1440 px. Capture screenshots at those widths.
+- **Gate 1 / HITL:** report sizes, the complete RMS table, network waterfall and screenshots; stop for approval before Batch 2. Typecheck, lint, unit tests and build must pass. Keep the result in local preview; no publication or deployment.
+
+### Batch 2 — launch readiness (blocked by Gate 1 approval)
+
+- Replace the mailto-only form with JSON POST to build-time `N8N_WEBHOOK_URL`: name, email, location, message, page, timestamp and honeypot. Apply a honeypot, one submission per 30 seconds, disabled pending button and explicit Croatian success/error states. Claim delivery only after HTTP 2xx; network errors offer the existing mailto draft. Add a privacy notice link under the form. Never hard-code the webhook.
+- Legal footer: ADDUCO d.o.o. za građevinarstvo, trgovinu i usluge; Mlinska ulica 6, 20350 Metković; MBS 060354966; OIB 40912050957. Registration court, capital and paid-in statement, board members, bank and IBAN use owner-supplied values only; missing values remain visible `[TODO]` and are reported. Add `/privatnost` covering no cookies/analytics, inquiry data emailed to Adduco, retention and a data-request contact; do not invent missing details.
+- Introduce build flag `PUBLIC_INDEXABLE`. Default remains the chatgpt.site URL with noindex. When true, remove noindex/nofollow, allow robots, emit sitemap.xml and use `FINAL_DOMAIN` for canonical/OG URLs. Extend JSON-LD with telephone, email, url, areaServed (Dubrovačko-neretvanska and Splitsko-dalmatinska) and the FINA record in sameAs. Preload latin-ext weights 400/800 alongside latin.
+- Add `content/projects.json` with title, location, year, role, client, images[], caption and source URL. Render the two existing sourced projects with zero images and “Fotografije u pripremi”; no generated or stock portfolio images.
+- Remove any remaining dead three manualChunks; correct package description/license/author from verified information; update README to current architecture; run Chromium Playwright in CI with workers=1.
+- **Gate 2 / HITL:** report mobile Lighthouse as lab measurements, cold/complete transfers in both orientations, webhook 2xx and failure-path evidence, footer screenshot and every open `[TODO]`. Do not publish to Sites until the owner explicitly authorizes it.
+
+Throughout both batches: use behavioral TDD, keep typecheck/lint/tests/build green at every commit, label estimates and lab numbers honestly, preserve visitor copy except explicitly requested launch additions, and do not modify secrets or production resources.
+
 ## Earlier caption entrance — 18 September 2026
 
 The owner accepts the video animation but requests readable text before each movie ends. Reveal the destination caption from approximately 1.5 seconds into each three-second forward/reverse transition, using actual native playback progress and the existing brief fade. Hide the outgoing caption at transition start; never overlap captions. Keep the caption visible through the final frame without fading it again. Gesture locking remains active until the film ends; the newly visible action can immediately navigate to normal business content. The scene indicator and hash follow the revealed caption so Back returns to that reading position. Do not use elapsed wall-clock time for the early entrance when a movie stalls or buffers. Keep the existing bounded stall fallback, immediate error stills and direct/reduced-motion navigation. Preserve all artwork, caption wording, films, visual layout, lazy preparation and budgets. DESIGN.md stays unchanged. Publish the correction through the existing authorized public Sites release and synchronize GitHub.

@@ -609,6 +609,18 @@ footer > a:not(:first-child) {
 .chapter-film {
   z-index: -2;
 }
+.chapter-still[data-settling="true"] {
+  z-index: -1;
+  animation: scene-settle 150ms linear both;
+}
+@keyframes scene-settle {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 .chapter-wash {
   z-index: -1;
   background:
@@ -644,6 +656,33 @@ footer > a:not(:first-child) {
   bottom: 96px;
   font-size: 11px;
   color: #c4cfde;
+}
+.transition-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgb(243 245 248 / 16%);
+  pointer-events: none;
+}
+.transition-progress::after {
+  content: "";
+  display: block;
+  width: 24%;
+  height: 100%;
+  background: var(--red);
+  animation: transition-buffer 1.4s ease-in-out infinite alternate;
+}
+@keyframes transition-buffer {
+  to {
+    transform: translateX(315%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .transition-progress::after {
+    animation: none;
+  }
 }
 .scene-nav {
   position: absolute;

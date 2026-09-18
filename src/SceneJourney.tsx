@@ -3,7 +3,15 @@ import { attachSceneGestures } from "./sceneGestures";
 import { Arrow } from "./ui";
 import { scenes, sceneMedia, sceneStill } from "./scenes";
 
-type View = { scene: number; caption: number | null; film: string | null };
+type View = {
+  scene: number;
+  still: number;
+  caption: number | null;
+  film: string | null;
+  buffering: boolean;
+  stills: number[];
+  settling: number | null;
+};
 const hashes = scenes.map((scene) => `#${scene.id}`);
 
 /** Stationary scene anchors connected by complete native forward/reverse films. */
@@ -11,7 +19,16 @@ export default function SceneJourney() {
   const section = useRef<HTMLElement>(null);
   const videoRefs = useRef(new Map<string, HTMLVideoElement>());
   const request = useRef<(scene: number) => void>(() => {});
-  const [view, setView] = useState<View>({ scene: 0, caption: 0, film: null });
+  const finishHandoff = useRef<(scene: number) => void>(() => {});
+  const [view, setView] = useState<View>({
+    scene: 0,
+    still: 0,
+    caption: 0,
+    film: null,
+    buffering: false,
+    stills: [0],
+    settling: null,
+  });
 
   useEffect(() => {
     const stage = section.current!;
@@ -26,13 +43,68 @@ export default function SceneJourney() {
     ).connection;
     const stillOnly = () => motion.matches || !!connection?.saveData;
     let scene = Math.max(0, hashes.indexOf(location.hash));
+    let visibleStill = 0;
+    const requestedStills = new Set([0, scene]);
     let caption: number | null = scene;
-    let pending: { destination: number; clip: (typeof films)[number] } | null =
-      null;
+    let pending: {
+      destination: number;
+      clip: (typeof films)[number];
+      started: boolean;
+    } | null = null;
     let visibleFilm: string | null = null;
+    let settling: number | null = null;
     let timer: ReturnType<typeof setTimeout> | undefined;
+    let bufferTimer: ReturnType<typeof setTimeout> | undefined;
+    let buffering = false;
     let disposed = false;
-    const update = () => setView({ scene, caption, film: visibleFilm });
+    let settlement = 0;
+    const stillCache = new Map<string, Promise<boolean>>();
+    const update = () =>
+      setView({
+        scene,
+        still: visibleStill,
+        caption,
+        film: visibleFilm,
+        buffering,
+        stills: [...requestedStills],
+        settling,
+      });
+    const cancelHandoff = () => {
+      // The decoded still is already available if a handoff is in progress.
+      if (settling !== null) visibleFilm = null;
+      settling = null;
+      finishHandoff.current = () => {};
+    };
+    const prepareStill = (destination: number) => {
+      const src = sceneStill(destination, portrait.matches);
+      let ready = stillCache.get(src);
+      if (!ready) {
+        const image = new Image();
+        image.fetchPriority = destination === 0 ? "high" : "low";
+        image.src = src;
+        ready = image.decode().then(
+          () => true,
+          () => false,
+        );
+        stillCache.set(src, ready);
+      }
+      return ready;
+    };
+    const clearBuffer = () => {
+      clearTimeout(bufferTimer);
+      bufferTimer = undefined;
+      buffering = false;
+    };
+    const waitForFilm = () => {
+      if (bufferTimer || buffering) return;
+      bufferTimer = setTimeout(() => {
+        bufferTimer = undefined;
+        if (!disposed && pending) {
+          buffering = true;
+          update();
+        }
+      }, 300);
+    };
     const prepare = (clip: (typeof films)[number]) => {
       const film = clip.video;
       const src = `/assets/transition-${clip.segment}/${portrait.matches ? "portrait" : "landscape"}-${clip.direction}.mp4`;
@@ -62,21 +134,54 @@ export default function SceneJourney() {
       film: string | null = null,
       changeHash = true,
     ) => {
+      cancelHandoff();
+      const revision = ++settlement;
       clearTimeout(timer);
+      clearBuffer();
       pending = null;
       for (const { video } of films)
         if (video.hasAttribute("src")) video.pause();
-      scene = destination;
-      caption = destination;
-      visibleFilm = film;
-      if (changeHash && location.hash !== hashes[scene])
-        history.replaceState(null, "", hashes[scene]);
-      update();
-      observeScene();
+      requestedStills.add(destination);
+      const reveal = (ready: boolean) => {
+        if (disposed || revision !== settlement) return;
+        scene = destination;
+        if (ready) visibleStill = destination;
+        caption = destination;
+        // Keep the previous visual if even the fallback image is unavailable.
+        visibleFilm = film ?? (ready ? null : visibleFilm);
+        // All six original-source reverse encodes need the measured join
+        // compensation recorded in QA.md. Forward movies stay untouched.
+        if (ready && film?.endsWith("-reverse") && !stillOnly()) {
+          settling = destination;
+          finishHandoff.current = (finishedScene) => {
+            if (
+              disposed ||
+              revision !== settlement ||
+              finishedScene !== destination
+            )
+              return;
+            settling = null;
+            visibleFilm = null;
+            finishHandoff.current = () => {};
+            update();
+          };
+        }
+        if (changeHash && location.hash !== hashes[scene])
+          history.replaceState(null, "", hashes[scene]);
+        update();
+        observeScene();
+      };
+      // Successful native playback already supplies its own decoded destination.
+      // A slow optional still must not delay the next deliberate gesture.
+      if (film) reveal(false);
+      // Never remove the outgoing visual before the fallback is decoded.
+      void prepareStill(destination).then(reveal);
     };
     request.current = (destination) => {
       if (disposed || pending || destination === scene || !scenes[destination])
         return;
+      cancelHandoff();
+      ++settlement;
       const direction = destination > scene ? "forward" : "reverse";
       if (stillOnly() || Math.abs(destination - scene) > 1) {
         settle(destination);
@@ -87,9 +192,11 @@ export default function SceneJourney() {
           clip.segment === Math.max(scene, destination) &&
           clip.direction === direction,
       )!;
-      const transition = { destination, clip };
+      const transition = { destination, clip, started: false };
       pending = transition;
-      caption = null;
+      requestedStills.add(destination);
+      void prepareStill(destination);
+      waitForFilm();
       update();
       const film = prepare(clip);
       if ((!film.ended && film.currentTime > 0) || film.error) film.load();
@@ -109,7 +216,13 @@ export default function SceneJourney() {
           return;
         }
         visibleFilm = clip.key;
+        clearBuffer();
+        if (!pending.started) caption = null;
+        pending.started = true;
         update();
+      };
+      const waiting = () => {
+        if (pending?.clip === clip) waitForFilm();
       };
       const ended = () => {
         if (pending?.clip !== clip) return;
@@ -133,11 +246,13 @@ export default function SceneJourney() {
         if (pending?.clip === clip) settle(pending.destination);
       };
       film.addEventListener("playing", playing);
+      film.addEventListener("waiting", waiting);
       film.addEventListener("ended", ended);
       film.addEventListener("timeupdate", progress);
       film.addEventListener("error", error);
       return () => {
         film.removeEventListener("playing", playing);
+        film.removeEventListener("waiting", waiting);
         film.removeEventListener("ended", ended);
         film.removeEventListener("timeupdate", progress);
         film.removeEventListener("error", error);
@@ -189,10 +304,13 @@ export default function SceneJourney() {
     motion.addEventListener("change", preference);
     // The opening film is eager; other scenes use the observer above.
     if (scene === 0) prepare(films[0]);
-    update();
+    if (scene === 0) update();
+    else settle(scene, null, false);
     return () => {
       disposed = true;
+      cancelHandoff();
       clearTimeout(timer);
+      clearBuffer();
       removeGestures();
       observer?.disconnect();
       window.removeEventListener("hashchange", hashChange);
@@ -225,19 +343,29 @@ export default function SceneJourney() {
         <picture
           key={scene.id}
           className="chapter-still"
-          data-visible={view.scene === index}
+          data-visible={view.still === index}
+          data-settling={view.settling === index}
+          onAnimationEnd={(event) => {
+            if (event.animationName === "scene-settle")
+              finishHandoff.current(index);
+          }}
           aria-hidden="true"
         >
           <source
             media="(max-aspect-ratio: 9/10)"
-            srcSet={sceneStill(index, true)}
+            srcSet={
+              view.stills.includes(index) ? sceneStill(index, true) : undefined
+            }
           />
           <img
-            src={sceneStill(index, false)}
+            src={
+              view.stills.includes(index) ? sceneStill(index, false) : undefined
+            }
             alt=""
             width="1920"
             height="1080"
-            fetchPriority={index === 0 ? "high" : "auto"}
+            loading={index === 0 ? "eager" : "lazy"}
+            fetchPriority={index === 0 ? "high" : "low"}
           />
         </picture>
       ))}
@@ -261,6 +389,12 @@ export default function SceneJourney() {
         />
       ))}
       <div className="chapter-wash" />
+      <div
+        className="transition-progress"
+        role="progressbar"
+        aria-label="Učitavanje prijelaza"
+        hidden={!view.buffering}
+      />
       {scenes.map((scene, index) => {
         const Heading = index === 0 ? "h1" : "h2";
         return (

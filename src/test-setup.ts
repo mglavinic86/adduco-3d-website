@@ -20,3 +20,5 @@ globalThis.IntersectionObserver = class {
   disconnect() {}
 } as unknown as typeof IntersectionObserver;
 HTMLElement.prototype.scrollIntoView = vi.fn();
+// jsdom has no image decoder; real decoding/error behavior is covered in Playwright.
+HTMLImageElement.prototype.decode = vi.fn().mockResolvedValue(undefined);

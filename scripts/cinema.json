@@ -2252,5 +2252,993 @@
         }
       }
     }
+  },
+  "transitionPolishStudy": {
+    "date": "2026-09-18",
+    "status": "Archived pre-correction study: original CRF18/size/RMS acceptance not met; six CRF18 candidates excluded from assets. Superseded by transitionPolishCorrection after owner revised constraints.",
+    "baselineCommit": "de65388bd8b2b7ae036b4a4f90b522bde3f25522",
+    "baselineArchive": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/54623c3c-7ea0-46ed-b2d0-6e94374723e9.zip",
+    "candidateArchive": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/e0b4030a-1a98-4984-9324-23dc1cf34695.zip",
+    "processing": "Higgsfield sandbox: uniformly select 72 of 193 original frames, inclusive endpoints, scale Lanczos to 720x1280 / 1920x1080 PNG. For moves 2/3, first three master frames blend from the preceding ORIGINAL source endpoint with weights 0,7/27,20/27. Reverse the PNG sequence; encode libx264 veryslow CRF18, 24fps, GOP72/keyint_min72/sc_threshold0, yuv420p, explicit BT709 limited range, faststart, silent. No compressed forward clip used as candidate encoding input. No generation.",
+    "measurement": "Decode frames 0 and 71 with ffmpeg into RGB PNG; Pillow RGB Lanczos resize to longest edge640 (portrait360x640, landscape640x360); RMS=sqrt(mean squared difference across all RGB samples), no gain, alignment or exposure fitting. Supplementary 640-width baseline also recorded.",
+    "baseline": {
+      "transition-1/portrait-forward.mp4": {
+        "bytes": 572882,
+        "rms640width": [
+          4.044007922003601,
+          3.1142315930817612
+        ],
+        "rms640long": [
+          3.653031782465587,
+          2.7363029578821885
+        ]
+      },
+      "transition-1/portrait-reverse.mp4": {
+        "bytes": 565340,
+        "rms640width": [
+          7.980001870155545,
+          7.986697019888302
+        ],
+        "rms640long": [
+          6.370781897001864,
+          6.854719455925563
+        ]
+      },
+      "transition-2/portrait-forward.mp4": {
+        "bytes": 582112,
+        "rms640width": [
+          4.4901436658380165,
+          2.669043225557531
+        ],
+        "rms640long": [
+          3.8868639321246956,
+          2.255689180839319
+        ]
+      },
+      "transition-2/portrait-reverse.mp4": {
+        "bytes": 579255,
+        "rms640width": [
+          3.1178847673582966,
+          6.909063705337873
+        ],
+        "rms640long": [
+          2.5755615061107084,
+          5.933523400318703
+        ]
+      },
+      "transition-3/portrait-forward.mp4": {
+        "bytes": 567808,
+        "rms640width": [
+          3.973127031909145,
+          2.955079039214069
+        ],
+        "rms640long": [
+          3.470647212229912,
+          2.3980246621110037
+        ]
+      },
+      "transition-3/portrait-reverse.mp4": {
+        "bytes": 569045,
+        "rms640width": [
+          3.351141013092546,
+          5.678709683175214
+        ],
+        "rms640long": [
+          2.660068877902447,
+          4.795962446374767
+        ]
+      },
+      "transition-1/landscape-forward.mp4": {
+        "bytes": 602322,
+        "rms640width": [
+          2.955647499483608,
+          2.488247840311494
+        ],
+        "rms640long": [
+          2.955647499483608,
+          2.488247840311494
+        ]
+      },
+      "transition-1/landscape-reverse.mp4": {
+        "bytes": 642922,
+        "rms640width": [
+          5.910416421885398,
+          5.973880139709125
+        ],
+        "rms640long": [
+          5.910416421885398,
+          5.973880139709125
+        ]
+      },
+      "transition-2/landscape-forward.mp4": {
+        "bytes": 643085,
+        "rms640width": [
+          4.365026495666477,
+          1.969475542381026
+        ],
+        "rms640long": [
+          4.365026495666477,
+          1.969475542381026
+        ]
+      },
+      "transition-2/landscape-reverse.mp4": {
+        "bytes": 649483,
+        "rms640width": [
+          3.252070654470266,
+          6.835566517711283
+        ],
+        "rms640long": [
+          3.252070654470266,
+          6.835566517711283
+        ]
+      },
+      "transition-3/landscape-forward.mp4": {
+        "bytes": 649925,
+        "rms640width": [
+          3.455868641474909,
+          1.9369174751536409
+        ],
+        "rms640long": [
+          3.455868641474909,
+          1.9369174751536409
+        ]
+      },
+      "transition-3/landscape-reverse.mp4": {
+        "bytes": 642731,
+        "rms640width": [
+          2.262942457247823,
+          6.132829227094432
+        ],
+        "rms640long": [
+          2.262942457247823,
+          6.132829227094432
+        ]
+      }
+    },
+    "candidates": {
+      "transition-1/portrait-reverse.mp4": {
+        "source": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_6d658000-6802-4572-8356-74c5eb5b0138.mp4",
+        "bytes": 2474484,
+        "rmsFirst": 6.5706319765878884,
+        "rmsLast": 5.021533491983411,
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "start_time": "0.000000",
+              "duration": "3.000000",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "2474484"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pts_time": "0.000000",
+          "pict_type": "I",
+          "side_data_list": [
+            {
+              "side_data_type": "H.26[45] User Data Unregistered SEI message"
+            }
+          ]
+        },
+        "lastFrame": {
+          "key_frame": 0,
+          "pts_time": "2.958333",
+          "pict_type": "P"
+        },
+        "faststart": true
+      },
+      "transition-2/portrait-reverse.mp4": {
+        "source": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_460f59fb-41bc-4318-94d6-47dd2111df4b.mp4",
+        "bytes": 2508430,
+        "rmsFirst": 5.385892951214723,
+        "rmsLast": 7.142856117724794,
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "start_time": "0.000000",
+              "duration": "3.000000",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "2508430"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pts_time": "0.000000",
+          "pict_type": "I",
+          "side_data_list": [
+            {
+              "side_data_type": "H.26[45] User Data Unregistered SEI message"
+            }
+          ]
+        },
+        "lastFrame": {
+          "key_frame": 0,
+          "pts_time": "2.958333",
+          "pict_type": "P"
+        },
+        "faststart": true
+      },
+      "transition-3/portrait-reverse.mp4": {
+        "source": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_a0a77647-21b8-4282-b9ea-dc9aa09b36d1.mp4",
+        "bytes": 2117578,
+        "rmsFirst": 5.649284769134742,
+        "rmsLast": 5.747107011760755,
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "start_time": "0.000000",
+              "duration": "3.000000",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "2117578"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pts_time": "0.000000",
+          "pict_type": "I",
+          "side_data_list": [
+            {
+              "side_data_type": "H.26[45] User Data Unregistered SEI message"
+            }
+          ]
+        },
+        "lastFrame": {
+          "key_frame": 0,
+          "pts_time": "2.958333",
+          "pict_type": "P"
+        },
+        "faststart": true
+      },
+      "transition-1/landscape-reverse.mp4": {
+        "source": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190739_83bee30f-abd2-4f75-9d09-5c1af2921dfa.mp4",
+        "bytes": 4427812,
+        "rmsFirst": 6.186926179901903,
+        "rmsLast": 4.0708283577815605,
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "start_time": "0.000000",
+              "duration": "3.000000",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "4427812"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pts_time": "0.000000",
+          "pict_type": "I",
+          "side_data_list": [
+            {
+              "side_data_type": "H.26[45] User Data Unregistered SEI message"
+            }
+          ]
+        },
+        "lastFrame": {
+          "key_frame": 0,
+          "pts_time": "2.958333",
+          "pict_type": "P"
+        },
+        "faststart": true
+      },
+      "transition-2/landscape-reverse.mp4": {
+        "source": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190908_400576cb-2471-4ce8-bce0-4ebd5f8ac7f9.mp4",
+        "bytes": 5704203,
+        "rmsFirst": 8.408314062305854,
+        "rmsLast": 6.873950993202122,
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "start_time": "0.000000",
+              "duration": "3.000000",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "5704203"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pts_time": "0.000000",
+          "pict_type": "I",
+          "side_data_list": [
+            {
+              "side_data_type": "H.26[45] User Data Unregistered SEI message"
+            }
+          ]
+        },
+        "lastFrame": {
+          "key_frame": 0,
+          "pts_time": "2.958333",
+          "pict_type": "P"
+        },
+        "faststart": true
+      },
+      "transition-3/landscape-reverse.mp4": {
+        "source": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_c08b95fa-4934-4e1c-ac9b-c49fde6f0c16.mp4",
+        "bytes": 3822237,
+        "rmsFirst": 5.189709062217551,
+        "rmsLast": 8.661849455824685,
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "start_time": "0.000000",
+              "duration": "3.000000",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "3822237"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pts_time": "0.000000",
+          "pict_type": "I",
+          "side_data_list": [
+            {
+              "side_data_type": "H.26[45] User Data Unregistered SEI message"
+            }
+          ]
+        },
+        "lastFrame": {
+          "key_frame": 0,
+          "pts_time": "2.958333",
+          "pict_type": "P"
+        },
+        "faststart": true
+      }
+    },
+    "retainedAssetSha256": {
+      "public/assets/transition-1/landscape-forward.mp4": "fc21912a445ed911acf209c30a7cdd56485bb21d70c9262280f50891e58ff833",
+      "public/assets/transition-1/portrait-reverse.mp4": "242a8794225e676495ed38383977ce25e6aaa1211caab0f0ce402585f2d5ab85",
+      "public/assets/transition-1/landscape-reverse.mp4": "1628670a4c5fbe8e29e9d6f4fce5b8abe3c802dc92a85d09995fd2b2b9f7c13d",
+      "public/assets/transition-1/portrait-start.webp": "0cdf9f35d88824145e6f460198c3a2bbe4e1ca7b2c264195f8b6998f9aff8c1c",
+      "public/assets/transition-1/portrait-forward.mp4": "33d65a70bc835a9900dbda978c53ca1c29c6957d5d96c4df589601257e5c1798",
+      "public/assets/transition-1/landscape-start.webp": "12da17e9ba1e8778ea3a9706c2727e0b533fd43ff26ec3de6af9a78a03e44b4d",
+      "public/assets/transition-1/portrait-end.webp": "67e10e88d413e977caf9fda9323499381959d175439625a95cb694324986ff5b",
+      "public/assets/transition-1/landscape-end.webp": "1afc93fb499ae587932c4685ad280a430aee9f1d4301f8a14adfac241ac5de33",
+      "public/assets/transition-2/landscape-forward.mp4": "793c81d4b6e4bcf2d995f90979ffc58f0e9ed508330f13d89516d0c0123a6de2",
+      "public/assets/transition-2/portrait-reverse.mp4": "e9c36d0dd236786e371361aa531003232680fe83a39e5ad9abccb1bb7a64d278",
+      "public/assets/transition-2/landscape-reverse.mp4": "fe4a3c9d37832357442f4115649e548d9a7dcb820aefefde80f43b5809d548bf",
+      "public/assets/transition-2/portrait-forward.mp4": "1487f6b17d41db5ff92dbe9a25498d38e7bcb9d0edcd97d8a2ea83c20b82928b",
+      "public/assets/transition-2/portrait-end.webp": "a287436bf0513e6891a9734f5f118ddcda5c48bb2f25c2f8b634237764734c65",
+      "public/assets/transition-2/landscape-end.webp": "ae45d9e26ab98359c99b1df605c2ee124d81abc272b893182cc90ae8ebe2f0f8",
+      "public/assets/transition-3/landscape-forward.mp4": "77a344525d07b98efe9f768ffee8baceea03b728e997bae9d1890d4f0ec3a103",
+      "public/assets/transition-3/portrait-reverse.mp4": "86503041f007517a576751150531e766fcf645b27efa621c33d5c9e662c8d12a",
+      "public/assets/transition-3/landscape-reverse.mp4": "b10670383394d3132f419bffcd6928cdd98668ee01f532d12e71144eb0ef29d2",
+      "public/assets/transition-3/portrait-forward.mp4": "77fa84d2479d4b125d911de172a2c37ceb80155b87b8e05712954eadbe59e1f6",
+      "public/assets/transition-3/portrait-end.webp": "3760ffad0dcf1adc051ec5a9063ac3ac44f5de91b78eacf943314fe0ba169fc2",
+      "public/assets/transition-3/landscape-end.webp": "7e1b15a8cb913fa72ccf01cc4b0ef94f1362f04f9791e8367916a4cb5862000b"
+    }
+  },
+  "transitionPolishCorrection": {
+    "date": "2026-09-18",
+    "status": "Corrected Gate 1 media in local preview; forward source files unchanged; raw RMS exceptions reported, six reverse settle fades approved. Awaiting Gate 1 review; no publication.",
+    "archiveMediaId": "c7b443a5-ca28-4af5-8ccb-0e3f2f352944",
+    "archiveUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/c7b443a5-ca28-4af5-8ccb-0e3f2f352944.zip",
+    "processing": "Higgsfield sandbox ffmpeg/Pillow. Uniform original source frames round(i*192/71), inclusive 0/192, Lanczos scale to 720x1280 portrait /1920x1080 landscape RGB PNG. For moves 2/3 blend first three frames from preceding ORIGINAL endpoint, weights 0,7/27,20/27. Reverse original PNG sequence then libx264 two-pass slow, 1500/1650k, maxrate 1800/1950k, bufsize3000/3300k, yuv420p, GOP72/keyint_min72/sc_threshold0, 24fps/72frames/3s, silent, faststart. No compressed forward movie used to encode a reverse. No generation.",
+    "stillMapping": "Scene0 decoded frame0 of accepted forward1; scenes1/2/3 decoded frame71 of respective accepted forwards. RGB PNG -> Pillow WebP quality85 method6. Shared scene1 and2 are preceding forward endpoints, not independent next-clip origins. Report actual mismatch, do not modify forward movies.",
+    "settleCompensation": "All six reverse joins exceed RMS3. Hold ended native movie and fade decoded destination still over it for150ms. Raw RMS remains unchanged; this does not compensate reverse entry differences or shared forward2-origin differences.",
+    "verification": {
+      "clips": {
+        "transition-1/portrait-forward.mp4": {
+          "bytes": 572882,
+          "rmsFirst": 2.0445989430602185,
+          "rmsLast": 1.8237034016588944,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 720,
+                "height": 1280,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "572882"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "33d65a70bc835a9900dbda978c53ca1c29c6957d5d96c4df589601257e5c1798"
+        },
+        "transition-1/portrait-reverse.mp4": {
+          "bytes": 564200,
+          "rmsFirst": 6.044372119346196,
+          "rmsLast": 6.310802622913378,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 720,
+                "height": 1280,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "564200"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "9dd45436115922c1e59c5bce73510a8732d03a42308b7f1fbc3548b9283046c9"
+        },
+        "transition-2/portrait-forward.mp4": {
+          "bytes": 582112,
+          "rmsFirst": 3.1441397667224,
+          "rmsLast": 1.8606635552245172,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 720,
+                "height": 1280,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "582112"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "1487f6b17d41db5ff92dbe9a25498d38e7bcb9d0edcd97d8a2ea83c20b82928b"
+        },
+        "transition-2/portrait-reverse.mp4": {
+          "bytes": 567324,
+          "rmsFirst": 4.932983166063581,
+          "rmsLast": 6.74985403648767,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 720,
+                "height": 1280,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "567324"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "89fc148080cd3340387333c4b651d94d537f82dccadd431c21eab512818b6c16"
+        },
+        "transition-3/portrait-forward.mp4": {
+          "bytes": 567808,
+          "rmsFirst": 2.838754260642301,
+          "rmsLast": 2.0527325538169845,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 720,
+                "height": 1280,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "567808"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "77fa84d2479d4b125d911de172a2c37ceb80155b87b8e05712954eadbe59e1f6"
+        },
+        "transition-3/portrait-reverse.mp4": {
+          "bytes": 553486,
+          "rmsFirst": 5.387244478128836,
+          "rmsLast": 5.519203244673864,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 720,
+                "height": 1280,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "553486"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "a80fe84efa15914e5bf35236e72b519bc54f2c60c2941d2353a934c86f019921"
+        },
+        "transition-1/landscape-forward.mp4": {
+          "bytes": 602322,
+          "rmsFirst": 1.5320618596083733,
+          "rmsLast": 1.4869941561318827,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "602322"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "fc21912a445ed911acf209c30a7cdd56485bb21d70c9262280f50891e58ff833"
+        },
+        "transition-1/landscape-reverse.mp4": {
+          "bytes": 645107,
+          "rmsFirst": 5.471944172998058,
+          "rmsLast": 5.636561035995263,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "645107"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "79dda711e59a92eba323bc39520eb8ca9dc7ab1ad49c7312e26c8c99a0ab43c7"
+        },
+        "transition-2/landscape-forward.mp4": {
+          "bytes": 643085,
+          "rmsFirst": 3.765525154277953,
+          "rmsLast": 1.5403851655781853,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "643085"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "793c81d4b6e4bcf2d995f90979ffc58f0e9ed508330f13d89516d0c0123a6de2"
+        },
+        "transition-2/landscape-reverse.mp4": {
+          "bytes": 631822,
+          "rmsFirst": 8.10443238995958,
+          "rmsLast": 7.719594814316501,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "631822"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "49b8dc7676c27b9f6f19cd14118f2346585b9028d92b8b289667cb759318405d"
+        },
+        "transition-3/landscape-forward.mp4": {
+          "bytes": 649925,
+          "rmsFirst": 2.8697206459249913,
+          "rmsLast": 1.5172360423919982,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "649925"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "77a344525d07b98efe9f768ffee8baceea03b728e997bae9d1890d4f0ec3a103"
+        },
+        "transition-3/landscape-reverse.mp4": {
+          "bytes": 620068,
+          "rmsFirst": 4.576925444856818,
+          "rmsLast": 8.005243688022848,
+          "probe": {
+            "programs": [],
+            "streams": [
+              {
+                "codec_name": "h264",
+                "width": 1920,
+                "height": 1080,
+                "r_frame_rate": "24/1",
+                "start_time": "0.000000",
+                "duration": "3.000000",
+                "nb_frames": "72"
+              }
+            ],
+            "format": {
+              "duration": "3.000000",
+              "size": "620068"
+            }
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          },
+          "faststart": true,
+          "sha256": "3b3821c41ac131d8158e6a77dbdf5f299e181f996a0e11e53a8ab7dc24c907b8"
+        }
+      },
+      "stills": {
+        "transition-1/portrait-start.webp": {
+          "bytes": 115480,
+          "source": "transition-1/portrait-forward.mp4",
+          "frame": 0,
+          "quality": 85,
+          "rmsToDecodedFrame": 2.0445989430602185
+        },
+        "transition-1/portrait-end.webp": {
+          "bytes": 107034,
+          "source": "transition-1/portrait-forward.mp4",
+          "frame": 71,
+          "quality": 85,
+          "rmsToDecodedFrame": 1.8237034016588944
+        },
+        "transition-2/portrait-end.webp": {
+          "bytes": 90184,
+          "source": "transition-2/portrait-forward.mp4",
+          "frame": 71,
+          "quality": 85,
+          "rmsToDecodedFrame": 1.8606635552245172
+        },
+        "transition-3/portrait-end.webp": {
+          "bytes": 133676,
+          "source": "transition-3/portrait-forward.mp4",
+          "frame": 71,
+          "quality": 85,
+          "rmsToDecodedFrame": 2.0527325538169845
+        },
+        "transition-1/landscape-start.webp": {
+          "bytes": 167214,
+          "source": "transition-1/landscape-forward.mp4",
+          "frame": 0,
+          "quality": 85,
+          "rmsToDecodedFrame": 1.5320618596083733
+        },
+        "transition-1/landscape-end.webp": {
+          "bytes": 163918,
+          "source": "transition-1/landscape-forward.mp4",
+          "frame": 71,
+          "quality": 85,
+          "rmsToDecodedFrame": 1.4869941561318827
+        },
+        "transition-2/landscape-end.webp": {
+          "bytes": 159872,
+          "source": "transition-2/landscape-forward.mp4",
+          "frame": 71,
+          "quality": 85,
+          "rmsToDecodedFrame": 1.5403851655781853
+        },
+        "transition-3/landscape-end.webp": {
+          "bytes": 196510,
+          "source": "transition-3/landscape-forward.mp4",
+          "frame": 71,
+          "quality": 85,
+          "rmsToDecodedFrame": 1.5172360423919982
+        }
+      },
+      "forwardSha256": {
+        "transition-1/portrait-forward.mp4": "33d65a70bc835a9900dbda978c53ca1c29c6957d5d96c4df589601257e5c1798",
+        "transition-2/portrait-forward.mp4": "1487f6b17d41db5ff92dbe9a25498d38e7bcb9d0edcd97d8a2ea83c20b82928b",
+        "transition-3/portrait-forward.mp4": "77fa84d2479d4b125d911de172a2c37ceb80155b87b8e05712954eadbe59e1f6",
+        "transition-1/landscape-forward.mp4": "fc21912a445ed911acf209c30a7cdd56485bb21d70c9262280f50891e58ff833",
+        "transition-2/landscape-forward.mp4": "793c81d4b6e4bcf2d995f90979ffc58f0e9ed508330f13d89516d0c0123a6de2",
+        "transition-3/landscape-forward.mp4": "77a344525d07b98efe9f768ffee8baceea03b728e997bae9d1890d4f0ec3a103"
+      },
+      "sources": {
+        "portrait1": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_6d658000-6802-4572-8356-74c5eb5b0138.mp4",
+        "portrait2": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_460f59fb-41bc-4318-94d6-47dd2111df4b.mp4",
+        "portrait3": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_a0a77647-21b8-4282-b9ea-dc9aa09b36d1.mp4",
+        "landscape1": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190739_83bee30f-abd2-4f75-9d09-5c1af2921dfa.mp4",
+        "landscape2": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190908_400576cb-2471-4ce8-bce0-4ebd5f8ac7f9.mp4",
+        "landscape3": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_c08b95fa-4934-4e1c-ac9b-c49fde6f0c16.mp4"
+      },
+      "encoder": "libx264 slow, 2pass 1500k portrait /1650k landscape, maxrate +300k, bufsize 2x, GOP72 keyint_min72 scenecut0, yuv420p, faststart, silent",
+      "webp": {
+        "quality": 85,
+        "method": 6
+      },
+      "comparison": "RGB RMS at longest edge640; Lanczos; no alignment/exposure fitting",
+      "settleFadeClips": [
+        "transition-1/portrait-reverse.mp4",
+        "transition-2/portrait-reverse.mp4",
+        "transition-3/portrait-reverse.mp4",
+        "transition-1/landscape-reverse.mp4",
+        "transition-2/landscape-reverse.mp4",
+        "transition-3/landscape-reverse.mp4"
+      ]
+    }
   }
 }

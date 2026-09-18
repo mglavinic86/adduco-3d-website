@@ -70,10 +70,17 @@ test("a stalled movie releases the gesture and reveals its destination caption",
   await page.keyboard.press("PageDown");
   await expect(
     page.getByRole("heading", { name: "Od vizije do stvarnosti." }),
-  ).toHaveCount(0);
+  ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Snaga je u detalju." }),
   ).toBeVisible({ timeout: 8000 });
+  await expect(page.getByRole("progressbar")).toBeHidden();
+  const fallback = page.locator('.chapter-still[data-visible="true"] img');
+  await expect(fallback).toHaveJSProperty("complete", true);
+  expect(
+    await fallback.evaluate((img: HTMLImageElement) => img.naturalWidth),
+  ).toBeGreaterThan(0);
+  await expect(page.locator('video[data-visible="true"]')).toHaveCount(0);
   await page
     .getByRole("navigation", { name: "Scene filmske priče" })
     .getByRole("link", { name: "O nama", exact: true })

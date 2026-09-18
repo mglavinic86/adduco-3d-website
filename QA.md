@@ -1,5 +1,165 @@
 # QA — mobile scroll smoothness
 
+## Gate 1 correction — 18 September 2026 (local review; not published)
+
+The owner withdrew CRF≤18, retained portrait≤1,000,000 bytes, set landscape≤1,200,000 bytes, requested eight stills decoded from accepted forward clips at WebP quality≥85, and authorized a 150ms final-frame/still blend for reverse joins still above RMS3. The dated PRD correction was added before implementation. DESIGN.md and all six forward MP4s are byte-for-byte unchanged (SHA-256 verified against commit de65388bd8b2b7ae036b4a4f90b522bde3f25522). No new generation, copy edits, Batch 2 work, commits, pushes or publication.
+
+### Delivered media and all 24 RMS values
+
+Higgsfield processed six reverse films directly from the original Seedance source frames, never from compressed forward films. Encoder matches accepted forward settings: libx264 slow, two-pass 1500kbps portrait /1650kbps landscape; maxrate1800/1950k, bufsize3000/3300k; yuv420p, GOP72, keyint_min72, scenecut0, no audio. All are 72 frames, 24fps, 3.000s, initial I-frame at0.000s and fast-start, 720×1280 portrait /1920×1080 landscape. Exact files/probes/SHA-256/source URLs are in scripts/cinema.json → transitionPolishCorrection. Confirmed Higgsfield archive: c7b443a5-ca28-4af5-8ccb-0e3f2f352944.
+
+Method: ffmpeg decodes first frame0 and last frame71 to RGB PNG; Pillow Lanczos resizes film endpoints and decoded WebP stills to **640px longest edge** (portrait360×640; landscape640×360); RMS=sqrt(mean squared error across all RGB samples), with no alignment, gain correction or masking. These are raw offline pixel measurements, not frame-rate/perceptual scores. First/last columns refer to playback direction: reverse first compares with forward destination, reverse last with forward origin. All byte sizes are exact decimal bytes.
+
+| Clip | Bytes | First → origin RMS | Last → destination RMS | Treatment / result |
+| --- | ---: | ---: | ---: | --- |
+| portrait 1 forward | 572,882 | 2.045 | 1.824 | Both ≤3 |
+| portrait 1 reverse | 564,200 | 6.044 | 6.311 | 150 ms settle fade |
+| portrait 2 forward | 582,112 | 3.144 | 1.861 | Shared origin >3; unchanged forward |
+| portrait 2 reverse | 567,324 | 4.933 | 6.750 | 150 ms settle fade |
+| portrait 3 forward | 567,808 | 2.839 | 2.053 | Both ≤3 |
+| portrait 3 reverse | 553,486 | 5.387 | 5.519 | 150 ms settle fade |
+| landscape 1 forward | 602,322 | 1.532 | 1.487 | Both ≤3 |
+| landscape 1 reverse | 645,107 | 5.472 | 5.637 | 150 ms settle fade |
+| landscape 2 forward | 643,085 | 3.766 | 1.540 | Shared origin >3; unchanged forward |
+| landscape 2 reverse | 631,822 | 8.104 | 7.720 | 150 ms settle fade |
+| landscape 3 forward | 649,925 | 2.870 | 1.517 | Both ≤3 |
+| landscape 3 reverse | 620,068 | 4.577 | 8.005 | 150 ms settle fade |
+
+**Do not interpret the fade as a numeric RMS pass.** All six reverse files still exceed3 at both ends. Under the owner's correction, all six receive the 150ms settlement blend. The native last frame stays paused and visible underneath a decoded destination still fading from0→1; only the animation's completion hides the movie. Captions remain visible, and fresh input can cancel the handoff immediately without a stale completion hiding the next film. Reduced-motion/direct/error stills do not run this animation. The blend compensates the final handoff only; reverse entry differences remain reported above.
+
+**Two shared forward origins remain above3:** portrait forward2=3.144 and landscape forward2=3.766. Four scene anchors mean the middle still is the preceding forward's decoded endpoint, also used as the next clip's origin. Those independently encoded forward endpoints already differ, even before WebP: RGB PNG-to-PNG RMS3.027 portrait /3.829 landscape. Re-extracting a still cannot make both source frames identical, and the owner explicitly forbids altering the forward movies. Same-frame WebP comparisons measure1.487–2.053 rather than mathematical zero because quality85 WebP is lossy. These residuals require owner review; no threshold was silently relaxed and no claim that all24 numbers pass is made.
+
+### Eight regenerated scene stills
+
+Decoded exclusively from accepted forward MP4s → RGB PNG → Pillow WebP quality85, method6. Scene0 is forward1 frame0; scenes1–3 are the respective forward frame71. All four portrait stills are below200,000 bytes. There are still exactly eight scene assets, not additional per-clip origin images.
+
+| Still | Bytes | Encoded-forward source |
+| --- | ---: | --- |
+| transition-1/portrait-start.webp | 115,480 | 0 of transition-1/portrait-forward.mp4 |
+| transition-1/portrait-end.webp | 107,034 | 71 of transition-1/portrait-forward.mp4 |
+| transition-2/portrait-end.webp | 90,184 | 71 of transition-2/portrait-forward.mp4 |
+| transition-3/portrait-end.webp | 133,676 | 71 of transition-3/portrait-forward.mp4 |
+| transition-1/landscape-start.webp | 167,214 | 0 of transition-1/landscape-forward.mp4 |
+| transition-1/landscape-end.webp | 163,918 | 71 of transition-1/landscape-forward.mp4 |
+| transition-2/landscape-end.webp | 159,872 | 71 of transition-2/landscape-forward.mp4 |
+| transition-3/landscape-end.webp | 196,510 | 71 of transition-3/landscape-forward.mp4 |
+
+### Interaction, loading and browser evidence
+
+The previous Gate1 interaction fixes below remain: outgoing caption until `playing`; 2px palette-red indicator only after300ms buffering; 6.5s watchdog with paired decoded still/caption fallback; only scene0 eager and other stills lazy/low with deferred sources; stage-only gesture capture, no scroll seeking or queue; document-level touch-end cleanup only; visible ≥44px header and scene exits. The destination caption still enters at1.5s of actual playback.
+
+TDD first reproduced zero intermediate still-opacity samples at reverse settlement. The 150ms handoff then passed in Chrome and WebKit. Per-frame browser samples verify an ended, paused, visible movie below a fading still while its caption remains readable. Tests cover all three reverse moves in both orientations and an immediate fresh gesture during the handoff. The completed production-preview regression suite and updated network evidence below describe this corrected media version.
+
+Final production-preview run: **122 passed, four expected skips**, 126 cases total, workers=1, Chrome + WebKit, 7.3 minutes. Skips are the two WebKit wheel-only cases and two WebKit CDP-transfer cases; their Chromium equivalents run. All four unit tests, TypeScript, ESLint, production/SSR build and git diff whitespace checks pass. No browser console warnings/errors in the in-app preview. The visual-artifact audit passes with only the existing optional CLAUDE.md warning. DESIGN.md has no diff. No software check remains failing.
+
+Chrome/WebKit computed-style samples on requestAnimationFrame verify the 150ms opacity ramp and paused, visible final movie underneath for all six reverse transitions. A fresh gesture during that fade starts the next film without a stale completion hiding it. This is browser lab evidence, not a physical-phone FPS guarantee; physical macOS momentum and iOS overscroll are modeled input tests, not hardware measurements.
+
+Cold-cache Chromium CDP actual encoded HTTP transfers, including repeated requests, all three forward/reverse movies, mobile menu and all business sections. **Local lab measurements**, decimal bytes; PDF is user-initiated and excluded. The initial portrait ≤2,000,000-byte and complete-page ≤5,000,000-byte budgets pass.
+
+| Orientation | First view (bytes) | Complete page, both directions (bytes) |
+| --- | ---: | ---: |
+| portrait | 884,508 | 4,185,344 |
+| landscape | 965,682 | 4,782,147 |
+
+Initial scene-resource waterfall (milliseconds from navigation, native request events):
+
+| Browser | Resource | Start ms | End ms |
+| --- | --- | ---: | ---: |
+| chrome | transition-1/landscape-start.webp | 27 | 44 |
+| chrome | transition-1/landscape-forward.mp4 | 94 | 94 |
+| webkit | transition-1/portrait-start.webp | 11 | 17 |
+| webkit | transition-1/portrait-forward.mp4 | 90 | 94 |
+| webkit | transition-1/portrait-forward.mp4 | 94 | 96 |
+
+Exactly **one unique scene still and one unique clip** load before the first gesture in each engine. WebKit makes two native requests to the same opening MP4, not two different clips. Other HTML/CSS/JS/fonts/logo transfers remain included in the full byte totals. Tests also verify that inactive stills are lazy/low and acquire sources only when requested.
+
+Both header Razgovarajmo and scene-nav O nama pass viewport containment, ≥44px target dimensions, center-point hit testing and actual clicks during native playback at390/768/1440px in both engines. All six screenshots were visually inspected: readable captions, no overlap, visible exits, preserved dark artwork.
+
+Evidence directory: `/Users/mato/.codex/visualizations/2026/09/15/01a0a34a-e6c7-7e73-8127-ac8e619655f2/gate1-2026-09-18/correction/`. Files: `media-verification.json` (all24 values, sizes, probes/hashes), `waterfall.html`, `waterfall-{chrome,webkit}.json`, `transfer-{portrait,landscape}.json`, `settle-{chrome,webkit}-{1,2,3}.json`, `adduco-batch1-{chrome,webkit}-{390,768,1440}.png`, `browser-tests.log`, `build.log`. These artifacts remain outside tracked application source. Preview: http://127.0.0.1:5184/.
+
+
+**Gate 1 remains the review stop.** The CRF/size conflict is resolved with the approved encoding and fade policy. Raw shared-forward-origin/entry differences above remain transparent for owner assessment. Batch2 and Sites publication require their separate explicit approval.
+
+## Earlier Gate 1 study — superseded by owner correction above
+
+Archived pre-correction measurements and decision request; the corrected delivery and current limitations are recorded above.
+
+The latest PRD amendment was the first changed file and records both batches, their approval gates and the publication hold. DESIGN.md, visitor captions, accepted gestures and all delivered film/still assets are unchanged. Batch 2 has not started. No GitHub push, Sites version or deployment was made.
+
+### Implemented interaction and loading
+
+- The outgoing caption remains while native play is pending and hides only on `playing`. The destination caption enters at the accepted 1.5 seconds of actual playback; buffering/resume cannot hide that caption a second time. A 2px red indeterminate indicator appears after 300ms of buffering; it reports waiting, not a fabricated download percentage.
+- The 6.5s movie watchdog is retained. A failed/stalled film pauses; its decoded destination still and caption are revealed together. If the still itself is delayed, the last visual/reading state stays until decoding completes. If both media and still fail, preserve the previous visual with accessible destination content. A later scene request invalidates a late fallback completion. A completed native film advances the logical scene immediately using its own decoded endpoint, even if the optional still is delayed; a reproduced regression verified that the next gesture starts the next film rather than replaying the previous one.
+- Only still0 has initial sources. Other images carry lazy/low attributes and receive sources when explicitly requested, preventing four overlaid pictures from being fetched simply because their layout boxes share the viewport. Requested fallback decoding is prepared alongside playback.
+- Touch completion/cancellation now clears gesture state on the document even if the release occurs outside the stage. Gesture capture remains attached only to the stage. There is no queue or scroll-driven media seeking.
+- Header Razgovarajmo and scene-nav O nama keep ≥44px targets and remain hit-testable during playback; both are actually clicked in browser tests at 390/768/1440px. No layout redesign was needed.
+
+TDD reproduced the premature caption removal, four initial still downloads, unloaded-image fallback and stale touch state after a modeled outside release before their fixes. Tests cover continuous 1.2s modeled macOS wheel momentum, two-finger/pinch input and releasing one finger, outside touch completion, rapid reverse input, Space/PageDown and uncaptured downward touch overscroll at scene0. These are controlled browser-event models, not physical macOS/iOS hardware measurements. Existing real Chromium touch and wheel coverage remains.
+
+### Media continuity — all 24 current-preview RMS measurements
+
+Method: ffmpeg decodes frames0/71; compare with origin/destination WebP decoded to RGB, using Pillow Lanczos at **640px longest edge** (portrait360×640; landscape640×360). Compute sqrt(mean squared error over every RGB sample), no exposure fit, geometry alignment or masking. Threshold ≤3.0 independently at both ends. Measurements are offline pixel comparisons, not frame-rate claims. The supplementary 640px-width baseline is in the JSON audit; this stricter portrait size also fails acceptance. Byte sizes below are exact, decimal bytes.
+
+| Current clip | Bytes | First → origin RMS | Last → destination RMS | Acceptance |
+| --- | ---: | ---: | ---: | --- |
+| portrait 1 forward | 572,882 | 3.653 | 2.736 | FAIL |
+| portrait 1 reverse | 565,340 | 6.371 | 6.855 | FAIL |
+| portrait 2 forward | 582,112 | 3.887 | 2.256 | FAIL |
+| portrait 2 reverse | 579,255 | 2.576 | 5.934 | FAIL |
+| portrait 3 forward | 567,808 | 3.471 | 2.398 | FAIL |
+| portrait 3 reverse | 569,045 | 2.660 | 4.796 | FAIL |
+| landscape 1 forward | 602,322 | 2.956 | 2.488 | PASS |
+| landscape 1 reverse | 642,922 | 5.910 | 5.974 | FAIL |
+| landscape 2 forward | 643,085 | 4.365 | 1.969 | FAIL |
+| landscape 2 reverse | 649,483 | 3.252 | 6.836 | FAIL |
+| landscape 3 forward | 649,925 | 3.456 | 1.937 | FAIL |
+| landscape 3 reverse | 642,731 | 2.263 | 6.133 | FAIL |
+
+### Original-source reverse candidates — rejected, not shipped
+
+All six requested reverse candidates were re-encoded through Higgsfield from original source frames, never from compressed forward MP4s. Each is silent H.264/yuv420p, 72frames/24fps/3.000s, same orientation dimensions, initial I-frame at0.000s, last frame at2.958333s and moov before mdat (fast-start). Encoding: libx264 veryslow, CRF18, explicit BT709 limited range. Uniform original-frame selection and the prior three-frame join blend are preserved, with the preceding ORIGINAL endpoint supplying the blend. Full source URLs/probes/hash provenance are in scripts/cinema.json.
+
+| CRF18 reverse candidate | Bytes | First → origin RMS | Last → destination RMS | Acceptance |
+| --- | ---: | ---: | ---: | --- |
+| transition-1/portrait-reverse.mp4 | 2,474,484 | 6.571 | 5.022 | FAIL |
+| transition-2/portrait-reverse.mp4 | 2,508,430 | 5.386 | 7.143 | FAIL |
+| transition-3/portrait-reverse.mp4 | 2,117,578 | 5.649 | 5.747 | FAIL |
+| transition-1/landscape-reverse.mp4 | 4,427,812 | 6.187 | 4.071 | FAIL |
+| transition-2/landscape-reverse.mp4 | 5,704,203 | 8.408 | 6.874 | FAIL |
+| transition-3/landscape-reverse.mp4 | 3,822,237 | 5.190 | 8.662 | FAIL |
+
+**Media acceptance is not met.** Tested CRF18 portrait derivatives are 2.12–2.51MB each, exceeding 1,000,000bytes. Existing forward beginnings also fail the requested RMS threshold, so replacing only reverse encodes cannot make all24 numbers pass. The current stills derive from the low-bitrate delivered forward movies; returning to original frames alone does not reproduce those exact compressed endpoints. These trials establish failure of the tested encoding, not mathematical impossibility of every encoder configuration. Do not hide this by weakening thresholds or claiming a nominal CRF setting maintains quality while forcing a lower bitrate.
+
+An owner decision is pending: retain 1MB and allow adjusted encoding plus common-source endpoint/still alignment (recommended for the transfer budget), or retain CRF≤18 and raise the media budget while aligning the common source derivatives. No noncompliant candidate has replaced an accepted production asset. Gate1 therefore is not approved for Batch2.
+
+### Browser evidence and transfer
+
+Final production-preview run: **114 browser tests passed; four expected skips** (two wheel-only and two CDP-transfer cases unsupported by mobile WebKit). The suite includes 28 new transition-polish cases across Chrome/WebKit. All four unit tests, TypeScript, ESLint and production/SSR build pass. The visual-artifact audit passes with the pre-existing optional CLAUDE.md warning. No console warnings/errors were observed in the in-app preview. DESIGN.md has no diff.
+
+Cold-cache Chromium CDP totals include actual encoded HTTP transfers, all three forward/reverse movies, the mobile menu and every business section. Decimal bytes; **local lab measurements**, not hosted/physical-phone results. These totals describe retained accepted media, not the rejected CRF18 candidates.
+
+| Orientation | First view (bytes) | Complete page, both directions (bytes) |
+| --- | ---: | ---: |
+| portrait | 879,458 | 4,202,672 |
+| landscape | 962,900 | 4,806,354 |
+
+Initial scene-resource waterfall (milliseconds from navigation, native request events):
+
+| Browser | Resource | Start ms | End ms |
+| --- | --- | ---: | ---: |
+| chrome | transition-1/landscape-start.webp | 25 | 45 |
+| chrome | transition-1/landscape-forward.mp4 | 91 | 91 |
+| webkit | transition-1/portrait-start.webp | 11 | 18 |
+| webkit | transition-1/portrait-forward.mp4 | 89 | 91 |
+| webkit | transition-1/portrait-forward.mp4 | 91 | 94 |
+
+Each browser loads exactly **one unique scene still and one unique clip** before the first gesture. WebKit makes two native requests to that same MP4; it does not fetch a second clip. Other page resources (HTML/CSS/JS/fonts/logo) are included in the complete transfer JSON, not hidden from the byte totals. Source-less inactive pictures carry lazy/low attributes until requested.
+
+Evidence is saved outside tracked application source at `/Users/mato/.codex/visualizations/2026/09/15/01a0a34a-e6c7-7e73-8127-ac8e619655f2/gate1-2026-09-18/`: `waterfall.html`, the two waterfall JSON traces, transfer-portrait/landscape.json, baseline-rms.json, reverse-crf18-rms.json, browser-tests.log and build.log. Playback screenshots `adduco-batch1-{chrome,webkit}-{390,768,1440}.png` show visible header and scene exits. Their ≥44px sizes, viewport containment, center-point hit testing and actual navigation are browser assertions. Screenshots for 390/768/1440 were visually inspected. Local preview: http://127.0.0.1:5184/.
+
+**Stop at Gate 1.** Software checks pass; media acceptance does not. Batch 2 and publication remain unstarted. An explicit owner decision is required before changing the specified CRF/size/endpoint constraints.
+
+
 ## Earlier caption entrance — 18 September 2026
 
 The owner accepts the films and requests earlier text. Destination captions now begin their existing 260 ms fade after approximately 1.5 seconds of actual native playback, in all three transitions and both directions. The movie continues to its unchanged three-second ending. Only one caption is visible, its action is immediately usable, and the displayed scene indicator/hash follows it. Completion retains the text without restarting its fade; gesture locking still lasts until the film ends. Fallbacks and direct navigation remain immediate. No films, artwork, CSS, wording or DESIGN.md changed.

@@ -115,15 +115,16 @@ export function attachSceneGestures(
   stage.addEventListener("wheel", wheel, { passive: false });
   stage.addEventListener("touchstart", touchStart, { passive: true });
   stage.addEventListener("touchmove", touchMove, { passive: false });
-  stage.addEventListener("touchend", touchEnd);
-  stage.addEventListener("touchcancel", touchEnd);
+  // Cleanup also follows touches released outside the stage; capture stays stage-only.
+  document.addEventListener("touchend", touchEnd);
+  document.addEventListener("touchcancel", touchEnd);
   document.addEventListener("keydown", keyboard);
   return () => {
     stage.removeEventListener("wheel", wheel);
     stage.removeEventListener("touchstart", touchStart);
     stage.removeEventListener("touchmove", touchMove);
-    stage.removeEventListener("touchend", touchEnd);
-    stage.removeEventListener("touchcancel", touchEnd);
+    document.removeEventListener("touchend", touchEnd);
+    document.removeEventListener("touchcancel", touchEnd);
     document.removeEventListener("keydown", keyboard);
   };
 }

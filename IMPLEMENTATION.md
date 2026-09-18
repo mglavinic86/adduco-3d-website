@@ -1,5 +1,13 @@
 # Vertical implementation slices
 
+## Gated transition polish and launch readiness — 18 September 2026
+
+- TP1 — media correction complete locally under the owner's revised constraints: six original-source reverse clips at accepted two-pass bitrates; eight decoded-forward WebP85 stills; six forward SHA-256 hashes unchanged. Size limits pass. Report all24 raw RMS values, including two shared forward origins still >3; apply the explicitly approved150ms settle fade to all six reverse clips. See QA.md.
+- TP2 — AFK, complete locally; 122 browser tests passed / four expected skips, four unit tests, typecheck/lint/build green: prior loading/input/exit fixes retained; add behavioral TDD for reverse settlement and fresh input during the handoff. No new visitor copy or visual direction.
+- TP3 — HITL, awaiting corrected Gate1 review: exact sizes/RMS, fresh waterfall/transfers, playback screenshots and local preview; raw residuals disclosed. Stop before Batch2 and publication.
+- LR4 — AFK, blocked by TP3 approval: webhook form, supplied legal identity/privacy, indexability flag, honest project content structure and repository/CI cleanup as specified in the latest PRD amendment.
+- LR5 — HITL, blocked by LR4: Gate 2 lab performance/transfer/form evidence, footer screenshot and open TODO list. No Sites publication until explicitly authorized again.
+
 ## Earlier caption entrance — 18 September 2026
 
 - EC1 — AFK, verified; release prepared: decouple caption visibility from film completion, reveal during actual playback, verify forward/reverse timing, non-overlap, gesture locking, early business actions and stalled playback. Publish the verified correction to the existing public Site.
