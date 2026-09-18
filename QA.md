@@ -1,5 +1,79 @@
 # QA — mobile scroll smoothness
 
+## Cold-load ordering — 18 September 2026 (stopped before publication)
+
+**Release status: not published.** The requested fetch-based cache warming is not reusable by native media in the tested WebKit engine. Its measured video bodies alone exceed the 5,000,000-byte budget. Following the owner's explicit stop condition, only the safe opening-image slice is implemented locally. No head video fetch or five-clip fetch queue is shipped. All Gate 1 player/input/fallback behavior, accepted films/stills, captions and DESIGN.md remain unchanged. The existing public Gate 1 release (Sites version 19) remains live.
+
+### Implemented opening slice
+
+`index.html` now discovers the appropriate opening WebP before the deferred module, with two mutually exclusive orientation `media` queries and `fetchpriority="high"`. A small inline style supplies the stage's blurred, embedded WebP background before hydration. Higgsfield processed the actual accepted opening stills into 20×36 portrait (228 bytes) and 20×11 landscape (114 bytes) placeholders; base64 adds 304/152 characters respectively. No accepted film or still was re-encoded. Provenance and source hashes are in `scripts/cinema.json` → `openingLqip`.
+
+Existing prerendering supplies the stage, captions and business content as HTML. The module remains `type="module"`, without `async` or a render-blocking flag. Browser tests abort the module entirely and verify the opening, caption and CSS artwork remain visible; a second test also aborts the full-resolution opening still. Those deliberate image-failure screenshots test the placeholder, not normal image quality. No render-critical content waits for hydration.
+
+Local Chrome 4G waterfall, milliseconds from navigation:
+
+| Orientation | Opening image request | JS bundle request | Opening image response complete | Opening image painted |
+| --- | ---: | ---: | ---: | ---: |
+| portrait | 181.1 | 182.1 | 628.3 | 652 |
+| landscape | 180.2 | 180.4 | 696.2 | 728 |
+
+The opening image starts before the bundle in both orientations. The no-hydration request-order tests also run in Chrome and WebKit. The placeholder is inline and needs no network request; the timing script's `lqipMs` field is a DOMContentLoaded-plus-frame presence check, **not** a measured placeholder first-paint timestamp.
+
+### Published baseline and local opening-only study
+
+These are **browser lab measurements**, not phone measurements or a performance guarantee. One cold navigation per profile/orientation, fresh browser context and cleared cache at navigation; caching stays enabled afterwards. Chrome 153, no CPU throttling. The real public URL is https://adduco-crveni-monolit.mglavinic.chatgpt.site/. Chrome DevTools Protocol applies the network profiles. “4G” means the current Fast 4G preset: 1,012,500 bytes/s download, 168,750 bytes/s upload and 165ms latency; “Fast3G” means the legacy Fast 3G/current Slow 4G preset: 180,000 bytes/s download, 84,375 bytes/s upload and 562.5ms latency. These effective settings include the DevTools preset adjustment factors. [DevTools preset source](https://chromium.googlesource.com/devtools/devtools-frontend/+/b2cbf557e71b23f634a169ca7bc782efeb29b6a5/front_end/core/sdk/NetworkManager.ts)
+
+Opening visibility uses Chrome Element Timing for the actual opening image; first readiness uses that clip's first native `canplaythrough`. Gesture latency runs six moves, forward1/2/3 then reverse3/2/1, as soon as the previous move ends (or the retained stall fallback releases it). The timestamp is taken immediately before Playwright keyboard dispatch, so latency includes a few milliseconds of automation overhead. “Later max” is the worst of moves2–6; these are cold-journey measurements, **not a claim that later clips were already cached**. The JSON records each clip's readiness/buffer at its gesture.
+
+| Origin / build | Profile | Orientation | Opening visible (ms) | First canplaythrough (ms) | Later max (ms) | Journey transfer (bytes) |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| Public Gate 1, before | 4G | portrait | 2,276 | 2,543.5 | 562.3 | 4,065,898 |
+| Public Gate 1, before | 4G | landscape | 752 | 965.4 | 1,788.3 | 4,691,921 |
+| Public Gate 1, before | Fast3G | portrait | 3,892 | 4,775.1 | 2,549.5 | 4,065,642 |
+| Public Gate 1, before | Fast3G | landscape | 3,144 | 4,742.3 | 5,388.6 | 4,691,924 |
+| Local opening slice only | 4G | portrait | 652 | 882.5 | 551.3 | 4,054,400 |
+| Local opening slice only | 4G | landscape | 728 | 911.8 | 820.1 | 4,680,059 |
+| Local opening slice only | Fast3G | portrait | 2,824 | 3,733.3 | 2,542.0 | 4,054,400 |
+| Local opening slice only | Fast3G | landscape | 3,112 | 3,899.6 | 5,286.9 | 4,680,059 |
+
+**Published after: not available, because the candidate was withheld.** Localhost has different response latency and transport from Sites. The local opening-only numbers cannot establish a like-for-like published improvement or acceptance of the full task. The sampled public portrait 4G document response itself took 1,779ms; an HTML image hint cannot make a full-resolution image appear within 1,000ms on that particular response. Landscape's document response was 203ms. A repeated public sample would be required to characterize that origin/edge variability.
+
+Journey transfer is actual CDP encoded traffic through all six movies and all normal business sections; it includes repeat transfers and headers. This diagnostic does not open the mobile menu or user-triggered PDF, and its totals must not replace the broader completed-page regression budget test below. On Fast3G, some cold moves reach the retained 6.5s stall fallback. No new prefetch is installed, so later-move latency still misses 200ms. The local study preceded HTML formatting cleanup; runtime behavior and bundle/media hashes are unchanged, but these byte counts describe that measured build.
+
+### Cache reuse experiment — the blocking result
+
+Both methods were tested on the **published Sites origin** in fresh Chrome and WebKit contexts, using the unused 553,486-byte `transition-3/portrait-reverse.mp4`: (a) `preload as="fetch" crossorigin="anonymous"`, awaiting load; (b) explicit fetch to completion, then attach a native muted/inline video with the same URL. The first request was fully consumed before native attachment, avoiding a concurrent-request race. Sites responds with `Cache-Control: public, max-age=0, must-revalidate` and an ETag.
+
+| Engine / method | Initial response | Native media consumption | Body reused? |
+| --- | ---: | ---: | --- |
+| Chrome / fetch preload | 554,183 encoded HTTP bytes | 56 encoded HTTP bytes (revalidation) | Yes |
+| Chrome / explicit fetch | 554,197 encoded HTTP bytes | 33 encoded HTTP bytes (revalidation) | Yes |
+| WebKit / fetch preload | 554,116 reported response-body bytes | 554,116 reported response-body bytes again | No |
+| WebKit / explicit fetch | 554,116 reported response-body bytes | 554,107 reported response-body bytes again | No |
+
+Chrome values use CDP `loadingFinished.encodedDataLength`; Resource Timing alone misleadingly lists the cached full encoded-body size on media consumption. WebKit uses Playwright response-size reporting; the slight difference from the raw file size includes its transport reporting overhead. A separate local HTTP transport fixture confirmed the actual server-sent bodies: Chrome transfers the file then receives a zero-body 304; WebKit transfers the full file, probes bytes0–1, then transfers the full range again. The fixture supplies correct ETags and byte ranges. Repeating with fresh `max-age=3600`, default/no-CORS requests, credentials variants and an explicit Range fetch did not eliminate duplication in this WebKit build (reported Safari version26.6). This is evidence for the tested engines, not a universal statement about all Safari versions.
+
+The same instrumented HTTP fixture then measured **all six clips in each orientation**, fetching in the requested order and consuming each through a native video. Exact server-sent movie bodies:
+
+| WebKit orientation | Video bodies alone (bytes) | Requests | 5 MB complete-page budget |
+| --- | ---: | ---: | --- |
+| portrait | 6,815,636 | 18 | Exceeded before HTML, fonts or stills |
+| landscape | 7,584,670 | 18 | Exceeded before HTML, fonts or stills |
+
+These are measured transport-lab totals, not an estimate and not a deployed candidate. Each file produced a full fetch, a two-byte media probe and a full media range response. This lower bound already fails the budget. Therefore neither tested fetch strategy is shipped, and the sequential fetch queue is stopped at its dependency rather than knowingly introducing double downloads. The existing observer-based native preparation remains intact.
+
+The preload documentation's fetch example consumes the resource through fetch/MediaSource; it does not prove native video-element cache reuse, which is why this task used measured native consumption. [Google web.dev preload guidance](https://web.dev/articles/fast-playback-with-preload)
+
+**Recommended next implementation, not yet applied:** prepare the actual persistent native video elements early and sequentially, then play those same elements. Test native buffered-data reuse and memory in both engines before changing release status. This changes the requested fetch-based mechanism; it does not require new films, compressed artwork, Blob URLs, scroll seeking or different Gate 1 gestures. It also needs fresh published timing evidence, including document latency, before promising the three targets.
+
+### Verification and evidence
+
+The PRD amendment was added before changes. Opening discovery tests were first red without HTML preloads, then green after the opening slice. Typecheck, lint, four unit tests and production/SSR build pass. Final Chrome/WebKit regression: **126 passed, four expected skips, 130 cases total, workers=1, 7.3 minutes**. The four skips remain WebKit's wheel-only and CDP-transfer cases; their Chrome equivalents run. All four new opening/no-hydration cases pass. DESIGN.md, `src/`, the public media and the Git HEAD remain unchanged; no commit, push or deployment is part of this stopped pass.
+
+The separate complete-page regression test, with CDP caching disabled throughout, measures the final local build at **885,047 initial /4,185,883 complete bytes portrait** and **966,221 initial /4,782,686 complete bytes landscape**. Its scope includes all six movies, mobile menu and all business sections; the optional PDF is excluded. This passes the existing local transfer gate without the rejected fetch-prefetch implementation. Cache-disabled results are a transfer stress check, not evidence of cache reuse. Both placeholder screenshots were visually inspected: readable original captions, header and exit over the blurred artwork. The design-artifact audit passes, with only the pre-existing optional CLAUDE.md warning; intentional new files are the two measurement scripts and the opening-loading test.
+
+Evidence is archived outside the repository under `/Users/mato/.codex/visualizations/2026/09/15/01a0a34a-e6c7-7e73-8127-ac8e619655f2/cold-load-2026-09-18/`: public-before and local-opening timing/waterfall JSON, public cache probe, fresh-cache/ETag transport logs and reproducible fixture scripts, exact six-clip body totals, placeholder screenshots and build/browser-test logs. Reusable diagnostics are `scripts/measure-load.mjs` and `scripts/probe-media-cache.mjs`. Local preview: http://127.0.0.1:5184/.
+
 ## Gate 1 correction — 18 September 2026 (local review; not published)
 
 The owner withdrew CRF≤18, retained portrait≤1,000,000 bytes, set landscape≤1,200,000 bytes, requested eight stills decoded from accepted forward clips at WebP quality≥85, and authorized a 150ms final-frame/still blend for reverse joins still above RMS3. The dated PRD correction was added before implementation. DESIGN.md and all six forward MP4s are byte-for-byte unchanged (SHA-256 verified against commit de65388bd8b2b7ae036b4a4f90b522bde3f25522). No new generation, copy edits, Batch 2 work, commits, pushes or publication.

@@ -4,6 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#111e2b" />
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/transition-1/portrait-start.webp"
+      media="(max-aspect-ratio: 9/10)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/transition-1/landscape-start.webp"
+      media="not all and (max-aspect-ratio: 9/10)"
+      fetchpriority="high"
+    />
+    <style>
+      .chapter {
+        position: relative;
+        height: 100svh;
+        isolation: isolate;
+        background: #111e2b
+          url("data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAwBACdASoUAAsAPqlEnEkmI6KhMAgAwBUJQBOmUGVshwLD7wj/qpHXDgAA/veCbqXmTqt+sS7Xq/uMxiE1ErypVJ/Xpb8JS2ldldbFxURD8Q3m33IEIvgXi6MwAAAA")
+          center / cover no-repeat;
+      }
+      @media (max-aspect-ratio: 9/10) {
+        .chapter {
+          background-image: url("data:image/webp;base64,UklGRtwAAABXRUJQVlA4INAAAADwBQCdASoUACQAPqlInEkmJKKhKrgN+MAVCUrz6dxaGIkG5AXfSDtdnFdv1T9fDYhesyku7E+JYAD+8WjwYTenl7LOUsPMK0B/N493PxHCfZnxBqFrhC0d0A9scewnNe0vxRUAPu+rvHakrwt8wbu2TwUeUh20M/hIYiEUdEcqe/5FoDsRPowQSo4/6HxXyTmSJZKii9OJ8Y/Dp0HKpz3dhWDDr+uQ0qdNjtrgZOjksXtuf0ydY2tgWshFAkzjYr7tNlXbOdhJDgcxyDJemhAA");
+        }
+      }
+    </style>
     <title>Adduco — Od vizije do stvarnosti</title>
     <meta
       name="description"

@@ -3240,5 +3240,29 @@
         "transition-3/landscape-reverse.mp4"
       ]
     }
+  },
+  "openingLqip": {
+    "date": "2026-09-18",
+    "processing": "Higgsfield sandbox Pillow: decode current opening WebP, resize Lanczos to20px width (portrait20x36 /landscape20x11), GaussianBlur radius0.65, WebP quality65 method6; inline base64 CSS background; no new generation or changes to accepted stills/films.",
+    "archiveMediaId": "bd95a2c2-7b4f-453f-979c-4a1de7625f93",
+    "archiveUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/bd95a2c2-7b4f-453f-979c-4a1de7625f93.json",
+    "files": {
+      "portrait": {
+        "bytes": 228,
+        "dimensions": [
+          20,
+          36
+        ],
+        "sourceSha256": "e9fd96337e46f46901264f3b2b031453077bf9eb9e05a9ba655b95e97010fb3c"
+      },
+      "landscape": {
+        "bytes": 114,
+        "dimensions": [
+          20,
+          11
+        ],
+        "sourceSha256": "ed65f97a5629950a3d7cab998d04112636fb2ce26eddb511785ba4c429862dd8"
+      }
+    }
   }
 }

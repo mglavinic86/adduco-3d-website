@@ -1,5 +1,15 @@
 # Adduco — local website
 
+## Cold-load ordering — 18 September 2026
+
+The owner's physical-device test accepts cached Gate 1 playback and identifies initial loading as the remaining issue. Preserve every Gate 1 interaction, all films/stills, captions and DESIGN.md. Optimize discovery and preparation, with behavioral tests and measured cache reuse.
+
+1. Preload the opening WebP in HTML before the deferred module bundle, with mutually exclusive orientation media queries and high fetch priority. Add an approximately20px blurred inline base64 derivative as the stage background so the first visual does not wait for hydration.
+2. Start the first orientation-specific forward clip from a small head script before hydration. Compare fetch preload and explicit fetch-to-HTTP-cache in Chrome/WebKit; ship only a path proven not to download the clip twice. Respect reduced motion and Data Saver from the start.
+3. After first-clip canplaythrough, sequentially prefetch forward2, reverse1, forward3, reverse2, reverse3 for that orientation with low fetch priority, skipping reduced motion/Data Saver. Preserve observer preparation as fallback. This expressly supersedes the previous restriction to one clip before the first gesture once the opening clip is ready; other stills remain lazy.
+4. Measure cold navigation on the published Sites URL before changes and after publication, in both orientations: actual opening-image visibility≤1.0s (report the LQIP separately), first-clip canplaythrough≤2.5s, and each later cached gesture→playing≤200ms under explicitly documented Chrome DevTools4G throttling. Also report Fast3G/4G timelines and total actual transfer≤5,000,000bytes. Use a fresh cache at navigation while allowing cache reuse thereafter; disabling the cache throughout would invalidate the reuse test.
+5. Publish only after the candidate meets the targets and byte budget in a production-equivalent validation, then verify on the actual published URL. If the constraints cannot be met, report the measured cause and stop without publication. Batch2 remains outside this work.
+
 ## Gate 1 encoding correction approved — 18 September 2026
 
 This owner-approved correction supersedes the CRF and media-continuity constraints in the amendment below. The rest of Gate 1, the accepted scene interaction and the unchanged DESIGN.md remain binding. It does not authorize Batch 2 or publication.

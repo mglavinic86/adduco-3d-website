@@ -1,5 +1,14 @@
 # Vertical implementation slices
 
+## Cold-load ordering — 18 September 2026
+
+- CL1 — complete locally: orientation-specific high-priority HTML opening preloads; tiny inline blurred artwork; no-hydration browser coverage. The image request precedes the module. Gate 1 runtime, accepted media, captions and DESIGN.md are unchanged.
+- CL2 — investigation complete, implementation stopped: published Chrome reuses both tested fetch approaches; WebKit downloads the movie body again. ETag/range and fresh-cache transport fixtures corroborate the finding. See QA.md and archived measurements.
+- CL3 — blocked by CL2: do not install a sequential fetch queue that duplicates transfers. All-six-clip WebKit transport tests send 6,815,636 portrait /7,584,670 landscape bytes in movie bodies alone, over the 5 MB complete-page budget. Existing observer preparation remains.
+- CL4 — stopped by the owner's explicit budget condition: no publication; no published-after claims. Public-before and local-opening-only Fast3G/4G timelines are reported separately. Next proposed approach is preparing and reusing actual native video elements, subject to verification and agreement on the changed mechanism. Batch 2 remains untouched.
+
+The prior corrected Gate 1 build was explicitly published separately on 18 September as public Sites version19. The historical TP3 publication hold below refers to that earlier review, not the current live state.
+
 ## Gated transition polish and launch readiness — 18 September 2026
 
 - TP1 — media correction complete locally under the owner's revised constraints: six original-source reverse clips at accepted two-pass bitrates; eight decoded-forward WebP85 stills; six forward SHA-256 hashes unchanged. Size limits pass. Report all24 raw RMS values, including two shared forward origins still >3; apply the explicitly approved150ms settle fade to all six reverse clips. See QA.md.
