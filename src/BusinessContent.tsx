@@ -1,27 +1,9 @@
 import InquiryForm from "./InquiryForm";
 import { Arrow, Wordmark } from "./ui";
-export const detailTitles = {
-  "o-nama": "O nama",
-  usluge: "Usluge",
-  priprema: "Prije prvog razgovora",
-  projekti: "Projekti",
-  kontakt: "Kontakt",
-};
-export type Detail = keyof typeof detailTitles;
-export default function BusinessContent({
-  active,
-}: {
-  active?: Detail | null;
-}) {
+export default function BusinessContent() {
   return (
     <>
-      <section
-        hidden={
-          active !== undefined && active !== "o-nama" && active !== "usluge"
-        }
-        className="editorial intro-section"
-        id="o-nama"
-      >
+      <section className="editorial intro-section" id="o-nama">
         <div className="section-label">01 — VIZIJA</div>
         <div className="intro-grid">
           <h2>
@@ -44,46 +26,42 @@ export default function BusinessContent({
             </a>
           </div>
         </div>
-        <div className="services" id="usluge">
-          <div className="section-label">ŠTO RADIMO</div>
-          {[
-            {
-              name: "Visokogradnja",
-              text: "Izvedba objekata i njihovih nosivih konstrukcija.",
-            },
-            {
-              name: "Niskogradnja",
-              text: "Zemljani radovi i priprema terena za infrastrukturu.",
-            },
-            {
-              name: "Betonski radovi",
-              text: "Betoniranje i izvedba betonskih konstrukcijskih elemenata.",
-            },
-            {
-              name: "Asfaltiranje i prometnice",
-              text: "Priprema i asfaltiranje površina te gradnja cesta.",
-            },
-          ].map((s, i) => (
-            <a className="service" key={s.name} href="#kontakt">
-              <span className="service-number">0{i + 1}</span>
-              <h3>{s.name}</h3>
-              <p>{s.text}</p>
-              <Arrow diagonal />
-            </a>
-          ))}
-          <p className="service-note">
-            Opseg radova dogovaramo prema potrebama vašeg projekta.
-          </p>
-          <a href="#priprema" className="text-link">
-            Kako pripremiti projekt <Arrow diagonal />
-          </a>
-        </div>
       </section>
-      <section
-        hidden={active !== undefined && active !== "priprema"}
-        className="editorial process-section"
-        id="priprema"
-      >
+      <section className="editorial services" id="usluge">
+        <div className="section-label">ŠTO RADIMO</div>
+        {[
+          {
+            name: "Visokogradnja",
+            text: "Izvedba objekata i njihovih nosivih konstrukcija.",
+          },
+          {
+            name: "Niskogradnja",
+            text: "Zemljani radovi i priprema terena za infrastrukturu.",
+          },
+          {
+            name: "Betonski radovi",
+            text: "Betoniranje i izvedba betonskih konstrukcijskih elemenata.",
+          },
+          {
+            name: "Asfaltiranje i prometnice",
+            text: "Priprema i asfaltiranje površina te gradnja cesta.",
+          },
+        ].map((s, i) => (
+          <a className="service" key={s.name} href="#kontakt">
+            <span className="service-number">0{i + 1}</span>
+            <h3>{s.name}</h3>
+            <p>{s.text}</p>
+            <Arrow diagonal />
+          </a>
+        ))}
+        <p className="service-note">
+          Opseg radova dogovaramo prema potrebama vašeg projekta.
+        </p>
+        <a href="#priprema" className="text-link">
+          Kako pripremiti projekt <Arrow diagonal />
+        </a>
+      </section>
+      <section className="editorial process-section" id="priprema">
         <div className="section-label">PRIJE PRVOG RAZGOVORA</div>
         <div className="section-heading">
           <h2>
@@ -135,11 +113,7 @@ export default function BusinessContent({
           </a>
         </div>
       </section>
-      <section
-        hidden={active !== undefined && active !== "projekti"}
-        className="editorial projects-section"
-        id="projekti"
-      >
+      <section className="editorial projects-section" id="projekti">
         <div className="section-label">IZ NAŠEG RADA</div>
         <div className="section-heading">
           <h2>
@@ -221,11 +195,7 @@ export default function BusinessContent({
           </dl>
         </article>
       </section>
-      <section
-        hidden={active !== undefined && active !== "kontakt"}
-        className="contact-section"
-        id="kontakt"
-      >
+      <section className="contact-section" id="kontakt">
         <p className="eyebrow">KONTAKT</p>
         <div className="contact-grid">
           <div className="contact-intro">

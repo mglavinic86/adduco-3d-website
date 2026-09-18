@@ -1,5 +1,47 @@
 # Adduco — local website
 
+## Completion approved — 18 September 2026
+
+The owner accepted the first full transition ("To je to") and explicitly requested completing all remaining work. The first-transition review gate is satisfied. Complete all four established scenes with three forward and three reverse three-second native transitions per orientation, preserving the approved interaction and DESIGN.md. Direct scene navigation may jump to the selected still without chaining films. Prepare only adjacent media as the active scene intersects the viewport; entering the initial scene never autoplays. Keep ordinary business sections, existing hashes, fallback accessibility and the 2 MB first-portrait / 5 MB complete-page transfer limits. Verify every join, both directions, responsive layouts and failures. Complete the existing authorized public Sites release and synchronize its public GitHub source; no new service or contact integration is requested.
+
+## Owner correction: scroll-triggered scene transitions — 18 September 2026
+
+The owner clarified the intended experience after reviewing the chapter-1 checkpoint. The previous autoplay-on-entry interpretation below is rejected. The owner approved the reverse transition and gesture capture within the film; implementation follows this corrected behavior. DESIGN.md remains the visual contract.
+
+- Opening the page shows the first film frame, stationary, with the opening scene's existing HTML caption. No video starts merely because the opening is visible.
+- A deliberate downward scroll starts one complete 2.5–3-second native video transition from the current scene to the next. The film remains the full-screen setting during that transition. Scroll distance/speed must never scrub its media clock.
+- When the transition ends, hold its last frame and reveal the next scene's existing caption as an overlay. Wait for a new deliberate scroll before the following transition. No automatic chain of clips.
+- Keep four approved scene/caption anchors. This model connects them with three forward transitions; it replaces the earlier concept of four separate automatically playing chapter clips. Produce only the first transition for the corrected approval checkpoint, not the full set.
+- The current 0–2.5-second opening trim is not the complete opening-to-detail transition. The corrected clip must end at the actual next scene's framing anchor, preserving the existing landscape and separately composed portrait imagery.
+- Existing still fallbacks, readable content/contact, no touch play button and transfer budgets remain. O nama, Usluge, Projekti and Kontakt remain normal sections below the film unless the owner changes that separately. Direct business navigation must allow leaving the cinematic experience immediately.
+- Return behavior approved by the owner: an upward scroll plays a short reverse transition back to the previous scene, then restores its caption. Prepare separate forward/reverse MP4s; do not seek backwards through individual frames or rely on negative playback rate.
+- Input handling explicitly approved by the owner: capture vertical gestures only within the cinematic stage. One deliberate gesture starts one transition; ignore additional input and momentum until it completes and require a fresh gesture afterward. Do not queue transitions. This narrowly supersedes the earlier no-wheel-interception rule. Preserve horizontal/zoom gestures, native business-section scrolling, keyboard access and immediate exit through navigation.
+
+This is a correction to the first-transition approval checkpoint, not approval to build all later transitions or publish.
+
+
+## Native snap chapters amendment — 18 September 2026
+
+This owner-requested amendment supersedes every earlier scroll-scrubbing, continuous-camera, modal-business-content and seek-recovery requirement below. **DESIGN.md remains the unchanged visual contract:** preserve the approved construction artwork, red emblem, Croatian captions, typography and dark direction. This amendment changes playback and document flow only.
+
+### Playback and navigation
+- Target four vertical chapters, each exactly `100svh`, with `scroll-snap-type: y mandatory` on the document scroller. Native vertical scrolling only; no horizontal gesture handling, wheel interception, scroll-driven `currentTime`, artificial easing or speed caps.
+- Cut the existing accepted films into four independent H.264 MP4s per orientation, 2–3 seconds each: 720×1280 portrait, 1920×1080 landscape, silent, fast-start, first frame a keyframe. Every portrait segment must be at most 1,000,000 bytes. Preserve the separate portrait direction rather than crop landscape footage.
+- Chapter 1 loads eagerly in the selected orientation. Chapters 2–4 will load lazily via IntersectionObserver after the approval gate. Entering a chapter starts its native segment once; completion holds its final frame and fades its existing HTML caption in. Re-entry, including an interrupted first visit, shows the extracted final frame without replaying or seeking. A visit is remembered for the mounted page session, not persisted across reloads.
+- Videos are muted and playsInline, without playback controls. Reduced motion, Data Saver, rejected autoplay, missing media or a stalled decoder retain the existing chapter still and readable caption. Essential HTML, links, contact and the PDF never wait for media. A keyboard-focused caption action remains visible during playback.
+- O nama, Usluge, Projekti and Kontakt are ordinary semantic sections below the chapters. Keep existing hash URLs, preparation/PDF content and honest unsent email-draft behavior. Business sections may exceed a viewport; snapping must not prevent reading their contents.
+- Delete the frame sequence/store modules and public sequence packets, the old film scrubber, Blob seek recovery, easing/camera speed-cap code and tests specific to those retired behaviors.
+
+### Transfer budget and acceptance
+- Cold first portrait view: at most **2,000,000 transferred bytes**, including page, scripts, styles, fonts, logo, stills and chapter 1 media.
+- Completed page in either orientation: at most **5,000,000 transferred bytes** after all four chapters and ordinary content have been visited. Measure actual browser transfers, including repeated requests, separately from on-disk sizes. Report PDF download separately; it is user-initiated.
+- Report measured chapter MP4/still sizes, H.264 dimensions/duration/first-keyframe evidence, browser network totals and measurement conditions. Do not label an estimate for chapters 2–4 as a completed full-page measurement.
+- Keep typecheck, lint, component tests and production build green. Browser checks cover native play/end/re-entry, no scroll seeks, failure/reduced motion/data saving, direct fragments, both scroll directions, 390/768/1440px, inquiry validation and PDF access.
+
+### Explicit approval gate
+Implement and show **chapter 1 only**, in both orientations, with the normal business-content foundation below it. No placeholder chapter animations and no chapter 2–4 production before owner approval. Report file sizes and measured current preview transfer; open the local preview and stop for approval. Publication is outside this checkpoint. The previous four chapter captions remain recorded in DESIGN.md for the next approved slice.
+
+
 ## Direct portrait response — 16 September 2026
 
 The owner accepted the research-led next pass after persistent mobile judder. First isolate input response: prepared portrait frames follow the current native scroll position without the 100ms easing plus camera-speed cap, which reproduced continued forward camera motion after scroll reversal. Decode completion may schedule selection from the latest input, never present an obsolete request. Prioritize the next likely frame from gesture speed while retaining the same bounded image memory. React captions update only when their visibility, drift or active chapter changes. Preserve the opening pose during its fade, then follow current scroll; preserve all artwork, both compositions, contact access and reduced-motion behavior. The previous bounded-speed contract continues only for landscape/legacy movies. Validate this slice before considering Worker rendering, codecs or new interpolated media. Physical-phone confirmation is a separate HITL gate; draw timestamps are not compositor presentation evidence.

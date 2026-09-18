@@ -1,5 +1,122 @@
 # QA — mobile scroll smoothness
 
+## Complete four-scene release — 18 September 2026
+
+The owner accepted the first-transition preview and authorized completing the entire experience and its existing public Sites release. All four approved captions and the dark visual contract remain unchanged. Three native three-second moves connect the stationary scenes in either direction. Forward and reverse movies are separate H.264 assets in landscape and purpose-composed portrait versions. Only adjacent clips prepare when the active scene intersects the viewport; the initial frame stays paused. Direct scene links jump to the requested still without chaining playback. O nama, Usluge, Priprema, Projekti and Kontakt remain normal document sections.
+
+### Media
+
+The accepted first pair is unchanged. Higgsfield archive `6e92809b-181a-4578-ae46-cc5a3729cc89` supplies the remaining forward movies/stills; archive `e62c9c13-3e02-4019-b7cb-3afa07994767` supplies their final reverse movies. Every new movie is H.264/yuv420p, 72 frames at 24fps, exactly 3.000 seconds, silent, fast-start, starting with an I-frame. Forward starts share the preceding delivered endpoint; three opening frames join that pose to the existing motion. QA comparison sheets confirm aligned concrete, reinforcement and emblem geometry at both joins. Source URLs, selected frames, processing, and probes are in `scripts/cinema.json`.
+
+| Transition | Portrait forward / reverse (bytes) | Landscape forward / reverse (bytes) |
+| --- | ---: | ---: |
+| Vizija → Betonski radovi | 572,882 / 565,340 | 602,322 / 642,922 |
+| Betonski radovi → Visokogradnja | 582,112 / 579,255 | 643,085 / 649,483 |
+| Visokogradnja → Vaš projekt | 567,808 / 569,045 | 649,925 / 642,731 |
+
+New destination stills: height 89,516 portrait / 154,514 landscape bytes; final scene 131,716 portrait / 192,090 landscape bytes. Existing opening/detail stills are listed in the accepted checkpoint below. Seventeen unused older still variants have been removed; original supplied branding and source provenance remain.
+
+### Verification
+
+The complete-page transfer regression first failed: the original later reverse derivatives started at 0.125 seconds with only 69 frames. That offset triggered unnecessary reloads and omitted opening frames. A real-browser assertion reproduced the nonzero prepared start; the corrected derivatives explicitly normalize all 72 reversed presentation timestamps to start at zero. No artwork or forward timing changed.
+
+- Final full run: **80 browser checks passed, four expected skips** (Chrome-only network measurements and wheel injection unavailable in mobile WebKit). Four component tests, TypeScript, ESLint and production/SSR build pass. No failing checks remain.
+- Chrome and WebKit cover every forward/reverse transition, zero-based prepared reverse media, opening pause, held endings/captions, rapid opposing input, continuous gesture bursts, rejected/missing/stalled media, partial-playback recovery, rotation, direct scene and business hashes/Back, no-JavaScript content, mobile menu/focus, inquiry draft, PDF and sharing metadata.
+- Visual QA covers 360×640, 390×844, 768×1024 and 1440×900, including the two new destination captions. No horizontal overflow or header/caption/navigation overlap; only the active caption paints. In-app forward/reverse inspection has no console warnings/errors. The contact flow has zero Axe violations. Strict design audit passes (one existing optional CLAUDE.md warning); DESIGN.md is unchanged.
+- These checks use desktop engines, responsive viewports and injected touch events, not the owner's physical phone. No claim of guaranteed device frame rate is made. This exact build is ready for the authorized public Sites release; the deployment record identifies its published source.
+
+Earlier checkpoints below are historical.
+
+Cold-cache Chrome production-preview measurements sum actual `Network.loadingFinished.encodedDataLength`, including compressed HTML/JS/CSS, fonts, logo, four stills, media ranges and repeated requests. First view is measured at network idle with the opening paused. Full-page measurement visits every scene forward and backward (all six selected-orientation MP4s), opens the mobile menu and visits every business section. No opposite-orientation video is downloaded.
+
+| Orientation | First view (bytes) | Full page, both directions (bytes) |
+| --- | ---: | ---: |
+| Portrait | 1,204,334 | 4,202,098 |
+| Landscape | 1,472,286 | 4,805,780 |
+
+Both orientations meet the complete-page 5,000,000-byte budget; portrait also meets the 2,000,000-byte opening budget. No reverse movie downloads twice. Optional, user-initiated PDF download is separate: 156,006 bytes on disk. These are controlled local browser measurements, not field-performance claims. Per-request reports are `/tmp/adduco-transfer-portrait.json` and `/tmp/adduco-transfer-landscape.json`.
+
+## Corrected first-transition preview — 18 September 2026
+
+**Scope:** the complete first transition only, connecting Vizija to Betonski radovi in both orientations and both directions. The owner approved film-scoped vertical gesture capture and native reverse playback. Later transitions and publication remain behind the explicit local-review gate. DESIGN.md is unchanged. Earlier reports below describe superseded implementations.
+
+### Current behavior
+
+- Opening is stationary with its original caption. A deliberate vertical scroll/swipe or PageDown starts one complete three-second native film. Completion holds its final frame and reveals the destination caption. A fresh upward gesture/PageUp plays the separate reverse movie.
+- Additional gestures during playback, held keys and the remainder of a wheel/touch gesture are consumed inside the stage. No transition is queued. After the last implemented scene, a new downward gesture enters the ordinary business sections. Horizontal/zoom input remains native; header links exit immediately.
+- Both scenes have direct hash/navigation links. Reduced motion and Data Saver request no MP4s. Policy rejection, failed or stalled playback reveal the destination still and caption; a 6.5-second deadline bounds a stalled request. Rotation and leaving the film cancel pending playback. A subsequent attempt after an interrupted/failed clip starts at its first frame.
+- First-orientation forward media loads eagerly without playing. The reverse clip prepares on completion or IntersectionObserver entry at the detail scene. No video controls/play button, currentTime assignment, scroll clock, sequence packets, Blob recovery or media animation loop remains.
+- TDD regressions first reproduced autoplay on initial display, missing full-scene transitions, scrolling over a caption link escaping the stage, partial failed playback restarting at 0.93 seconds, and both captions painting together during a direct scene change. Each then passed after its fix.
+
+### Delivered media
+
+Higgsfield archive `eab736e2-c6bb-4f7e-9d62-ddd4ec10ec1c`. Each film contains 72 frames, H.264/yuv420p, 24fps, 3.000 seconds, no audio, fast-start, first frame an I-keyframe. Full probes and uniformly selected source-frame indices are retained under `sceneTransition1` in `scripts/cinema.json`. Both endpoints of the entire approved eight-second source are included; its camera path is retimed, with no generated scenery or interpolated frames. Reverse playback uses separately encoded reversed footage. Stills are extracted from frames 0 and 71 of the delivered forward clip.
+
+| Asset | Portrait bytes (720×1280) | Landscape bytes (1920×1080) |
+| --- | ---: | ---: |
+| Forward MP4 | 572,882 | 602,322 |
+| Reverse MP4 | 565,340 | 642,922 |
+| Opening WebP | 110,592 | 164,594 |
+| Detail WebP | 103,410 | 162,546 |
+
+### Validation and transfer
+
+- TypeScript, ESLint, four component tests and the production/SSR build pass. The complete browser run passed 62 checks with four expected skips. After the final caption-visibility CSS fix, all affected page/visual/transfer tests were rerun: 32 passed, two expected CDP-only skips. The new caption-overlap regression passes in both engines.
+- Chrome and WebKit checks cover initial pause, full forward/reverse playback, repeated and rapid opposite input, movie interruption/retry, rotation, reduced motion, Data Saver, failed/rejected/stalled media, direct hashes/Back, no-JavaScript business content, menu/focus, inquiry draft, PDF and sharing. Chrome also covers a continuous wheel burst across the film ending and browser-injected portrait touch swipes. Mobile WebKit gesture coverage uses modeled touch events and keyboard input because Playwright exposes neither swipe nor wheel there. No physical-phone smoothness claim is made.
+- Visual review includes 390×844, 768×1024 and 1440×900 opening scenes, plus the detail scene at those sizes and 360×640. No horizontal overflow or header/caption/navigation overlap. Captions are never simultaneously painted. The in-app preview was inspected in both directions; its console has no warnings/errors. The contact flow has zero Axe violations. DESIGN.md is unchanged. Strict visual-contract audit passes (only the existing optional CLAUDE.md warning).
+
+Cold-cache Chrome measurement on the production Vite preview sums `Network.loadingFinished.encodedDataLength`, including compressed document/scripts/styles, fonts, logo, stills, media ranges and repeated favicon requests. First view ends at network idle while the opening is **still paused**. The complete current-preview measurement then opens the mobile menu, plays forward and reverse, and visits all business sections. Only the selected orientation is fetched.
+
+| Orientation | First view (bytes) | First transition in both directions + all business sections (bytes) |
+| --- | ---: | ---: |
+| Portrait | 982,020 | 1,611,104 |
+| Landscape | 1,124,598 | 1,802,408 |
+
+Both first-view and current-preview totals are within the 2 MB / 5 MB budgets. The eventual **four-scene page is not yet certified**: the remaining two scene transitions are behind the owner's approval gate and must be measured after implementation. Optional PDF download is separate: 156,006 bytes on disk. These are local browser transfers, not CDN or field-performance measurements. Per-request reports are in `/tmp/adduco-transfer-portrait.json` and `/tmp/adduco-transfer-landscape.json`.
+
+Local preview: http://127.0.0.1:5184/. No commit, push or publication was performed. The public Site remains its previous release.
+
+## Historical rejected autoplay checkpoint — 18 September 2026
+
+**Scope:** chapter 1 only, with ordinary O nama, Usluge, Priprema, Projekti and Kontakt sections. Chapters 2–4 are deliberately unbuilt pending owner approval. Local preview: http://127.0.0.1:5184/. No push or publication in this checkpoint. DESIGN.md is unchanged; PRD.md contains the dated interaction amendment.
+
+### Media proof
+
+Higgsfield processing archive `a904e280-32da-47a3-8b01-471e6e7be456`, from the first 2.5 seconds of each accepted opening source. Both delivered MP4s are H.264/yuv420p, 24fps, 60 frames, silent, fast-start. ffprobe confirms frame zero is an I-frame with `key_frame: 1`. Full source/encoding/probe records live in `scripts/cinema.json`.
+
+| File | Size (bytes) | Dimensions / duration |
+| --- | ---: | --- |
+| Portrait MP4 | 721,551 | 720×1280 / 2.500 s |
+| Landscape MP4 | 1,031,070 | 1920×1080 / 2.500 s |
+| Portrait existing opening still | 101,174 | 720×1280 |
+| Portrait final-frame still | 79,724 | 720×1280 |
+| Landscape existing opening still | 220,070 | 1600×900 |
+| Landscape final-frame still | 151,968 | 1920×1080 |
+
+### Behavior and checks
+
+- TDD evidence: normal business sections initially failed because content was hidden in dialogs; native playback test initially failed because no video lived in the chapter; stalled-playback test initially left the caption hidden; rotation initially retained the wrong video composition; header contact initially left the mobile menu open. Each failed before its implementation/fix and then passed.
+- Four component behavior tests, TypeScript, ESLint and production/SSR build pass.
+- Browser suite: 40 passed, two intentionally skipped. Chrome and WebKit cover playback/end/hold/re-entry, interrupted visits and rapid reversal without seek events, rotation, rejected autoplay, missing media, reduced motion, Data Saver, bounded stalled playback, native direct hashes/Back, menu keyboard access, form validation, unsent draft, PDF, no-JavaScript access and sharing metadata. Two transfer tests run only in Chrome because measurement uses its network protocol, and are skipped in WebKit.
+- Visual inspection at 390×844, 768×1024 and 1440×900: approved construction artwork, distinct red panels, readable captions, accessible header/action and dark normal business sections; no horizontal overflow. Mandatory vertical snap and exactly 100svh chapter height verified. No visible play button and no native video controls. No page errors; in-app preview console has no warnings/errors. Axe check on the contact flow reports zero violations.
+- All frame packets, sequence/store modules, the old movie scrubber, scroll clock and seek-specific tests are deleted. Source contains no media-clock assignment, Blob seek recovery, wheel/touch interception or animation-frame playback loop. Original generated-source provenance remains for later authorized trims. The unchanged portrait opening was relocated before deleting its sequence directory.
+- Re-entry uses the final-frame still, including when the first visit is interrupted. Only actual completion uses the browser-held video endpoint. Reduced motion/Data Saver avoid movie requests entirely. Autoplay failure retains the existing opening still. A six-second deadline prevents a stalled decoder from hiding copy indefinitely; header navigation and business HTML are available throughout. Seen state lasts for this page session and resets on reload.
+
+### Transfer measurement
+
+Measured in a fresh Chrome page with cache disabled, production Vite preview, using `Network.loadingFinished.encodedDataLength` summed across every HTTP response (headers, compressed scripts/styles/HTML, fonts, images, favicon and the complete MP4). Viewports: 390×844 portrait, 1440×900 landscape. Only the selected orientation's movie is requested. First view is measured after native playback ends and the network becomes idle; current complete-page measurement then opens/closes the mobile menu (including its additional fonts) and visits every business section. The test writes its resource breakdown to `/tmp/adduco-transfer-portrait.json` and `/tmp/adduco-transfer-landscape.json`.
+
+| Orientation | First view (bytes) | Chapter 1 + all business sections (bytes) |
+| --- | ---: | ---: |
+| Portrait | 1,096,010 | 1,124,866 |
+| Landscape | 1,596,675 | 1,596,675 |
+
+
+The unchanged optional PDF is 156,006 bytes on disk, fetched only when requested. The measurements above exclude that separate download. The eventual four-chapter page's ≤5,000,000-byte transfer budget is **not yet certified**: chapters 2–4 and IntersectionObserver-based lazy loading are behind the explicit approval gate. Remaining budget is reserved for those segments, their stills and any additional font use, with a new cold/full-page measurement required after implementation.
+
+These are local browser measurements, not a deployed CDN or physical-phone frame-rate claim. Desktop wheel and WebKit programmatic native scrolling are covered; Playwright's mobile WebKit cannot synthesize a wheel. A real phone review belongs to the owner's chapter-1 approval. Native video itself is no longer controlled by scroll speed.
+
+
 ## Direct portrait response — 16 September 2026
 
 Research isolated a second clock in the portrait controller: a 100ms easing curve plus a 144-source-frame/second speed cap. A new browser regression moves native scroll at 4,000 CSSpx/s for 500ms and then reverses. Both Chrome and WebKit failed on the previous implementation: the drawn camera continued forward until approximately 750/741ms while the scroll target was already decreasing. This reproduces the mechanism in the browser, not just the earlier mathematical model. The exact cause of all judder on the owner's physical phone remains unmeasured.

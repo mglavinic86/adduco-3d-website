@@ -1,5 +1,29 @@
 # Vertical implementation slices
 
+## Complete four-scene journey — 18 September 2026
+
+- CJ1 — HITL, complete: owner accepted ST3 and approved completing the full experience.
+- CJ2 — AFK, complete; blocked by CJ1 (satisfied): prepare exact-join transitions 2–3 in both orientations and directions, extend the accepted native player and verify full forward/reverse travel.
+- CJ3 — AFK, complete; CJ2 satisfied: validate interruption, loading, all hash destinations, responsive captions, accessibility and cold/full transfer budgets.
+- CJ4 — AFK, release prepared; CJ3 satisfied, publication authorized: publish the exact verified source through the existing public Sites project and synchronize the public GitHub repository. Verify the published page.
+
+## Corrected scene-transition checkpoint — 18 September 2026
+
+The owner rejected autoplay-on-entry and clarified a stationary opening, one scroll-triggered complete transition, and a held destination scene with its caption. The rejected NC1 component and short opening trims have been replaced; archive provenance remains in scripts/cinema.json.
+- ST1 — HITL, complete: owner approved native reverse playback and gesture capture limited to the film, ignoring additional input during a transition. Forward behavior and the first-transition-only approval scope are explicit in PRD.md.
+- ST2 — AFK, complete locally; ST1 satisfied: stationary opening, one complete native three-second transition per gesture, separate reverse clips, held destination/caption, failure stills and ordinary business access. Browser/visual QA and transfer measurements are recorded in QA.md.
+- ST3 — HITL, complete; owner accepted the preview and authorized completion: owner reviews this corrected first-transition checkpoint before any remaining transitions or publication.
+
+
+## Native snap chapters — 18 September 2026
+
+These NC slices and all older scrolling/frame-sequence slices below are historical. The corrected ST checkpoint above supersedes NC autoplay and its pending approval.
+- NC1 — AFK, complete locally: one 100svh chapter; two 2.5-second native MP4s derived through Higgsfield; held final frame, no replay, accessible fallback and ordinary business sections. Remove all scrubber runtime/assets/tests. Test behavior, measure actual transfer, show local preview.
+- NC2 — HITL, pending; blocked by NC1: owner approves chapter 1 on the local preview. Stop here before producing chapters 2–4 or publishing.
+- NC3 — AFK, blocked by NC2: produce chapters 2–4 in both orientations with IntersectionObserver loading and unchanged captions; verify complete-page portrait transfer ≤5MB.
+- NC4 — HITL, blocked by NC3: review full four-chapter result and authorize publication.
+
+
 ## Direct portrait response — current
 
 - DR1 — AFK, complete: reproduce camera movement against the actual scroll direction, remove the portrait catch-up clock, prioritize likely next images with the existing memory bound, verify final settling and loading/reversal behavior.

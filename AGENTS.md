@@ -3,12 +3,12 @@
 Read PRD.md, DESIGN.md, CONTENT-SOURCES.md and IMPLEMENTATION.md before changes. DESIGN.md is the only visual contract. The user selected Gallery Journey, then a cinematic continuous journey with dark realistic contemporary construction, and confirmed ADDUCO d.o.o., Metković, OIB 40912050957.
 
 ## Stack and checks
-React, TypeScript and Vite. A Higgsfield-generated film supplies the cinematic world, with native scroll selecting cached portrait images or paused landscape/legacy video frames. Package versions in package.json are authoritative.
+React, TypeScript and Vite. Higgsfield-generated artwork supplies stationary scenes connected by native three-second films. The owner correction at the top of PRD.md supersedes autoplay-on-entry and authorizes film-scoped gesture capture and separate reverse clips. The owner accepted the first transition on 18 September and authorized finishing all four scenes and the existing public Sites release. Preserve the accepted gesture behavior, artwork, captions and transfer budgets. Package versions in package.json are authoritative.
 - `npm test`: investor behavior tests.
 - `npm run typecheck`: TypeScript.
 - `npm run lint`: ESLint.
 - `npm run build`: production bundle plus pre-rendered essential HTML.
-- `npm run test:e2e`: real Chrome checks plus WebKit opening/phone regressions; expects a server on 127.0.0.1:5184. Install its WebKit binary once with `npx playwright install webkit`.
+- `npm run test:e2e`: real Chrome and WebKit native-playback/responsive regressions; expects a server on 127.0.0.1:5184. Install its WebKit binary once with `npx playwright install webkit`.
 - `npm run preview -- --port 5184 --strictPort`: serve the completed build locally.
 
 Use TDD for behavioral code changes and keep each slice runnable. Browser QA must cover 390, 768, and 1440px, direct navigation, both scroll directions, reduced motion, unavailable video, inquiry validation and the PDF.

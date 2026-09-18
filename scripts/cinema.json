@@ -734,17 +734,9 @@
     "verifiedBalanceAfter": 1064
   },
   "playback": {
-    "segmentsPerOrientation": 3,
-    "nominalSeconds": 24,
-    "mode": "Native scroll, 100ms exponential smoothing and 24fps quantized serialized seeks; decoded frame clock for captions",
-    "portraitMediaQuery": "(max-aspect-ratio: 9/10)",
-    "narrowAndTouchDefault": "Automatic scroll-controlled motion; no playback button",
-    "hostWithoutByteRanges": "Prepare same-origin Blob for current and prefetched moves before crossing",
-    "cache": "Retain up to three prepared moves per orientation; release old orientation after replacement frame is decoded",
-    "prefetch": "Next directional move after 30% progress; first move only on entry",
-    "reducedMotion": "Composed stills; also used for data saving, explicit fallback or video failure",
-    "seekPosition": "Midpoint of quantized 24fps frame interval to avoid boundary rounding selecting a previous frame",
-    "opening": "Hold opening pose and caption while first film prepares; 180ms same-pose opacity handoff, then smooth toward pending native scroll destination."
+    "date": "2026-09-18",
+    "mode": "Stationary scene anchors; one deliberate vertical gesture starts one complete three-second native transition. Separate reverse MP4, no currentTime assignment. Hold endpoint/caption, ignore input during transition, require new gesture.",
+    "scope": "All four approved scenes with three native forward/reverse transitions in each orientation; normal business sections and hash navigation below."
   },
   "sharing": {
     "date": "2026-09-16",
@@ -757,33 +749,1508 @@
     "quality": 88,
     "processing": "Higgsfield sandbox Pillow ImageOps.fit, Lanczos, centered crop, RGB, optimized JPEG. Faithful derivative of the approved landscape anchor; no new generation or project-photo claim."
   },
-  "portraitFrameSequence": {
-    "date": "2026-09-16",
-    "processor": "Higgsfield sandbox ffmpeg",
-    "confirmedArchiveMediaId": "932f54a1-5e39-4bde-b52b-444de82c8af3",
-    "sourceFiles": [
-      "construction-portrait-v2-0.mp4",
-      "construction-portrait-v3-1.mp4",
-      "construction-portrait-v3-2.mp4"
+  "nativeChapter1": {
+    "date": "2026-09-18",
+    "processing": "Higgsfield sandbox ffmpeg, approved existing Seedance sources; no generation.",
+    "archiveMediaId": "a904e280-32da-47a3-8b01-471e6e7be456",
+    "archiveUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/a904e280-32da-47a3-8b01-471e6e7be456.zip",
+    "sourceIntervalSeconds": [
+      0,
+      2.5
     ],
-    "path": "public/assets/sequence/portrait-v1",
-    "frames": 577,
-    "fps": 24,
-    "width": 720,
-    "height": 1280,
-    "codec": "WebP quality 78 compression 4",
-    "filter": "scale=720:1280:in_color_matrix=bt709:out_range=pc,format=bgra",
-    "clipFrameCounts": [
-      192,
-      192,
-      193
-    ],
-    "packetFrames": 12,
-    "packets": 49,
-    "packetBytes": 45633782,
-    "originalPortraitMovieBytes": 30081106,
-    "format": "ADFC magic; uint32LE frame count; count+1 uint32LE payload-relative offsets; concatenated independent WebP images",
-    "opening": "opening.webp is the unchanged first WebP payload from 000.bin, unpacked locally; replaces the three old portrait/mobile opening variants to ensure the exact same pixels and color at handoff.",
-    "note": "Existing accepted footage, including repaired joins. No new generation or frame interpolation. Progressive packet loading; bounded decoded cache; video retained for landscape/unsupported ImageBitmap."
+    "portraitSourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_6d658000-6802-4572-8356-74c5eb5b0138.mp4",
+    "landscapeSourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190739_83bee30f-abd2-4f75-9d09-5c1af2921dfa.mp4",
+    "encoding": {
+      "codec": "libx264",
+      "preset": "slow",
+      "crf": 23,
+      "fps": 24,
+      "pixelFormat": "yuv420p",
+      "gop": 60,
+      "keyintMin": 60,
+      "sceneCut": 0,
+      "fastStart": true,
+      "audio": false,
+      "portraitMaxrateAndBufsize": "2200k",
+      "landscapeMaxrateAndBufsize": "4000k"
+    },
+    "lastFrame": "Frame 59 extracted from each delivered MP4 using libwebp quality 82.",
+    "openingStills": "Unchanged approved portrait opening relocated from retired packets to chapter-1/portrait-start.webp; existing chapter-v2-0.webp remains landscape fallback.",
+    "files": {
+      "portrait": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "nb_frames": "60"
+            }
+          ],
+          "format": {
+            "duration": "2.500000",
+            "size": "721551"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "mp4Bytes": 721551,
+        "endStillBytes": 79724
+      },
+      "landscape": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "nb_frames": "60"
+            }
+          ],
+          "format": {
+            "duration": "2.500000",
+            "size": "1031070"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "mp4Bytes": 1031070,
+        "endStillBytes": 151968
+      }
+    },
+    "retirement": "All old construction MP4s and public sequence packets removed from delivery; original source URLs/media IDs in movies remain provenance for later approved chapters.",
+    "status": "Rejected autoplay-on-entry checkpoint; component and output assets removed. Retained as historical processing provenance only."
+  },
+  "sceneTransition1": {
+    "date": "2026-09-18",
+    "status": "Owner-accepted first transition; retained unchanged in the completed journey.",
+    "processing": "Higgsfield sandbox ffmpeg; uniform selection of 72 frames including exact first and last source frames, retimed to 3 seconds at 24fps; no new generated scenery or frame interpolation.",
+    "archiveMediaId": "eab736e2-c6bb-4f7e-9d62-ddd4ec10ec1c",
+    "archiveUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/eab736e2-c6bb-4f7e-9d62-ddd4ec10ec1c.zip",
+    "sourceUrls": {
+      "portrait": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_6d658000-6802-4572-8356-74c5eb5b0138.mp4",
+      "landscape": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190739_83bee30f-abd2-4f75-9d09-5c1af2921dfa.mp4"
+    },
+    "encoding": {
+      "codec": "libx264",
+      "preset": "slow",
+      "passes": 2,
+      "portraitBitrateKbps": 1500,
+      "landscapeBitrateKbps": 1650,
+      "fps": 24,
+      "frames": 72,
+      "durationSeconds": 3,
+      "gop": 72,
+      "keyintMin": 72,
+      "sceneCut": 0,
+      "pixelFormat": "yuv420p",
+      "fastStart": true,
+      "audio": false
+    },
+    "reverse": "Encoded independently from the reversed lossless 72-frame master; native playback runs forward through this reversed sequence.",
+    "stills": "Frames 0 and 71 of each delivered forward MP4, libwebp quality 84; both orientations contain artwork only.",
+    "files": {
+      "landscape-forward.mp4": 602322,
+      "portrait-reverse.mp4": 565340,
+      "landscape-reverse.mp4": 642922,
+      "portrait-start.webp": 110592,
+      "portrait-forward.mp4": 572882,
+      "landscape-start.webp": 164594,
+      "portrait-end.webp": 103410,
+      "landscape-end.webp": 162546
+    },
+    "verification": {
+      "portrait-forward": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "572882"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      },
+      "portrait-reverse": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "565340"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      },
+      "landscape-forward": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "602322"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      },
+      "landscape-reverse": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "642922"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      }
+    }
+  },
+  "sceneTransitionsComplete": {
+    "date": "2026-09-18",
+    "authorization": "Owner accepted the first transition and requested completing all remaining work, including the existing public Sites release.",
+    "archiveMediaId": "6e92809b-181a-4578-ae46-cc5a3729cc89",
+    "archiveUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/6e92809b-181a-4578-ae46-cc5a3729cc89.zip",
+    "processing": "Higgsfield sandbox ffmpeg and Pillow. Uniformly select 72 frames including first and last source frame; retime to 3 s at 24 fps. H.264 slow two-pass, 1500 kbps portrait / 1650 kbps landscape, maxrate +300 kbps, bufsize 2x bitrate, yuv420p, 72-frame GOP, first I-frame, faststart, no audio.",
+    "continuity": "Each new transition starts from the preceding delivered forward clip decoded frame 71. Smoothstep blend into native motion across the first three selected frames (weights 0, 7/27, 20/27), then unchanged native frames. Reverse films are encoded from the same reversed 72-frame master. No new generated scenery.",
+    "stills": "Delivered scene stills are frame 71 from each new forward MP4, WebP quality 84. Unused comparison/start frames remain only in the QA archive.",
+    "verification": {
+      "transition-2/portrait-forward.mp4": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "582112"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_460f59fb-41bc-4318-94d6-47dd2111df4b.mp4",
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      },
+      "transition-2/portrait-reverse.mp4": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "nb_frames": "69"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "554434"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_460f59fb-41bc-4318-94d6-47dd2111df4b.mp4",
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      },
+      "transition-3/portrait-forward.mp4": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "567808"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_a0a77647-21b8-4282-b9ea-dc9aa09b36d1.mp4",
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      },
+      "transition-3/portrait-reverse.mp4": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "nb_frames": "69"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "545579"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_a0a77647-21b8-4282-b9ea-dc9aa09b36d1.mp4",
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      },
+      "transition-2/landscape-forward.mp4": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "643085"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190908_400576cb-2471-4ce8-bce0-4ebd5f8ac7f9.mp4",
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      },
+      "transition-2/landscape-reverse.mp4": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "nb_frames": "69"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "616721"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190908_400576cb-2471-4ce8-bce0-4ebd5f8ac7f9.mp4",
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      },
+      "transition-3/landscape-forward.mp4": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "649925"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_c08b95fa-4934-4e1c-ac9b-c49fde6f0c16.mp4",
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      },
+      "transition-3/landscape-reverse.mp4": {
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "nb_frames": "69"
+            }
+          ],
+          "format": {
+            "duration": "3.000000",
+            "size": "614836"
+          }
+        },
+        "firstFrame": {
+          "key_frame": 1,
+          "pict_type": "I",
+          "side_data_list": [
+            {}
+          ]
+        },
+        "sourceUrl": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191835_c08b95fa-4934-4e1c-ac9b-c49fde6f0c16.mp4",
+        "sourceFrames": 193,
+        "selectedIndices": [
+          0,
+          3,
+          5,
+          8,
+          11,
+          14,
+          16,
+          19,
+          22,
+          24,
+          27,
+          30,
+          32,
+          35,
+          38,
+          41,
+          43,
+          46,
+          49,
+          51,
+          54,
+          57,
+          59,
+          62,
+          65,
+          68,
+          70,
+          73,
+          76,
+          78,
+          81,
+          84,
+          87,
+          89,
+          92,
+          95,
+          97,
+          100,
+          103,
+          105,
+          108,
+          111,
+          114,
+          116,
+          119,
+          122,
+          124,
+          127,
+          130,
+          133,
+          135,
+          138,
+          141,
+          143,
+          146,
+          149,
+          151,
+          154,
+          157,
+          160,
+          162,
+          165,
+          168,
+          170,
+          173,
+          176,
+          178,
+          181,
+          184,
+          187,
+          189,
+          192
+        ]
+      }
+    },
+    "deliveredFiles": {
+      "public/assets/transition-2/landscape-forward.mp4": 643085,
+      "public/assets/transition-2/portrait-reverse.mp4": 554434,
+      "public/assets/transition-2/landscape-reverse.mp4": 616721,
+      "public/assets/transition-2/portrait-forward.mp4": 582112,
+      "public/assets/transition-2/portrait-end.webp": 89516,
+      "public/assets/transition-2/landscape-end.webp": 154514,
+      "public/assets/transition-3/landscape-forward.mp4": 649925,
+      "public/assets/transition-3/portrait-reverse.mp4": 545579,
+      "public/assets/transition-3/landscape-reverse.mp4": 614836,
+      "public/assets/transition-3/portrait-forward.mp4": 567808,
+      "public/assets/transition-3/portrait-end.webp": 131716,
+      "public/assets/transition-3/landscape-end.webp": 192090
+    },
+    "reverseTimingCorrection": {
+      "archiveId": "e62c9c13-3e02-4019-b7cb-3afa07994767",
+      "archiveUrl": "https://d2ol7oe51mr4n9.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/e62c9c13-3e02-4019-b7cb-3afa07994767.zip",
+      "reason": "Browser regression found original reverse clips started at 0.125 seconds and contained 69 frames. Replace all transition-2/3 reverse derivatives with full 72-frame versions; start zero, duration 3 seconds. Original probes remain historical provenance.",
+      "processing": "Decode the delivered forward movie; reverse,setpts=N/(24*TB); libx264 slow two-pass 1500k portrait / 1650k landscape; 24fps CFR, yuv420p, GOP72, no audio, faststart. Retains every delivered frame including both endpoints.",
+      "verification": {
+        "transition-2/portrait-reverse.mp4": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "start_time": "0.000000",
+              "duration": "3.000000",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "start_time": "0.000000",
+            "duration": "3.000000",
+            "size": "579255"
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          }
+        },
+        "transition-2/landscape-reverse.mp4": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "start_time": "0.000000",
+              "duration": "3.000000",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "start_time": "0.000000",
+            "duration": "3.000000",
+            "size": "649483"
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          }
+        },
+        "transition-3/portrait-reverse.mp4": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 720,
+              "height": 1280,
+              "r_frame_rate": "24/1",
+              "start_time": "0.000000",
+              "duration": "3.000000",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "start_time": "0.000000",
+            "duration": "3.000000",
+            "size": "569045"
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          }
+        },
+        "transition-3/landscape-reverse.mp4": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 1920,
+              "height": 1080,
+              "r_frame_rate": "24/1",
+              "start_time": "0.000000",
+              "duration": "3.000000",
+              "nb_frames": "72"
+            }
+          ],
+          "format": {
+            "start_time": "0.000000",
+            "duration": "3.000000",
+            "size": "642731"
+          },
+          "firstFrame": {
+            "key_frame": 1,
+            "pts_time": "0.000000",
+            "pict_type": "I",
+            "side_data_list": [
+              {
+                "side_data_type": "H.26[45] User Data Unregistered SEI message"
+              }
+            ]
+          },
+          "lastFrame": {
+            "key_frame": 0,
+            "pts_time": "2.958333",
+            "pict_type": "P"
+          }
+        }
+      }
+    }
   }
 }

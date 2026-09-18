@@ -1,5 +1,10 @@
 # Content provenance
 
+## Current delivery amendment — 18 September 2026
+
+The corrected first transition uses the entire approved eight-second opening-to-detail source in each orientation, uniformly sampled to 72 frames including the exact endpoints and retimed to three seconds. Separate forward/reverse H.264 films and matching endpoint WebPs were processed through Higgsfield (archive `eab736e2-c6bb-4f7e-9d62-ddd4ec10ec1c`). No scenery was regenerated and the logo/business claims are unchanged. Source URLs, selected frame indices, encoding, probes and byte sizes are in `scripts/cinema.json` under `sceneTransition1`. The rejected 0–2.5-second trims and old runtime scrubber/packets are removed. The owner accepted this preview and authorized completing the remaining transitions. Transitions 2–3 were prepared through Higgsfield archive `6e92809b-181a-4578-ae46-cc5a3729cc89`, using the preceding delivered endpoint at every join. Their three-second forward/reverse derivatives retain the approved source artwork; exact processing, probes and sizes are under `sceneTransitionsComplete` in `scripts/cinema.json`. Final reverse derivatives for transitions 2–3 are in archive `e62c9c13-3e02-4019-b7cb-3afa07994767`: all 72 decoded forward frames reversed with zero-based timestamps, preserving both endpoints. Earlier encoding/sequence entries below are historical provenance.
+
+
 Checked 15 September 2026. User confirmed the Metković company (OIB 40912050957).
 
 | Fact | Source | Use / limitation |

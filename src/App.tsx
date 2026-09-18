@@ -1,336 +1,44 @@
-import {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  useCallback,
-  type MouseEvent,
-  type CSSProperties,
-} from "react";
-import { journeyProgress } from "./journey";
-import CinematicFilm from "./CinematicFilm";
-import BusinessContent, { detailTitles, type Detail } from "./BusinessContent";
+import { useEffect, useRef, useState } from "react";
+import SceneJourney from "./SceneJourney";
+import BusinessContent from "./BusinessContent";
 import { Arrow, Wordmark } from "./ui";
-const chapters = [
-  {
-    id: "vizija",
-    name: "Vizija",
-    label: "Jasna ideja. Čvrst početak.",
-    title: (
-      <>
-        Od vizije
-        <br />
-        <span>do stvarnosti.</span>
-      </>
-    ),
-    caption:
-      "Svaki projekt počinje jasnim razumijevanjem onoga što želite izgraditi.",
-  },
-  {
-    id: "povjerenje",
-    name: "Betonski radovi",
-    label: "Betonski radovi",
-    title: (
-      <>
-        Snaga je
-        <br />
-        <span>u detalju.</span>
-      </>
-    ),
-    caption: "Betoniranje i izvedba betonskih konstrukcijskih elemenata.",
-  },
-  {
-    id: "preciznost",
-    name: "Visokogradnja",
-    label: "Visokogradnja",
-    title: (
-      <>
-        Gradimo
-        <br />
-        <span>u visinu.</span>
-      </>
-    ),
-    caption: "Izvedba objekata i njihovih nosivih konstrukcija.",
-  },
-  {
-    id: "projekt",
-    name: "Vaš projekt",
-    label: "Vaš sljedeći projekt",
-    title: (
-      <>
-        Vaš projekt
-        <br />
-        <span>počinje razgovorom.</span>
-      </>
-    ),
-    caption: "Visokogradnja, niskogradnja i betonski radovi.",
-  },
-];
-const stillFrame = (index: number) => (index === 0 ? "v2-0" : String(index));
 
-function captionState(progress: number) {
-  const active = Math.round(progress);
-  return {
-    active,
-    visible: Math.abs(progress - active) < 0.46 ? active : -1,
-    passed: Math.floor(progress),
-  };
-}
-
-function Experience({
-  still,
-  active,
-  onFail,
-  onFrame,
-}: {
-  still: boolean;
-  active: number;
-  onFail: () => void;
-  onFrame: (progress: number | null) => void;
-}) {
-  const [loadedStills, setLoadedStills] = useState([true, false, false, false]);
-  const [shownStill, setShownStill] = useState(0);
-  useEffect(() => {
-    if (loadedStills[active]) setShownStill(active);
-  }, [active, loadedStills]);
-  return (
-    <div className="world" aria-hidden="true">
-      <div className="world-stills">
-        {chapters.map(
-          (c, i) =>
-            (loadedStills[i] || active === i) && (
-              <picture key={c.id}>
-                {i === 0 && (
-                  <source
-                    media="(max-aspect-ratio: 9/10)"
-                    srcSet="/assets/sequence/portrait-v1/opening.webp"
-                  />
-                )}
-                {i !== 0 && (
-                  <>
-                    <source
-                      type="image/avif"
-                      media="(max-width: 767px) and (max-aspect-ratio: 9/10)"
-                      srcSet={`/assets/chapter-mobile-${stillFrame(i)}.avif`}
-                    />
-                    <source
-                      media="(max-width: 767px) and (max-aspect-ratio: 9/10)"
-                      srcSet={`/assets/chapter-mobile-${stillFrame(i)}.webp`}
-                    />
-                    <source
-                      media="(max-aspect-ratio: 9/10)"
-                      srcSet={`/assets/chapter-portrait-${stillFrame(i)}.webp`}
-                    />
-                  </>
-                )}
-                <source
-                  media="(max-width: 1023px)"
-                  srcSet={`/assets/chapter-tablet-${stillFrame(i)}.webp`}
-                />
-                <img
-                  src={`/assets/chapter-${stillFrame(i)}.webp`}
-                  alt=""
-                  width="1600"
-                  height="900"
-                  fetchPriority={i === 0 ? "high" : undefined}
-                  loading="eager"
-                  onLoad={() => {
-                    setLoadedStills((previous) =>
-                      previous[i]
-                        ? previous
-                        : previous.map(
-                            (loaded, index) => loaded || index === i,
-                          ),
-                    );
-                    if (i === active) setShownStill(i);
-                  }}
-                  className={shownStill === i ? "active" : ""}
-                />
-              </picture>
-            ),
-        )}
-      </div>
-      {!still && <CinematicFilm onFail={onFail} onFrame={onFrame} />}
-      <div className="world-wash" />
-    </div>
-  );
-}
 export default function App() {
-  const [ready, setReady] = useState(false);
-  const [still, setStill] = useState(true);
-  const [captions, setCaptions] = useState(() => captionState(0));
-  const currentCaptions = useRef(captions);
-  const active = captions.active;
-  const present = useCallback((progress: number) => {
-    const next = captionState(progress);
-    const previous = currentCaptions.current;
-    if (
-      previous.active === next.active &&
-      previous.visible === next.visible &&
-      previous.passed === next.passed
-    )
-      return;
-    currentCaptions.current = next;
-    setCaptions(next);
-  }, []);
-  const onFrame = useCallback(
-    (progress: number | null) => {
-      present(progress ?? journeyProgress());
-    },
-    [present],
-  );
   const [menu, setMenu] = useState(false);
-  const [panel, setPanel] = useState<Detail | null>(null);
-  const dialog = useRef<HTMLDialogElement>(null);
-  const opener = useRef<HTMLElement | null>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const navigation = useRef<HTMLElement>(null);
-  const fail = useCallback(() => setStill(true), []);
-  const closePanel = useCallback(() => {
-    setPanel(null);
-    history.replaceState(null, "", `#${chapters[active].id}`);
-  }, [active]);
-  useEffect(() => {
-    setReady(true);
-    const mq = matchMedia("(prefers-reduced-motion: reduce)");
-    const device = navigator as Navigator & {
-      connection?: { saveData?: boolean };
-    };
-    setStill(
-      mq.matches ||
-        Boolean(device.connection?.saveData) ||
-        new URLSearchParams(location.search).has("fallback"),
-    );
-    const motion = () => setStill(mq.matches);
-    mq.addEventListener("change", motion);
-    const route = () => {
-      const id = location.hash.slice(1);
-      setPanel(id in detailTitles ? (id as Detail) : null);
-    };
-    route();
-    window.addEventListener("hashchange", route);
-    window.addEventListener("popstate", route);
-    return () => {
-      mq.removeEventListener("change", motion);
-      window.removeEventListener("hashchange", route);
-      window.removeEventListener("popstate", route);
-    };
-  }, []);
-  useLayoutEffect(() => {
-    if (!ready) return;
-    // Run once, after the enhanced chapter heights exist and before paint.
-    // A frame scheduled from the startup effect can precede that commit;
-    // window.load can arrive after the visitor has already moved the camera.
-    const id = location.hash.slice(1);
-    if (id in detailTitles) window.scrollTo({ top: 0, behavior: "instant" });
-    else if (chapters.some((c) => c.id === id))
-      document.getElementById(id)?.scrollIntoView({ behavior: "instant" });
-  }, [ready]);
-  useEffect(() => {
-    if (!still) return;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      // During motion, only the displayed movie frame updates captions.
-      present(journeyProgress());
-    };
-    const scroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    window.addEventListener("scroll", scroll, { passive: true });
-    window.addEventListener("resize", scroll);
-    update();
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", scroll);
-      window.removeEventListener("resize", scroll);
-    };
-  }, [present, still]);
-  const panelOpen = panel !== null;
-  useEffect(() => {
-    if (!panelOpen) return;
-    const element = dialog.current!;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    element.showModal();
-    return () => {
-      element.close();
-      document.body.style.overflow = previousOverflow;
-      opener.current?.focus({ preventScroll: true });
-    };
-  }, [panelOpen]);
-  useEffect(() => {
-    if (panel) {
-      const section = document.getElementById(panel);
-      const scroller = dialog.current?.querySelector(".panel-scroll");
-      if (section && scroller)
-        scroller.scrollTop +=
-          section.getBoundingClientRect().top -
-          scroller.getBoundingClientRect().top -
-          24;
-    }
-  }, [panel]);
+  const headerRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (!menu) return;
-    navigation.current
-      ?.querySelector<HTMLAnchorElement>("a")
-      ?.focus({ preventScroll: true });
-    const outside = (event: PointerEvent) => {
-      const target = event.target as Node;
-      if (
-        !navigation.current?.contains(target) &&
-        !menuButton.current?.contains(target)
-      )
-        setMenu(false);
-    };
-    const escape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+    navigation.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    const dismiss = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
         setMenu(false);
         menuButton.current?.focus();
       }
     };
-    document.addEventListener("keydown", escape);
+    const outside = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setMenu(false);
+    };
+    document.addEventListener("keydown", dismiss);
     document.addEventListener("pointerdown", outside);
     return () => {
-      document.removeEventListener("keydown", escape);
+      document.removeEventListener("keydown", dismiss);
       document.removeEventListener("pointerdown", outside);
     };
   }, [menu]);
-  function navigate(event: MouseEvent<HTMLDivElement>) {
-    const link = (event.target as Element).closest<HTMLAnchorElement>(
-      'a[href^="#"]',
-    );
-    if (
-      !link ||
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey
-    )
-      return;
-    const id = link.hash.slice(1);
-    setMenu(false);
-    if (id in detailTitles) {
-      event.preventDefault();
-      if (!panel)
-        opener.current =
-          menu && link.closest(".main-nav") ? menuButton.current : link;
-      history.pushState(null, "", `#${id}`);
-      setPanel(id as Detail);
-    } else if (panel) setPanel(null);
-  }
   return (
-    <div className={`site ${ready ? "is-ready" : ""}`} onClick={navigate}>
+    <div className="site">
       <a className="skip" href="#o-nama">
         Preskoči na sadržaj
       </a>
-      <Experience
-        still={still}
-        active={active}
-        onFail={fail}
-        onFrame={onFrame}
-      />
-      <header className="header">
+      <header
+        className="header"
+        ref={headerRef}
+        onClick={(event) => {
+          if ((event.target as Element).closest("a")) setMenu(false);
+        }}
+      >
         <a href="#vizija" className="brand" aria-label="Adduco — početna">
           <Wordmark />
         </a>
@@ -391,135 +99,12 @@ export default function App() {
           <span aria-hidden="true">+</span>
         </button>
       </header>
-      <main id="sadrzaj" className="journey">
-        {chapters.map((chapter, i) => {
-          const visible = captions.visible === i;
-          return (
-            <section
-              key={chapter.id}
-              id={chapter.id}
-              className={`chapter ${i === 0 ? "hero" : ""}`}
-              aria-labelledby={`title-${chapter.id}`}
-            >
-              <div
-                className="chapter-content"
-                inert={ready && !visible}
-                style={
-                  {
-                    "--caption-opacity": visible ? 1 : 0,
-                    "--caption-drift": visible
-                      ? "0px"
-                      : captions.passed >= i
-                        ? "-10px"
-                        : "10px",
-                  } as CSSProperties
-                }
-              >
-                <p className="eyebrow">
-                  {i === 0 ? "ADDUCO · GRAĐEVINARSTVO" : chapter.label}
-                </p>
-                {i === 0 ? (
-                  <h1 id={`title-${chapter.id}`}>{chapter.title}</h1>
-                ) : (
-                  <h2 id={`title-${chapter.id}`}>{chapter.title}</h2>
-                )}
-                <p className="chapter-copy">
-                  {i === 0 ? (
-                    <>
-                      Visokogradnja i niskogradnja.
-                      <br />
-                      Betonski radovi i prometnice.
-                    </>
-                  ) : (
-                    chapter.caption
-                  )}
-                </p>
-                <a
-                  className="text-link"
-                  href={["#o-nama", "#usluge", "#usluge", "#kontakt"][i]}
-                >
-                  {
-                    [
-                      "Upoznajte Adduco",
-                      "Istražite usluge",
-                      "Istražite usluge",
-                      "Razgovarajmo o vašem projektu",
-                    ][i]
-                  }
-                  <Arrow diagonal />
-                </a>
-              </div>
-            </section>
-          );
-        })}
-      </main>
-      {!ready && (
-        <div className="business-library">
+      <main id="sadrzaj">
+        <SceneJourney />
+        <div className="business-content">
           <BusinessContent />
         </div>
-      )}
-      <div className="journey-meta">
-        <span>METKOVIĆ, HRVATSKA</span>
-        <a href={active === 3 ? "#vizija" : `#${chapters[active + 1].id}`}>
-          {active === 3
-            ? "Povratak na početak ↑"
-            : "Pomaknite se i zakoračite u priču ↓"}
-        </a>
-      </div>
-      <div className="journey-dock">
-        <nav aria-label="Poglavlja priče">
-          {chapters.map((c, i) => (
-            <a
-              key={c.id}
-              href={`#${c.id}`}
-              aria-label={`${String(i + 1).padStart(2, "0")} ${c.name}`}
-              aria-current={active === i ? "step" : undefined}
-            >
-              <span>0{i + 1}</span>
-              <span className="dock-name">{c.name}</span>
-              <i />
-            </a>
-          ))}
-        </nav>
-        <button className="mode-button" onClick={() => setStill(!still)}>
-          <span className="mode-icon" aria-hidden="true">
-            {still ? "▶" : "Ⅱ"}
-          </span>
-          <span>{still ? "Pokreni animaciju" : "Zaustavi animaciju"}</span>
-        </button>
-      </div>
-      {ready && (
-        <dialog
-          ref={dialog}
-          className="detail-panel"
-          aria-label={panel ? detailTitles[panel] : undefined}
-          onCancel={(e) => {
-            e.preventDefault();
-            closePanel();
-          }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) closePanel();
-          }}
-        >
-          <div className="panel-shell">
-            <div className="panel-top">
-              <span className="eyebrow">
-                ADDUCO / {panel ? detailTitles[panel] : ""}
-              </span>
-              <button
-                type="button"
-                onClick={closePanel}
-                className="panel-close"
-              >
-                Natrag u priču <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div className="panel-scroll">
-              <BusinessContent active={panel} />
-            </div>
-          </div>
-        </dialog>
-      )}
+      </main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

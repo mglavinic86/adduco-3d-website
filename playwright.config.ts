@@ -6,21 +6,10 @@ export default defineConfig({
   projects: [
     {
       name: "chrome",
-      testIgnore: "**/webkit-film.spec.ts",
       use: { channel: "chrome" },
     },
     {
       name: "webkit",
-      testMatch: [
-        "**/webkit-film.spec.ts",
-        "**/opening.spec.ts",
-        "**/viewport.spec.ts",
-        "**/interface.spec.ts",
-        "**/loading.spec.ts",
-        "**/resume.spec.ts",
-        "**/rapid-scroll.spec.ts",
-        "**/sequence.spec.ts",
-      ],
       use: {
         browserName: "webkit",
         viewport: { width: 390, height: 844 },

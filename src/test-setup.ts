@@ -20,10 +20,3 @@ globalThis.IntersectionObserver = class {
   disconnect() {}
 } as unknown as typeof IntersectionObserver;
 HTMLElement.prototype.scrollIntoView = vi.fn();
-
-HTMLDialogElement.prototype.showModal = function () {
-  this.setAttribute("open", "");
-};
-HTMLDialogElement.prototype.close = function () {
-  this.removeAttribute("open");
-};

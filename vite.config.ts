@@ -7,12 +7,4 @@ export default defineConfig({
     setupFiles: ["./src/test-setup.ts"],
     include: ["src/**/*.test.tsx"],
   },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: (id: string) =>
-          id.includes("/three/") ? "three" : undefined,
-      },
-    },
-  },
 });
