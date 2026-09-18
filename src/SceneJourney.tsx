@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { attachSceneGestures } from "./sceneGestures";
+import { prepareNativeSequence } from "./nativePreparation";
 import { Arrow } from "./ui";
 import { scenes, sceneMedia, sceneStill } from "./scenes";
 
@@ -115,7 +116,22 @@ export default function SceneJourney() {
       }
       return film;
     };
+    const preparation = prepareNativeSequence(
+      [
+        "1-forward",
+        "2-forward",
+        "1-reverse",
+        "3-forward",
+        "2-reverse",
+        "3-reverse",
+      ].map((key) => films.find((clip) => clip.key === key)!),
+      prepare,
+      () => !disposed && !stillOnly(),
+    );
     const prepareAdjacent = () => {
+      // The observer remains a fallback before readiness / after preparation.
+      // Explicit user requests can always prepare their own film immediately.
+      if (preparation.active()) return;
       for (const clip of films) {
         if (
           (clip.direction === "forward" && clip.segment === scene + 1) ||
@@ -274,6 +290,7 @@ export default function SceneJourney() {
       if (document.hidden) interrupt();
     };
     const rotate = () => {
+      preparation.reset();
       interrupt(undefined, hashes.includes(location.hash) || !location.hash);
       for (const { video: film } of films) {
         if (!film.hasAttribute("src")) continue;
@@ -284,6 +301,10 @@ export default function SceneJourney() {
     };
     const preference = () => {
       if (stillOnly()) interrupt();
+      else {
+        preparation.resume();
+        observeScene();
+      }
     };
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting && pending) interrupt();
@@ -308,6 +329,7 @@ export default function SceneJourney() {
     else settle(scene, null, false);
     return () => {
       disposed = true;
+      preparation.dispose();
       cancelHandoff();
       clearTimeout(timer);
       clearBuffer();

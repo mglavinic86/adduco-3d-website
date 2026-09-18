@@ -1,5 +1,12 @@
 # Vertical implementation slices
 
+## Native preparation — 18 September 2026
+
+- NP1 — implemented and focused browser tests pass: retain the six native video elements; after the first canplaythrough, fully buffer one movie at a time in the approved order. Reuse those elements for playback. No fetch/preload bridge or media changes.
+- NP2 — verified: matching HTML preload and picture selection in both orientations and engines; only the correct opening image is requested. Reversing measurement order moves the slow first response to landscape as well. The prior portrait timing difference is not an orientation-selection failure; response latency before frontend execution remains separately reported.
+- NP3 — local verification complete: all134 applicable browser cases pass across the full run and updated-expectation rerun; four expected skips. Local4G later starts13.3ms portrait /12.1ms landscape; complete transfers under5MB. Live movie-payload and timing measurement follows publication. Gate 1 gestures, early captions, still fallbacks and navigation are preserved.
+- NP4 — authorized: publish through the existing public Sites project, then measure on the actual live URL. Report slow initial responses honestly. The optional tempo experiment and Batch 2 are outside this pass.
+
 ## Cold-load ordering — 18 September 2026
 
 - CL1 — complete locally: orientation-specific high-priority HTML opening preloads; tiny inline blurred artwork; no-hydration browser coverage. The image request precedes the module. Gate 1 runtime, accepted media, captions and DESIGN.md are unchanged.

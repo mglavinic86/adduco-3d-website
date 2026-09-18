@@ -47,7 +47,7 @@ test("one fresh gesture per transition reaches all four scenes and returns throu
   }
 });
 
-test("later films load only next to the current scene and do not play on arrival", async ({
+test("prepared later films stay paused and playback reuses their media", async ({
   page,
 }) => {
   const requested: string[] = [];
@@ -56,11 +56,14 @@ test("later films load only next to the current scene and do not play on arrival
   });
   await page.goto("/");
   await page.waitForLoadState("networkidle");
-  expect(requested.length).toBeGreaterThan(0);
+  expect(new Set(requested).size).toBe(6);
+  const preparedRequests = requested.length;
   expect(
-    requested.every(
-      (url) => url.includes("/transition-1/") && url.endsWith("-forward.mp4"),
-    ),
+    await page
+      .locator("video")
+      .evaluateAll((videos: HTMLVideoElement[]) =>
+        videos.every((v) => v.paused && v.currentTime === 0),
+      ),
   ).toBe(true);
   await page.keyboard.press("PageDown");
   await expect(page.getByRole("heading", { name: captions[1] })).toBeVisible({
@@ -70,12 +73,7 @@ test("later films load only next to the current scene and do not play on arrival
     page.locator('video[data-transition="1"][data-direction="forward"]'),
   ).toHaveJSProperty("ended", true);
   await page.waitForLoadState("networkidle");
-  expect(
-    requested.some(
-      (url) => url.includes("/transition-2/") && url.endsWith("-forward.mp4"),
-    ),
-  ).toBe(true);
-  expect(requested.some((url) => url.includes("/transition-3/"))).toBe(false);
+  expect(requested.length).toBe(preparedRequests);
   expect(
     await page
       .locator("video")

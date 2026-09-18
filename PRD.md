@@ -1,5 +1,15 @@
 # Adduco — local website
 
+## Native media preparation approved — 18 September 2026
+
+The owner approves replacing the rejected fetch-based warm-up with preparation in the persistent native video elements that actually play the movies. Preserve Gate 1 behavior, three-second films, captions, artwork and DESIGN.md. The opening-image-only slice was published separately as Sites version 20.
+
+- Keep the first clip eager. After its first `canplaythrough`, prepare forward 2, reverse 1, forward 3, reverse 2 and reverse 3 in that exact order, sequentially, using each movie's own `<video preload="auto">`. Start only one background preparation at a time and retain those elements and their buffered media for playback. Do not use fetch, fetch preloads, Blob URLs or scroll seeking. Preserve observer-based preparation as fallback and immediate requested playback; skip background preparation under reduced motion or Data Saver.
+- Verify native transfer in Chrome and WebKit against the sum of the six unchanged on-disk movie sizes for the selected orientation. Distinguish movie payload from HTTP headers/protocol overhead and count repeated payload honestly. Keep the complete-page 5 MB budget.
+- Preparing all six movies before any gesture necessarily supersedes the historical 2 MB limit measured at opening network-idle. Report bytes after background preparation separately from first-paint/first-clip readiness; the complete-page 5 MB limit still applies.
+- Investigate the prior portrait opening measurement of 2.276 s versus landscape 0.752 s. Verify the HTML preload media query, selected picture source/currentSrc, request order and document latency on the actual public URL. Target actual opening image paint within 1.0 s in both orientations on the previously specified cold 4G profile; retain the 2.5 s first-ready and 200 ms cached later-start targets.
+- Publish the verified implementation to the same public Sites project and repeat the timing/transfer table on its live URL. Report lab conditions, uncertainty and any missed target honestly. No Batch 2 work or new media generation. The optional `?tempo=brzo` experiment is not approved in this pass; three-second playback remains unchanged.
+
 ## Cold-load ordering — 18 September 2026
 
 The owner's physical-device test accepts cached Gate 1 playback and identifies initial loading as the remaining issue. Preserve every Gate 1 interaction, all films/stills, captions and DESIGN.md. Optimize discovery and preparation, with behavioral tests and measured cache reuse.

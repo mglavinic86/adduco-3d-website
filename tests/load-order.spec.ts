@@ -1,5 +1,40 @@
 import { test, expect } from "@playwright/test";
 
+for (const [orientation, viewport] of [
+  ["portrait", { width: 390, height: 844 }],
+  ["landscape", { width: 1440, height: 900 }],
+] as const) {
+  test(`${orientation} preload matches the picture selection and requests no opposite opening`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    const openings = new Set<string>();
+    page.on("request", (r) => {
+      if (r.url().endsWith("-start.webp")) openings.add(r.url());
+    });
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
+    const selected = await page
+      .locator(".chapter-still img")
+      .first()
+      .evaluate((img: HTMLImageElement) => ({
+        src: img.currentSrc,
+        portrait: matchMedia("(max-aspect-ratio: 9/10)").matches,
+        preloads: [
+          ...document.querySelectorAll<HTMLLinkElement>(
+            'head link[as="image"]',
+          ),
+        ]
+          .filter((link) => matchMedia(link.media).matches)
+          .map((link) => link.href),
+      }));
+    expect(selected.portrait).toBe(orientation === "portrait");
+    expect(selected.src).toContain(`/${orientation}-start.webp`);
+    expect(selected.preloads).toEqual([selected.src]);
+    expect([...openings]).toEqual([selected.src]);
+  });
+}
+
 test("HTML discovers the orientation still before the deferred bundle and paints without hydration", async ({
   page,
 }) => {

@@ -1,5 +1,38 @@
 # QA — mobile scroll smoothness
 
+## Native video preparation — 18 September 2026
+
+The owner approved preparing the persistent native video elements instead of the rejected fetch/cache bridge and explicitly authorized public publication. The opening-image slice below had already been published separately as Sites version20. DESIGN.md, captions, all accepted media and three-second playback remain unchanged. No tempo variant or Batch2 implementation is included.
+
+After opening `canplaythrough`, the sequence is forward2, reverse1, forward3, reverse2, reverse3. Each element retains its own source and buffer and stays paused until requested. Only one background movie prepares at a time. The queue waits for the complete native buffered range before advancing: `canplaythrough` predicts uninterrupted playback, rather than proving that the response is complete. [HTML media readiness specification](https://html.spec.whatwg.org/multipage/media.html#dom-media-have_enough_data)
+
+Reduced motion and Data Saver prevent preparation. Rotation resets the sequence for the selected orientation. Observer preparation remains a fallback and explicit user requests can immediately prepare their movie; background preparation does not block navigation. Gate1's caption timing, 300ms buffer indicator, 6.5s fallback, 150ms reverse settlement and stage-only gestures remain intact.
+
+### Opening-image diagnosis
+
+The original public measurements were **2,276ms portrait /752ms landscape**. The corresponding HTML-response times were **1,779ms /203ms**: a 1,576ms difference before the browser could discover page assets, versus the 1,524ms difference in image paint. From those responses to image paint, portrait took about497ms and landscape549ms. The portrait asset itself is smaller (115,480 versus167,214 bytes).
+
+Actual browser checks at390×844 and1440×900 in both Chrome and WebKit confirm: the portrait media query matches only the portrait viewport, exactly one opening preload matches, picture `currentSrc` equals that preload, and no opposite-orientation opening image is requested. The correct selected source is `transition-1/portrait-start.webp` on portrait. No image/source change was needed.
+
+Repeated public version20 4G sampling found portrait paint688/692ms after a slow first sample, and landscape744/756/748ms. Reversing the order produced a slow **landscape** first sample: paint3712ms, HTML response1801.8ms, with requestStart28.6ms and connection establishment ending28.5ms. Subsequent samples were portrait904/792ms and landscape748ms. Thus the slow response is not caused by portrait selection. It occurs before application execution in the document/asset delivery path; these observations do not identify its exact hosting-side cause. An HTML response arriving after1s prevents a1s full-resolution image target on that navigation, regardless of frontend preloading. Do not hide this outlier behind a median or claim the target always passes.
+
+The earlier diagnostic could overwrite its image-paint value if Element Timing emitted another entry. The current script retains the first positive renderTime and every entry, plus full Navigation Timing and selected source/preload evidence. The landscape-first diagnostic recorded one entry, so its3712ms result is not an overwrite artifact.
+
+### Pre-publication verification
+
+Cold local Chrome DevTools4G lab profile: 1,012,500B/s down,168,750B/s up,165ms latency; no CPU throttle; fresh contexts with caching allowed after navigation. One sample/orientation. Localhost timing is not published-page acceptance evidence.
+
+| Format | Opening image paint (ms) | First canplaythrough (ms) | Worst later gesture→playing (ms) | Complete journey transfer (bytes) |
+| --- | ---: | ---: | ---: | ---: |
+| portrait | 636 | 872.9 | 13.3 | 4,083,851 |
+| landscape | 724 | 911.1 | 12.1 | 4,680,527 |
+
+The independent local cache-disabled regression, including mobile menu and all business sections, records **3,722,023 prepared-opening /4,186,219 complete bytes portrait** and **4,158,274 /4,783,022 landscape**. The optional PDF is excluded. All-six-video preparation before any gesture intentionally supersedes the historical2MB network-idle opening limit; the complete-page5MB limit passes. Report first paint/readiness separately from a fully prepared idle opening.
+
+TDD: delaying forward2 reproduced the absence of preparation in both engines, then verified the exact sequence with no third request while that response was held. Added tests cover orientation replacement, no autoplay, selected-image correctness and reuse without requests on playback. The final138-case inventory comprises **134 passing cases and four expected WebKit skips**, verified by a132-pass full run followed by a2-pass focused rerun after updating the old adjacent-only loading expectation to the owner's newly approved all-six preparation. Both logs are retained; the earlier obsolete assertions are not hidden. Typecheck, ESLint, four unit tests and production/SSR build pass. Screenshots at390/768/1440 were inspected; header/exit and original caption composition are preserved. Artifact audit passes with the existing optional CLAUDE.md warning.
+
+Evidence directory: `/Users/mato/.codex/visualizations/2026/09/15/01a0a34a-e6c7-7e73-8127-ac8e619655f2/native-preparation-2026-09-18/`. Published timing and exact Chrome/WebKit movie-payload measurements will be recorded here after the authorized release. The payload ceilings are **3,407,812 bytes portrait /3,792,329 bytes landscape**, the exact sums of the six unchanged MP4 files; HTTP/protocol overhead is reported separately from movie payload.
+
 ## Cold-load ordering — 18 September 2026 (stopped before publication)
 
 **Release status: not published.** The requested fetch-based cache warming is not reusable by native media in the tested WebKit engine. Its measured video bodies alone exceed the 5,000,000-byte budget. Following the owner's explicit stop condition, only the safe opening-image slice is implemented locally. No head video fetch or five-clip fetch queue is shipped. All Gate 1 player/input/fallback behavior, accepted films/stills, captions and DESIGN.md remain unchanged. The existing public Gate 1 release (Sites version 19) remains live.

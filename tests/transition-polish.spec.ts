@@ -484,10 +484,18 @@ for (const width of [390, 768, 1440]) {
   });
 }
 
-test("opening requests one scene still and one film; later stills wait for navigation", async ({
+test("opening requests one still and only the first film until ready; later stills wait for navigation", async ({
   page,
 }, testInfo) => {
   const requests: { url: string; startMs: number; endMs?: number }[] = [];
+  let release!: () => void;
+  const held = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/transition-1/*-forward.mp4", async (route) => {
+    await held;
+    await route.continue();
+  });
   const started = Date.now();
   page.on("request", (r) => {
     if (/\/transition-\d\//.test(r.url()))
@@ -497,18 +505,34 @@ test("opening requests one scene still and one film; later stills wait for navig
     const item = requests.find((item) => item.url === r.url() && !item.endMs);
     if (item) item.endMs = Date.now() - started;
   });
-  await page.goto("/");
-  await page.waitForLoadState("networkidle");
-  await writeFile(
-    `/tmp/adduco-batch1-waterfall-${testInfo.project.name}.json`,
-    JSON.stringify(requests, null, 2),
-  );
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect
+    .poll(() => requests.some((r) => r.url.endsWith(".mp4")))
+    .toBe(true);
   expect(
     new Set(requests.filter((r) => r.url.endsWith(".webp")).map((r) => r.url))
       .size,
   ).toBe(1);
   expect(
     new Set(requests.filter((r) => r.url.endsWith(".mp4")).map((r) => r.url))
+      .size,
+  ).toBe(1);
+  release();
+  await expect
+    .poll(
+      () =>
+        new Set(
+          requests.filter((r) => r.url.endsWith(".mp4")).map((r) => r.url),
+        ).size,
+    )
+    .toBe(6);
+  await page.waitForLoadState("networkidle");
+  await writeFile(
+    `/tmp/adduco-native-waterfall-${testInfo.project.name}.json`,
+    JSON.stringify(requests, null, 2),
+  );
+  expect(
+    new Set(requests.filter((r) => r.url.endsWith(".webp")).map((r) => r.url))
       .size,
   ).toBe(1);
   for (const image of await page.locator(".chapter-still img").all()) {

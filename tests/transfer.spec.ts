@@ -30,9 +30,10 @@ for (const orientation of ["portrait", "landscape"] as const) {
     await page.waitForLoadState("networkidle");
     const sum = () =>
       [...requests.values()].reduce((sum, r) => sum + r.bytes, 0);
-    const firstViewBytes = sum();
-    if (orientation === "portrait")
-      expect(firstViewBytes).toBeLessThanOrEqual(2_000_000);
+    // All six movies now warm before the first gesture, by owner approval.
+    // Network-idle measures that complete preparation, not first visible paint.
+    const preparedOpeningBytes = sum();
+    expect(preparedOpeningBytes).toBeLessThanOrEqual(5_000_000);
     if (orientation === "portrait") {
       await page.getByRole("button", { name: "Otvori izbornik" }).click();
       await page.evaluate(() => document.fonts.ready);
@@ -75,7 +76,7 @@ for (const orientation of ["portrait", "landscape"] as const) {
     const movies = [...requests.values()].filter((r) => r.url.endsWith(".mp4"));
     const report = {
       orientation,
-      firstViewBytes,
+      preparedOpeningBytes,
       currentPageBytes,
       scope:
         "All four scenes, all three forward and reverse films, mobile menu and every business section.",
@@ -86,7 +87,7 @@ for (const orientation of ["portrait", "landscape"] as const) {
       JSON.stringify(report, null, 2),
     );
     console.log(
-      JSON.stringify({ orientation, firstViewBytes, currentPageBytes }),
+      JSON.stringify({ orientation, preparedOpeningBytes, currentPageBytes }),
     );
     expect(currentPageBytes).toBeLessThanOrEqual(5_000_000);
     expect(new Set(movies.map((r) => r.url)).size).toBe(6);
