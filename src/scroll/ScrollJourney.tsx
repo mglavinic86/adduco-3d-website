@@ -123,6 +123,7 @@ function DirectScroll({
       seeking: false,
       decoded: Boolean(film && film.readyState >= 2),
       frame: 0,
+      bootstrap: 0,
       raf: 0,
       requested: -1,
       painted: false,
@@ -281,13 +282,30 @@ function DirectScroll({
       };
       const failed = () => error(i);
       const loaded = () => {
-        state.decoded = true;
+        if (typeof state.film?.requestVideoFrameCallback !== "function")
+          state.decoded = true;
         if (state.failed) {
           state.failed = false;
           state.requested = -1;
         }
         scroll();
       };
+      // WebKit may coalesce a seek made in loadeddata with the initial frame.
+      // Let that first frame reach the compositor, then seek on the next tick.
+      if (
+        !state.decoded &&
+        state.film &&
+        typeof state.film.requestVideoFrameCallback === "function"
+      ) {
+        state.bootstrap = state.film.requestVideoFrameCallback(() => {
+          if (disposed) return;
+          state.bootstrap = 0;
+          state.decoded = true;
+          state.raf = requestAnimationFrame(() => {
+            if (!disposed) scroll();
+          });
+        });
+      }
       state.film?.addEventListener("loadedmetadata", scroll);
       state.film?.addEventListener("loadeddata", loaded);
       state.film?.addEventListener("canplay", seek);
@@ -362,6 +380,8 @@ function DirectScroll({
       observer?.disconnect();
       states.forEach((state, i) => {
         if (state.frame) state.film?.cancelVideoFrameCallback?.(state.frame);
+        if (state.bootstrap)
+          state.film?.cancelVideoFrameCallback?.(state.bootstrap);
         cancelAnimationFrame(state.raf);
         if (state.film && !state.film.paused) state.film.pause();
         state.film?.removeEventListener("loadedmetadata", scroll);
