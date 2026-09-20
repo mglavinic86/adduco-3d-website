@@ -91,7 +91,7 @@ for (const width of [390, 1440])
                   ? resolve(m.mediaTime)
                   : v.requestVideoFrameCallback(watch);
               v.requestVideoFrameCallback(watch);
-              scrollTo(0, ([0.3, 3.2, 6.1][i] + 2.1 * p) * h);
+              scrollTo(0, ([0.25, 2.55, 4.85][i] + 1.65 * p) * h);
             }),
           );
         }

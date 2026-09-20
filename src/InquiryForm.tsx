@@ -6,8 +6,21 @@ export default function InquiryForm() {
     null,
   );
   const resultRef = useRef<HTMLDivElement>(null);
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "error">(
+    "idle",
+  );
+  async function copyDraft() {
+    if (!draft) return;
+    try {
+      await navigator.clipboard.writeText(draft.body);
+      setCopyState("copied");
+    } catch {
+      setCopyState("error");
+    }
+  }
   function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setCopyState("idle");
     const form = e.currentTarget;
     const data = new FormData(form);
     const values = Object.fromEntries(
@@ -84,6 +97,7 @@ export default function InquiryForm() {
       onSubmit={submit}
       onChange={() => {
         if (draft) setDraft(null);
+        if (copyState !== "idle") setCopyState("idle");
       }}
       noValidate
     >
@@ -121,6 +135,20 @@ export default function InquiryForm() {
           <a href={draft.href}>
             Otvorite e-poštu <span aria-hidden="true">↗</span>
           </a>
+          <button
+            className="outline-button copy-draft"
+            type="button"
+            onClick={copyDraft}
+          >
+            Kopirajte upit
+          </button>
+          {copyState !== "idle" && (
+            <p>
+              {copyState === "copied"
+                ? "Upit je kopiran. Zalijepite ga u svoju e-poštu."
+                : "Kopiranje nije dostupno. Označite i kopirajte tekst upita iznad."}
+            </p>
+          )}
           <p>
             Ako nemate aplikaciju za e-poštu, kopirajte tekst i pošaljite ga na
             adduco@adduco.hr.

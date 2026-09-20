@@ -33,7 +33,10 @@ test("later films remain unrequested until approaching their transitions", async
   await expect(
     page.getByRole("heading", { name: "Gradimo u visinu." }),
   ).toBeVisible();
-  expect(requests.some((x) => x.includes("segment-2"))).toBe(true);
+  // The immediate caption is independent of the following native request.
+  await expect
+    .poll(() => requests.some((x) => x.includes("segment-2")))
+    .toBe(true);
 });
 test("reduced motion supports every scene and requests no movies", async ({
   page,
@@ -77,7 +80,7 @@ for (const width of [390, 768, 1440]) {
         ({ i, fraction }) =>
           window.scrollTo(
             0,
-            ([0.3, 3.2, 6.1][i] + fraction * 2.1) *
+            ([0.25, 2.55, 4.85][i] + fraction * 1.65) *
               document.querySelector<HTMLElement>(".chapter")!.clientHeight,
           ),
         { i, fraction },
@@ -117,7 +120,7 @@ test("a cold requested film keeps outgoing copy, shows buffering, and settles af
   await page.evaluate(() =>
     scrollTo(
       0,
-      2.4 * document.querySelector<HTMLElement>(".chapter")!.clientHeight,
+      1.9 * document.querySelector<HTMLElement>(".chapter")!.clientHeight,
     ),
   );
   await expect(

@@ -3,7 +3,7 @@ html.scroll {
   scroll-behavior: auto;
 }
 .scroll-track {
-  height: 1020svh;
+  height: 820svh;
   position: relative;
 }
 .scroll-anchor {
@@ -31,7 +31,7 @@ html.scroll {
   z-index: -2;
 }
 .scroll-caption {
-  transition: none;
+  transition: opacity 160ms linear;
 }
 .scroll-caption[aria-hidden="true"] {
   visibility: hidden;
@@ -39,6 +39,12 @@ html.scroll {
 }
 .scroll-stage .chapter-wash {
   pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-caption {
+    transition: none;
+  }
 }
 
 .sr-only {

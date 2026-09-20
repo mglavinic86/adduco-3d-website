@@ -130,7 +130,7 @@ for (const profile of ["local", "4g-cpu4"])
           (i) =>
             scrollTo(
               0,
-              ([0.3, 3.2, 6.1][i] - 0.5) *
+              ([0.25, 2.55, 4.85][i] - 0.5) *
                 document.querySelector<HTMLElement>(".chapter")!.clientHeight,
             ),
           i,
@@ -148,7 +148,7 @@ for (const profile of ["local", "4g-cpu4"])
       const movement = await page.evaluate(async () => {
         const films = [...document.querySelectorAll("video")];
         const h = document.querySelector<HTMLElement>(".chapter")!.clientHeight;
-        const starts = [0.3, 3.2, 6.1];
+        const starts = [0.25, 2.55, 4.85];
         const samples = [];
         for (const i of [0, 1, 2, 1, 0])
           for (const p of [0.25, 0.8, 0.2, 0.6]) {
@@ -171,7 +171,7 @@ for (const profile of ["local", "4g-cpu4"])
                 } else v.requestVideoFrameCallback(watch);
               };
               v.requestVideoFrameCallback(watch);
-              scrollTo(0, (starts[i] + 2.1 * p) * h);
+              scrollTo(0, (starts[i] + 1.65 * p) * h);
             });
             samples.push({ segment: i, progress: p, latency });
           }

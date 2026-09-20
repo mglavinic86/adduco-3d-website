@@ -1,7 +1,7 @@
 {
   "name": "adduco-3d-website",
   "version": "1.0.0",
-  "description": "",
+  "description": "Adduco construction website with an accessible cinematic scroll journey and sourced project records.",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build && vite build --ssr src/prerender.tsx --outDir .prerender && node .prerender/prerender.js",
@@ -12,8 +12,8 @@
     "test:e2e": "playwright test"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "ADDUCO d.o.o.",
+  "license": "UNLICENSED",
   "dependencies": {
     "@fontsource/manrope": "^5.3.0",
     "react": "^19.3.0",

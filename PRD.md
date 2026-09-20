@@ -1,5 +1,19 @@
 # Adduco — local website
 
+## Finishing pass while real photography is pending — 20 September 2026
+
+The owner authorizes polishing, optimizing and upgrading the accepted site while obtaining real project photographs. Reuse the agreed dark direction, all original films, logo, Croatian company claims and direct-scroll A. DESIGN.md remains unchanged; this focused pass does not reopen concepts or spend generation credits. Existing public Sites and GitHub-main release authorization continues.
+
+Visitor outcomes and acceptance, through the existing rendered-page, native-media/request and inquiry seams:
+1. Visitors arriving directly at business sections can read and contact Adduco without downloading cinema movies; returning to the stage starts the correct orientation/codec and all scenes remain usable.
+2. Camera travel remains immediately reversible, with reading holds. Reduce total cinematic scroll distance by about 20% without discarding source frames. At a stopped position the relevant caption is fully readable, never permanently half-transparent. Caption changes continue to follow actually displayed frames.
+3. Preserve high-priority opening art and pre-rendered content; prioritize Croatian font subsets and measure cold delivery. Do not claim reduced movie bytes or a hosting latency guarantee when the media is unchanged.
+4. An inquiry remains a reviewable mailto draft until a real delivery endpoint is supplied. Visitors can copy that draft in one action, with honest success/failure feedback and no false sent state. Add no external service, tracking or persistence of inquiry data.
+5. Prepare the two sourced projects as structured content with honest photography-pending presentation and no generated/stock portfolio substitutes. Improve existing responsive readability within the current visual contract.
+6. Browser regression checks run in CI. Validate local Chrome/WebKit, 390/768/1440, cold and warm navigation, reduced motion, delivery failure, inquiry/PDF and no-range hosting before publication. Report live results separately from local lab measurements.
+
+Missing owner inputs remain real photographs, delivery endpoint/recipient confirmation and final legal/privacy details. Do not invent any of them or enable search indexing as part of this finishing pass.
+
 ## Sites delivery correction — 20 September 2026
 
 Public verification of the complete A release reproduced a host-specific failure: Sites returns HTTP200 to movie Range requests and Chrome reports a zero-length seekable interval. The previous functional publication was restored. The owner has already authorized completing A, public Sites release and GitHub main synchronization; this is a delivery correction within that scope, not a visual or media change.

@@ -89,7 +89,7 @@ for (const orientation of ["portrait", "landscape"]) {
                 } else v.requestVideoFrameCallback(callback);
               };
               v.requestVideoFrameCallback(callback);
-              window.scrollTo(0, (0.3 + progress * 2.1) * h);
+              window.scrollTo(0, (0.25 + progress * 1.65) * h);
             },
           );
           samples.push({ progress, start, buffered, ...frame });

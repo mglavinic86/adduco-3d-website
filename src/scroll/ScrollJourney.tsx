@@ -7,10 +7,10 @@ import { selectScrollCodec, type ScrollCodec } from "./selectMedia";
 export const media = (portrait: boolean, file: string, segment = 0) =>
   `/assets/scroll/${segment ? `segment-${segment + 1}/` : ""}${portrait ? "portrait" : "landscape"}-${file}`;
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
-const starts = [0.3, 3.2, 6.1];
-const anchors = [0, 2.4, 5.3, 8.2];
+const starts = [0.25, 2.55, 4.85];
+const anchors = [0, 1.9, 4.2, 6.5];
 const progressAt = (units: number) =>
-  starts.reduce((sum, start) => sum + clamp((units - start) / 2.1), 0);
+  starts.reduce((sum, start) => sum + clamp((units - start) / 1.65), 0);
 const still = (scene: number, portrait: boolean) =>
   media(portrait, scene ? "end.webp" : "start.webp", Math.max(0, scene - 1));
 
@@ -31,13 +31,16 @@ function usePreference(query: string) {
 export function Captions({
   progress,
   enhanced,
+  settled,
 }: {
   progress: number;
   enhanced: boolean;
+  settled: boolean;
 }) {
   return scenes.map((scene, i) => {
-    const opacity =
-      progress >= i
+    const opacity = settled
+      ? Number(Math.round(progress) === i)
+      : progress >= i
         ? clamp(1 - (progress - i) / 0.35)
         : clamp((progress - i + 0.45) / 0.25);
     const Heading = i === 0 ? "h1" : "h2";
@@ -84,6 +87,14 @@ function DirectScroll({
   const track = useRef<HTMLDivElement>(null);
   const films = useRef<(HTMLVideoElement | null)[]>([]);
   const [progress, setProgress] = useState(0);
+  const [settledProgress, setSettledProgress] = useState(0);
+  // Travel may clear the artwork; a stopped camera must leave readable text.
+  // This finite timer never moves the camera or runs an idle animation loop.
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSettledProgress(progress), 120);
+    return () => clearTimeout(timer);
+  }, [progress]);
+  const settled = settledProgress === progress;
   const [painted, setPainted] = useState<{
     segment: number;
     portrait: boolean;
@@ -100,8 +111,25 @@ function DirectScroll({
     active: boolean;
   } | null>(null);
   const initialized = useRef(false);
+  const [activated, setActivated] = useState(false);
   useEffect(() => {
-    if (stillOnly) return;
+    if (stillOnly || activated) return;
+    // A direct business link must not spend bandwidth on an offscreen world.
+    // Observe the sticky viewport, not its much taller scroll track.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.intersectionRatio >= 0.25)) {
+          setActivated(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(track.current!.querySelector(".scroll-stage")!);
+    return () => observer.disconnect();
+  }, [stillOnly, activated]);
+  useEffect(() => {
+    if (stillOnly || !activated) return;
     let active = true;
     Promise.all([selectScrollCodec(portrait), prepareMediaDelivery()]).then(
       ([value, ready]) => {
@@ -113,7 +141,7 @@ function DirectScroll({
     return () => {
       active = false;
     };
-  }, [portrait, stillOnly]);
+  }, [portrait, stillOnly, activated]);
 
   useEffect(() => {
     const wrapper = track.current!;
@@ -205,6 +233,7 @@ function DirectScroll({
         showFallback();
         return;
       }
+      if (!activated) return;
       if (
         !film ||
         state.seeking ||
@@ -242,8 +271,11 @@ function DirectScroll({
       position.current = {
         units,
         height: h,
-        active: units >= 0 && units < 9.2,
+        active: units >= 0 && units < 7.2,
       };
+      // Keep the retained scene while reading business content. In particular,
+      // hydration at #kontakt must not seek/download the final movie.
+      if (!position.current.active) return;
       target = progressAt(units);
       activeSegment = Math.max(0, Math.min(2, Math.ceil(target) - 1));
       if (stillOnly) showFallback();
@@ -355,16 +387,24 @@ function DirectScroll({
       );
       scroll();
     };
-    const observer = stillOnly
-      ? undefined
-      : new IntersectionObserver(
-          (entries) => {
-            for (const entry of entries)
-              if (entry.isIntersecting)
-                prepare(Number((entry.target as HTMLElement).dataset.prepare));
-          },
-          { rootMargin: "120% 0px" },
-        );
+    const observer =
+      stillOnly || !activated
+        ? undefined
+        : new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries)
+                if (entry.isIntersecting)
+                  prepare(
+                    Number((entry.target as HTMLElement).dataset.prepare),
+                  );
+            },
+            // IntersectionObserver percentages use root WIDTH even vertically.
+            // Use stage-height pixels so a wide desktop does not eagerly load
+            // the second film before the visitor has moved.
+            {
+              rootMargin: `${Math.round(wrapper.querySelector<HTMLElement>(".chapter")!.clientHeight * 1.2)}px 0px`,
+            },
+          );
     wrapper
       .querySelectorAll("[data-prepare]")
       .forEach((el) => observer?.observe(el));
@@ -402,7 +442,7 @@ function DirectScroll({
       window.removeEventListener("hashchange", hash);
       document.removeEventListener("visibilitychange", scroll);
     };
-  }, [stillOnly, codec, portrait, deliveryUnavailable]);
+  }, [stillOnly, codec, portrait, deliveryUnavailable, activated]);
   const scene = fallback ?? 0;
   const visible =
     fallback === undefined && painted?.portrait === portrait
@@ -410,7 +450,7 @@ function DirectScroll({
       : -1;
   return (
     <div ref={track} className="scroll-track">
-      {progress >= 0.2975 && (
+      {(settled ? Math.round(progress) !== 0 : progress >= 0.2975) && (
         <h1 className="sr-only">Od vizije do stvarnosti.</h1>
       )}
       {scenes.map((scene, i) => (
@@ -477,7 +517,7 @@ function DirectScroll({
           />
         ))}
         <div className="chapter-wash" />
-        <Captions progress={progress} enhanced={enhanced} />
+        <Captions progress={progress} enhanced={enhanced} settled={settled} />
         <p className="chapter-hint">Pomaknite se i zakoračite u priču ↓</p>
         <SceneNav progress={progress} />
         {buffering && (

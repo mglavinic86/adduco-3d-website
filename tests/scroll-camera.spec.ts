@@ -295,7 +295,7 @@ test("orientation changes keep the reading and camera position", async ({
   await page.evaluate(() =>
     window.scrollTo(
       0,
-      (0.3 + 0.6 * 2.1) *
+      (0.25 + 0.6 * 1.65) *
         document.querySelector<HTMLElement>(".chapter")!.clientHeight,
     ),
   );

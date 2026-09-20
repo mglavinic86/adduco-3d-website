@@ -1,5 +1,12 @@
 # Vertical implementation slices
 
+## Finishing pass — 20 September 2026
+
+- FP1 — AFK, implemented and focused checks passed: zero-movie direct business visits; native stage return, opening/font priorities and measured loading. Existing browser/network seams.
+- FP2 — AFK, implemented; FP1 satisfied: shorter complete journey and stopped-caption readability; all scenes/reversal and responsive verification.
+- FP3 — AFK, implemented; FP2 satisfied: copyable inquiry draft, structured sourced project records awaiting real photography, responsive finishing and CI browser checks.
+- FP4 — AFK, final verification and release in progress; FP3 satisfied: required checks, computer/browser review, exact source release to the existing public Sites project and GitHub main, live QA and honest report. No new generation.
+
 ## Full A continuation — 20 September 2026
 
 - AC1 — complete: process remaining original portrait/landscape sources with the measured A codecs, record quality and joins; no new AI generation or generation-credit spend.

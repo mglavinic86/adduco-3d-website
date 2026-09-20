@@ -1,3 +1,4 @@
+import ProjectRecords from "./ProjectRecords";
 import InquiryForm from "./InquiryForm";
 import { Arrow, Wordmark } from "./ui";
 export default function BusinessContent() {
@@ -126,74 +127,7 @@ export default function BusinessContent() {
             projekte u kojima je sudjelovao Adduco.
           </p>
         </div>
-        <article className="project-record">
-          <div className="project-index">
-            01<span>METKOVIĆ</span>
-          </div>
-          <div>
-            <span className="eyebrow">PROMETNA INFRASTRUKTURA</span>
-            <h3>
-              Rekonstrukcija
-              <br />
-              Mlinske ulice
-            </h3>
-            <p>
-              Grad Metković u svojem pregledu projekata navodi Adduco kao
-              ugovorenog izvođača rekonstrukcije Mlinske ulice, od spoja s
-              Industrijskom ulicom do graničnog prijelaza Unka.
-            </p>
-            <a
-              className="text-link small"
-              href="https://grad-metkovic.hr/wp-content/uploads/2025/03/Zavrseni-i-odobreni-projekti-u-periodu-od-2021.-2025.-godine.pdf"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Projekt u izvješću Grada <Arrow diagonal />
-            </a>
-          </div>
-          <dl>
-            <dt>Uloga</dt>
-            <dd>Ugovoreni izvođač radova</dd>
-            <dt>Naručitelj</dt>
-            <dd>Grad Metković</dd>
-            <dt>Izvor</dt>
-            <dd>Gradski pregled projekata 2021.–2025.</dd>
-          </dl>
-        </article>
-        <article className="project-record">
-          <div className="project-index">
-            02<span>RABA — DUBA</span>
-          </div>
-          <div>
-            <span className="eyebrow">KOMUNIKACIJSKA INFRASTRUKTURA</span>
-            <h3>
-              Infrastruktura za
-              <br />
-              bolju povezanost
-            </h3>
-            <p>
-              U obavijesti iz svibnja 2026. Adduco i Konektor navedeni su kao
-              izvođači iskopa kabelske kanalizacije na dionici Raba–Duba za
-              razvoj širokopojasne mreže.
-            </p>
-            <a
-              className="text-link small"
-              href="https://metkovic-news.com/news/nocno-zatvaranje-ceste-na-dionici-raba-duba-zbog-radova-na-sirokopojasnoj-mrezi/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Pročitajte obavijest o radovima <Arrow diagonal />
-            </a>
-          </div>
-          <dl>
-            <dt>Uloga</dt>
-            <dd>Sudjelovanje u izvođenju iskopa</dd>
-            <dt>Zahvat</dt>
-            <dd>Kabelska kanalizacija</dd>
-            <dt>Izvor</dt>
-            <dd>Metković NEWS, 20. 5. 2026.</dd>
-          </dl>
-        </article>
+        <ProjectRecords />
       </section>
       <section className="contact-section" id="kontakt">
         <p className="eyebrow">KONTAKT</p>

@@ -1,5 +1,25 @@
 # QA — mobile scroll smoothness
 
+## Finishing pass — 20 September 2026
+
+Scope: owner-authorized polish while real photography is pending. DESIGN.md and every approved cinema asset are byte-for-byte unchanged; no generation or Higgsfield-credit spend. Full source frames, direct native scroll/reversal, reduced-motion/Data Saver fallback and Sites range delivery are retained.
+
+Behavior-first evidence:
+- The new direct-business-entry test first failed with two movie requests (opening and final film). It now verifies zero movie requests at all four business hashes, then actual-frame playback when returning to the stage, in Chrome and WebKit.
+- The stopped-caption test first found zero readable captions midway through travel. It now verifies one fully opaque, actionable caption after a finite120ms settle plus160ms opacity transition; camera position is never eased by that timer.
+- Total cinema track1020svh→820svh (19.6% less scrolling). Source movies and their dimensions/fps/quality are unchanged. Explicit scroll coordinates in camera/rotation/transport tests were updated to the accepted new path; frame-time assertions are unchanged. One existing test asserted a request synchronously after an immediate caption; it now waits for the independent native request before asserting it.
+- First-only media preparation remains; observer distance is expressed in stage-height pixels for consistent portrait/wide-screen approach behavior. Business-page hydration no longer seeks the final movie. Croatian latin-ext400/800 fonts join their Latin preload counterparts.
+- Copy-draft unit test failed before the button existed and now verifies clipboard contents, truthful unsent state and reset after editing. Browser coverage verifies denied clipboard access retains the selectable draft and reports failure. Nothing is submitted externally.
+- The two sourced projects now come from content/projects.json with null unknown year/client fields and empty images. Browser coverage verifies two honest photography-pending labels and zero portfolio images. Existing factual copy and source links are preserved. Body descriptions16px, metadata/form notes13px and footer12px improve readability within DESIGN.md; no added business claims.
+
+Visual computer review: native scroll and reversal, stopped text, direct contact, and project/content views at390,768,1440px. Desktop metadata aligns to the top of each project record. Temporary preview tab and viewport override are removed after review. Automated screenshots and logs are retained outside the repository under /Users/mato/.codex/visualizations/2026/09/20/adduco-finishing/.
+
+Public BEFORE lab, fresh Chrome cache,9Mbps down/1.5Mbps up/85ms latency and CPU4×, including the service-worker network target: portrait opening decode/paint-opportunity upper bound3642ms, first canplaythrough4081ms (HTML first byte1725ms); landscape843ms/1158ms (HTML first byte102ms). This is one sample per orientation, not a percentile or physical-phone result. The image bound is sampled after DOMContentLoaded and is not exact visible first paint. These cold times must not be confused with warmed seeking. Public AFTER results are recorded after the release.
+
+Final local checks:116 browser behavior cases passed in Chrome/WebKit,16 opt-in measurement cases skipped;5 unit tests, typecheck, lint and build passed. The no-range host tests still verify all three films in both directions at390/1440, exact upstream bytes and worker-failure fallback. Browser CI now runs the Chrome project with workers=1.
+
+Pending inputs: actual project photographs and captions; a real delivery endpoint and confirmed recipient before automatic form sending; confirmed legal/privacy details and final production metadata. Current mailto/clipboard draft remains explicitly unsent, no new service or indexing change. Opening latency remains partly host/network-dependent, and full-journey movie payload remains16.45–30.37MB depending on orientation/codec; this pass does not claim media compression savings.
+
 ## Public delivery correction — 20 September 2026
 
 ### Release verified

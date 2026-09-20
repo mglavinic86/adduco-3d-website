@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Rekonstrukcija Mlinske ulice",
+    "location": "Metković",
+    "year": null,
+    "role": "Ugovoreni izvođač radova",
+    "client": "Grad Metković",
+    "images": [],
+    "category": "PROMETNA INFRASTRUKTURA",
+    "caption": "Grad Metković u svojem pregledu projekata navodi Adduco kao ugovorenog izvođača rekonstrukcije Mlinske ulice, od spoja s Industrijskom ulicom do graničnog prijelaza Unka.",
+    "sourceUrl": "https://grad-metkovic.hr/wp-content/uploads/2025/03/Zavrseni-i-odobreni-projekti-u-periodu-od-2021.-2025.-godine.pdf",
+    "sourceLabel": "Projekt u izvješću Grada",
+    "sourceDescription": "Gradski pregled projekata 2021.–2025.",
+    "scope": null
+  },
+  {
+    "title": "Infrastruktura za bolju povezanost",
+    "location": "Raba — Duba",
+    "year": null,
+    "role": "Sudjelovanje u izvođenju iskopa",
+    "client": null,
+    "images": [],
+    "category": "KOMUNIKACIJSKA INFRASTRUKTURA",
+    "caption": "U obavijesti iz svibnja 2026. Adduco i Konektor navedeni su kao izvođači iskopa kabelske kanalizacije na dionici Raba–Duba za razvoj širokopojasne mreže.",
+    "sourceUrl": "https://metkovic-news.com/news/nocno-zatvaranje-ceste-na-dionici-raba-duba-zbog-radova-na-sirokopojasnoj-mrezi/",
+    "sourceLabel": "Pročitajte obavijest o radovima",
+    "sourceDescription": "Metković NEWS, 20. 5. 2026.",
+    "scope": "Kabelska kanalizacija"
+  }
+]

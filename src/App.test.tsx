@@ -3,6 +3,30 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 import App from "./App";
 describe("Investor journey", () => {
+  it("copies the prepared inquiry and clears its confirmation when edited", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.type(screen.getByLabelText("Ime i prezime *"), "Ana Horvat");
+    await user.type(screen.getByLabelText("E-pošta *"), "ana@example.com");
+    await user.type(
+      screen.getByLabelText("O vašem projektu *"),
+      "Izgradnja kuće u Metkoviću.",
+    );
+    await user.click(screen.getByRole("button", { name: "Pripremite upit" }));
+    await user.click(screen.getByRole("button", { name: "Kopirajte upit" }));
+    expect(await navigator.clipboard.readText()).toContain(
+      "Izgradnja kuće u Metkoviću.",
+    );
+    expect(
+      screen.getByText("Upit je kopiran. Zalijepite ga u svoju e-poštu."),
+    ).toBeVisible();
+    expect(screen.getByText(/Upit još nije poslan/)).toBeVisible();
+    await user.type(
+      screen.getByLabelText("O vašem projektu *"),
+      " Novi detalji.",
+    );
+    expect(screen.queryByText(/Upit je kopiran/)).not.toBeInTheDocument();
+  });
   it("explains the business immediately and links directly to a reachable inquiry section", async () => {
     render(<App />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(

@@ -250,7 +250,7 @@ h1 span,
 .section-heading > p,
 .project-record p,
 .process-grid p {
-  font-size: 14px;
+  font-size: 16px;
   color: #c3c9d1;
   max-width: 570px;
   margin-top: 16px;
@@ -391,7 +391,7 @@ h1 span,
   display: grid;
   grid-template-columns: 85px 1fr;
   gap: 10px 20px;
-  font-size: 11px;
+  font-size: 13px;
   border-left: 1px solid #ffffff40;
   padding-left: 18px;
   margin-top: 24px;
@@ -404,7 +404,30 @@ h1 span,
   line-height: 1.6;
 }
 .project-record .small {
-  font-size: 11px;
+  font-size: 13px;
+}
+.project-record .photo-pending {
+  font-size: 13px;
+  color: #c4cfde;
+  border-top: 1px solid #ffffff22;
+  padding-top: 16px;
+  margin-top: 24px;
+}
+.project-photos {
+  margin-top: 24px;
+}
+.project-photos figure {
+  margin: 0 0 24px;
+}
+.project-photos img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.project-photos figcaption {
+  font-size: 13px;
+  margin-top: 8px;
+  color: #c4cfde;
 }
 .contact-section > .eyebrow {
   display: none;
@@ -422,7 +445,7 @@ h1 span,
   letter-spacing: -0.045em;
 }
 .contact-grid p {
-  font-size: 14px;
+  font-size: 16px;
   color: #c3c9d1;
   margin-top: 20px;
 }
@@ -463,7 +486,7 @@ footer .brand-art {
 }
 footer > span,
 footer > a:not(:first-child) {
-  font-size: 9px;
+  font-size: 12px;
   color: #b8c0cb;
 }
 .field {
@@ -522,7 +545,7 @@ footer > a:not(:first-child) {
   margin-top: 8px;
 }
 .form-note {
-  font-size: 11px !important;
+  font-size: 13px !important;
   color: #b8c0cb !important;
   line-height: 1.8;
   margin: 0 !important;
@@ -567,7 +590,7 @@ footer > a:not(:first-child) {
 .form-result pre {
   white-space: pre-wrap;
   font:
-    11px/1.8 Manrope,
+    14px/1.8 Manrope,
     Arial,
     sans-serif;
   color: #c3c9d1;
@@ -579,6 +602,18 @@ footer > a:not(:first-child) {
   border-bottom: 1px solid;
   padding: 10px 0;
   gap: 20px;
+}
+.copy-draft {
+  display: flex;
+  width: 100%;
+  color: inherit;
+  background: transparent;
+  border: 1px solid #ffffff40;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+.copy-draft:hover {
+  background: #ffffff08;
 }
 
 .chapter {
@@ -765,6 +800,7 @@ footer > a:not(:first-child) {
     display: grid;
     grid-template-columns: 180px 1.7fr 1fr;
     gap: 40px;
+    align-items: start;
   }
   .project-index {
     align-items: start;
