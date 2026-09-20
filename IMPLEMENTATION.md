@@ -5,7 +5,7 @@
 - FP1 — AFK, implemented and focused checks passed: zero-movie direct business visits; native stage return, opening/font priorities and measured loading. Existing browser/network seams.
 - FP2 — AFK, implemented; FP1 satisfied: shorter complete journey and stopped-caption readability; all scenes/reversal and responsive verification.
 - FP3 — AFK, implemented; FP2 satisfied: copyable inquiry draft, structured sourced project records awaiting real photography, responsive finishing and CI browser checks.
-- FP4 — AFK, final verification and release in progress; FP3 satisfied: required checks, computer/browser review, exact source release to the existing public Sites project and GitHub main, live QA and honest report. No new generation.
+- FP4 — AFK, complete: public Sites version24 from6626cd8;116 local browser cases,16 live finishing cases,5 unit tests and required checks pass. Four live transfer/frame measurement runs pass with disclosed cold portrait timing misses. GitHub main synchronization includes the release and QA report. FP3 satisfied: required checks, computer/browser review, exact source release to the existing public Sites project and GitHub main, live QA and honest report. No new generation.
 
 ## Full A continuation — 20 September 2026
 

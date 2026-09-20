@@ -2,6 +2,21 @@
 
 ## Finishing pass — 20 September 2026
 
+Published as public Sites version24 from6626cd872e3644aeee23a21213d76927ee6c1191; subsequent report-only commit does not change the public app. All16 finishing-specific browser cases pass on the live URL in Chrome and WebKit, in addition to116 local behavior cases and5 unit tests. The actual in-app public browser also showed the updated projects and advancing video with readable stopped captions.
+
+Live AFTER lab (one fresh-context sample/orientation), same Chrome4G/CPU4× setup as BEFORE, including service-worker throttling; WebKit unthrottled desktop emulation:
+
+| Engine/orientation | Opening bound | First canplaythrough | Warm frame maximum | Full movie payload |
+| --- | ---: | ---: | ---: | ---: |
+| Chrome4G portrait | 2463ms | 2950ms | 34.1ms | 16,448,129B |
+| Chrome4G landscape | 739ms | 1116ms | 51.6ms | 20,905,502B |
+| WebKit portrait | 579ms | 955ms | 34.0ms | 19,243,530B |
+| WebKit landscape | 422ms | 818ms | 35.0ms | 26,014,715B |
+
+All three movies had exactly one upstream body each;15 warmed forward/reverse seeks added zero requests/bytes. No console errors in the four runs. These are movie-body totals, excluding ordinary page assets/protocol overhead. Later samples in this sequential approach were already prepared; they must NOT be represented as arbitrary cold-jump performance. The warm maxima are actual presented-frame callbacks, not scroll-event timestamps. The portrait opening/ready targets of1s/2.5s remain missed in this sample. The lower before/after timing is not attributed entirely to this patch: CDN/document latency varies, and the opening value is a post-DOMContentLoaded upper bound. No physical-phone or universal smoothness claim.
+
+Source-based improvements with directly verified behavior:1020→820svh cinema track; zero movies on a direct business visit; fully readable stopped captions; clipboard success and denied-access recovery. No new footage, lower bitrate or AI-credit spend. Structured photo slots await owner files. GitHub CI includes Chrome browser checks with one worker.
+
 Scope: owner-authorized polish while real photography is pending. DESIGN.md and every approved cinema asset are byte-for-byte unchanged; no generation or Higgsfield-credit spend. Full source frames, direct native scroll/reversal, reduced-motion/Data Saver fallback and Sites range delivery are retained.
 
 Behavior-first evidence:
