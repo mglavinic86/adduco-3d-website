@@ -56,7 +56,7 @@ SCROLL_PERFORMANCE=1 npx playwright test tests/scroll-performance.spec.ts --work
 MOTION_COLD=1 npx playwright test tests/motion-cold.spec.ts --workers=1
 ```
 
-The performance suite reports initial/complete Chrome transfer and actual warm frame latency across all movies. WebKit payload measurements include its native two-byte range probes. Chrome4G uses9Mbps down,1.5Mbps up,85ms latency, CPU4×; WebKit is unthrottled. Cold arbitrary jumps can wait for an unbuffered range and are measured separately. Lab emulation is not physical-phone acceptance.
+The direct-native performance suite reports initial/complete Chrome transfer and actual warm frame latency across all movies on a range-capable preview; its contiguous-buffer assumptions are not a public Sites delivery test. tests/media-delivery.spec.ts separately reproduces the Sites transport and verifies real frames plus exact upstream bytes in both engines. Current public timings and their limitations are in QA.md. WebKit payload measurements include its native two-byte range probes. Chrome4G uses9Mbps down,1.5Mbps up,85ms latency, CPU4×; WebKit is unthrottled. Cold arbitrary jumps can wait for an unbuffered range and are measured separately. Lab emulation is not physical-phone acceptance.
 
 ## Content and publishing
 

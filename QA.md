@@ -2,6 +2,26 @@
 
 ## Public delivery correction — 20 September 2026
 
+### Release verified
+
+Sites version23 is publicly deployed from `e6b12720121fe79c9bf6ea4eaa4a01f8dc384d5f`; that code is on GitHub main. It supersedes the temporary version21 rollback. The live in-app browser now reports a full seekable interval and visibly advances/reverses actual frames. No console errors were recorded in the four complete live measurement runs; contact exits work.
+
+Published-URL lab measurements, fresh browser cache, one complete-journey sample per row. Chrome uses9Mbps/1.5Mbps/85ms and CPU4×. Its page AND service-worker network targets were explicitly throttled; the attached worker URL is recorded in each JSON. WebKit is unthrottled desktop emulation. Opening is an image-decode/two-frame upper bound sampled after DOMContentLoaded, not a filmstrip-exact first-paint timestamp. First-ready is canplaythrough, not a complete download.
+
+| Live profile | Opening bound | First ready | Warm maximum | First-movie payload | All-movie payload |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Chrome4G portrait | 2,379ms | 3,157ms | 34.1ms | 5,846,920B | 16,448,129B |
+| Chrome4G landscape | 949ms | 1,141ms | 49.4ms | 6,620,349B | 20,905,502B |
+| WebKit portrait | 499ms | 801ms | 35ms | 6,990,223B | 19,243,530B |
+| WebKit landscape | 398ms | 1,406ms | 36ms | 8,855,012B | 26,014,715B |
+
+Every movie had exactly one upstream fetch with the exact encoded body size. The15 warm seeks across all movies, including reversals, added zero upstream movie requests or bytes. These columns are movie payload only, not full-page network totals; other assets and protocol overhead remain additional. The adapter's counters measure fetched response body bytes, independently corroborated by origin request/byte counts in the no-range test fixture. Native internal range responses are not counted as additional network downloads.
+
+A second cold opening sample was slower: portrait bound3,597ms/first-ready2,725ms (HTML first response1,743ms); landscape2,008ms/2,496ms (HTML first response85ms). All samples are retained. Therefore the old opening≤1s/first-ready≤2.5s targets are NOT consistently met on public Sites. The image bound can include time spent waiting for the deferred application before measurement begins; it is not proof that the image stayed invisible for that whole interval. There is no physical-device or perfect-smoothness claim.
+
+Cold direct jumps to previously unrequested later films took2.27–4.03s portrait and2.21–2.56s landscape under4G, versus the≤50ms warm frame result. The test deliberately bypasses normal approach-triggered preparation, but its wait is real. Quality, network transfer and uncached jumps remain a trade-off; do not describe warm response as universal cold performance. No new generation or media re-encoding was needed for this delivery correction.
+
+
 Complete A was pushed to GitHub main and published as Sites version22 from21d3c62. Public verification then failed Chrome actual-frame reveal/reversal despite passing locally: Sites returned HTTP200 to Range requests and the video reported seekable[0,0]. WebKit's equivalent two checks passed. The full-buffer performance fixture also failed; no public-after performance figures are claimed from that failed run. Version21 was successfully restored while fixing delivery. The earlier local numbers remain local evidence only.
 
 A controlled chunked HTTP200/no-range server reproduced the zero-time seek in Chrome for AV1, HEVC and H.264, with and without Content-Length. A narrowly scoped same-origin service worker now serves byte ranges progressively from one upstream fetch per movie. It neither intercepts nor caches HTML, forms or navigation. No Blob URLs, external services, new media or generation. Compressed completed entries use a48MiB LRU retention target; active streams are not evicted, and browser decoder/HTTP-cache memory is separate. The fixed immutable media revision avoids stale source reuse. Failed registration leaves artwork and normal content navigation usable.
