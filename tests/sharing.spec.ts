@@ -6,7 +6,7 @@ test("link previews have complete Croatian metadata and a reachable image withou
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto("http://127.0.0.1:5184/");
+  await page.goto(process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:5184/");
   const title = await page.title();
   await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
     "content",

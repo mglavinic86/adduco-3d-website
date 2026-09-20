@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import SceneJourney from "./SceneJourney";
+import ScrollJourney from "./scroll/ScrollJourney";
 import BusinessContent from "./BusinessContent";
 import { Arrow, Wordmark } from "./ui";
 
@@ -100,7 +100,7 @@ export default function App() {
         </button>
       </header>
       <main id="sadrzaj">
-        <SceneJourney />
+        <ScrollJourney />
         <div className="business-content">
           <BusinessContent />
         </div>

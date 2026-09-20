@@ -1,4 +1,4 @@
-node_modules/
+node_modules
 dist/
 .prerender/
 test-results/

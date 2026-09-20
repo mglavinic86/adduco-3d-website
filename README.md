@@ -1,93 +1,64 @@
 # Adduco — Filmska šetnja
 
-Croatian construction-company website built with React, TypeScript and Vite. Essential content is built into HTML before hydration. Three cinematic transitions connect four stationary scenes using separate native forward/reverse MP4s. One deliberate vertical gesture starts one complete three-second film, with the next caption appearing halfway through playback and remaining at the ending. Business content follows in ordinary document sections. The owner accepted the first transition and authorized completing the public release.
+Croatian construction-company website built with React, TypeScript and Vite. Pre-rendered essential HTML, four cinematic scenes with native vertical scroll controlling three high-quality films, readable caption holds, and ordinary business sections below the journey. Scroll forward, stop, or reverse without a three-second gesture lock. The approved artwork, captions and original logo are unchanged.
 
-**Live website:** [adduco-crveni-monolit.mglavinic.chatgpt.site](https://adduco-crveni-monolit.mglavinic.chatgpt.site/).
+**Public website:** [Adduco](https://adduco-crveni-monolit.mglavinic.chatgpt.site/).
 
 ## Run
 
-Requirements: Git, Node.js **22.22.0** (pinned in `.nvmrc`) and npm. With nvm, run `nvm install` and `nvm use` after cloning.
+Use Node22.22.0 (see .nvmrc), npm and Git. No runtime API keys or Higgsfield account are required.
 
 ```sh
-git clone https://github.com/mglavinic86/adduco-3d-website.git
-cd adduco-3d-website
 npm ci
 npm run dev -- --port 5184 --strictPort
 ```
 
-Open [localhost:5184](http://127.0.0.1:5184). No API key, `.env`, database, Higgsfield account or Git LFS is needed to run the website. Runtime media are included in Git; `npm ci` installs dependencies and bundled fonts from `package-lock.json`.
-
-Production preview:
+For the built preview, stop the development server and run:
 
 ```sh
 npm run build
 npm run preview -- --port 5184 --strictPort
 ```
 
-The build creates `dist/`, including pre-rendered HTML and static media. Serve it over HTTP at a domain root; asset paths start with `/`. Stop an existing development server before starting a preview on the same port.
+The build emits dist/ with pre-rendered HTML and static media. Serve at a domain root.
 
-## Checks
+## Architecture and media
+
+- src/scroll/ScrollJourney.tsx: native document scrolling, sticky stage, readable holds, latest-request coalescing and one pending seek per movie. Actual presented frames control visible captions. No wheel interception, artificial scroll easing, Blob bridge, or permanent idle render loop.
+- src/scroll/selectMedia.ts: bounded capability predictions select AV1 only when supported, smooth and power-efficient; WebKit uses qualifying HEVC after measured AV1 paused-seek failures. H.264 is the default and explicit codec-error retry. One format/orientation is loaded, never all alternatives. Predictions do not guarantee physical-device performance.
+- Opening image is preloaded before deferred JavaScript with orientation-specific picture selection and inline blurred fallback. The first film prepares eagerly; IntersectionObserver prepares later films near their transitions. Native video elements retain buffers for reversal. A direct jump prepares its requested movie immediately and exposes its caption/still without waiting for playback.
+- 300ms subtle loading indicator, 6.5s nearest-scene fallback, reduced motion/Data Saver stills, passive single-touch priming, normalized rotation position, and permanently accessible business/contact links.
+- src/scenes.ts holds approved Croatian captions. BusinessContent and InquiryForm retain sourced projects and a reviewable mailto draft; no false delivery confirmation or new service.
+- public/assets/scroll contains original-source 24fps derivatives: native1920×1080 landscape and900×1600 portrait. AV1 GOP12, HEVC/H.264 GOP24; no new AI generation, upscaling or invented portfolio photography. The runtime never downloads both orientations at initial view. A later device rotation requests the new orientation.
+- Manifests record hashes, exact sizes, SSIM and endpoint RMS. scripts/scroll-media.py and scripts/scroll-continuation.py reproduce encodes in Higgsfield; use its upload/export workflow. Never put signed upload URLs or credentials in source. scripts/cinema.json preserves historical provenance.
+- Adjacent source movies have different endpoint pixels; the incoming decoded frame fades over the held outgoing frame for150ms. Raw differences remain disclosed in QA.md.
+
+The owner explicitly lifted the historical5MB ceiling for quality on20September. Initial and complete transfers, codec fallbacks and cold-seek limitations are reported in QA.md. Desktop source is1080p, not4K. All runtime formats are stored in Git, but a visitor downloads one compatible format only. The unselected comparison and the superseded native gesture controller are retired; rollback is available in Git history.
+
+## Verification
 
 ```sh
 npm test
 npm run typecheck
 npm run lint
 npm run build
-```
-
-GitHub Actions runs these checks on pushes to `main` and pull requests. It does not deploy the website.
-
-For browser tests, install Playwright's Chrome and WebKit browsers:
-
-```sh
 npx playwright install --with-deps chrome webkit
-```
-
-Keep the production preview running on port 5184, then run in another terminal:
-
-```sh
 npm run test:e2e -- --workers=1
 ```
 
-The suite covers navigation, contact, PDF download, stationary opening, full native forward/reverse playback, gesture bursts, both scroll directions, rotation, autoplay/media failures, reduced motion, data saving and transfer budgets. Run sequentially for media-timing checks. Browser emulation does not establish physical-phone smoothness; see `QA.md` for results and limitations.
+Browser tests require the built preview at5184. Set PLAYWRIGHT_BASE_URL to test another built preview or the public URL. Tests cover four-scene scrolling and reversal, cold/error recovery, orientation, real-frame reveal, codecs, first-image discovery, Data Saver/reduced motion,390/768/1440 layouts, no-JS business content, accessibility, inquiry validation and PDF. No actual inquiry is sent.
 
-## Files and assets
+Opt-in measurements, run separately from other browser work:
 
-- `DESIGN.md`: unchanged visual contract; dark contemporary construction and original artwork/captions. The dated amendment in `PRD.md` governs the new interaction.
-- `CONTENT-SOURCES.md`: business claims and pending owner material.
-- `QA.md`: completed checks, local performance measurements and delivery limitations.
-- `src/scenes.ts`: the four approved captions, hash anchors and canonical stills.
-- `src/SceneJourney.tsx`: stationary scenes, complete native transitions, held endpoints and matching still fallbacks. No scroll-driven media clock.
-- `src/sceneGestures.ts`: film-scoped wheel/touch/keyboard input; one transition per gesture, no queued input. Business sections scroll natively.
-- `src/BusinessContent.tsx`: ordinary business sections, native hash targets and sourced copy.
-- `src/InquiryForm.tsx`: validated, reviewable mailto draft. It never sends or stores data.
-- `public/assets/`: production films, stills and logo derivatives.
-- `public/assets/transition-{1,2,3}/`: three-second portrait/landscape films in both directions and exact endpoint stills. The rejected opening trims, all sequence packets and the old scrubber are deleted.
-- `public/kontrolna-lista-adduco.pdf`: ready-to-serve investor checklist.
-- `tests/` and `src/App.test.tsx`: browser and component behavior tests.
-- `scripts/cinema.json`: exact Higgsfield generation prompts, references and web encoding settings. Use Higgsfield ffmpeg/Pillow to produce the videos and responsive chapter frames; keep working material outside the repository.
-- `scripts/checklist.py`: regenerate the Croatian preparation PDF with ReportLab and a Unicode Arial font.
+```sh
+SCROLL_PERFORMANCE=1 npx playwright test tests/scroll-performance.spec.ts --workers=1
+MOTION_COLD=1 npx playwright test tests/motion-cold.spec.ts --workers=1
+```
 
-The construction environment is conceptual artwork, not project photography. The supplied original logo is preserved in `adduco logo/`; the public horizontal logo is a faithful crop/resizing of the supplied image, processed through Higgsfield. Movies and stills are served locally from the Site; no third-party generation service is contacted by visitors.
+The performance suite reports initial/complete Chrome transfer and actual warm frame latency across all movies. WebKit payload measurements include its native two-byte range probes. Chrome4G uses9Mbps down,1.5Mbps up,85ms latency, CPU4×; WebKit is unthrottled. Cold arbitrary jumps can wait for an unbuffered range and are measured separately. Lab emulation is not physical-phone acceptance.
 
-The complete journey connects Vizija, Betonski radovi, Visokogradnja and Vaš projekt: H.264 at 720×1280 portrait and 1920×1080 landscape, 24fps, three seconds, muted and inline. Initial display is stationary. A deliberate downward scroll/swipe plays the complete forward film; a fresh upward gesture plays its separately encoded reverse. The destination caption fades in after about 1.5 seconds of actual playback, remains readable while the film finishes, then stays above the held last frame. Additional input during playback is ignored, including the remainder of that wheel/touch gesture. Header links and scene navigation remain accessible. After the last implemented scene, a fresh downward gesture enters the ordinary business content.
+## Content and publishing
 
-The opening forward film loads eagerly in the selected orientation. IntersectionObserver prepares only adjacent forward/reverse films at each newly active scene; loading never starts playback. Direct scene links can jump to a chosen still without chaining movies. Reduced motion/Data Saver use matching stills without movie requests. Rejected/failed playback falls back to the requested destination still; a 6.5-second deadline also releases stalled transitions. Visibility changes, rotation and direct business navigation cancel pending playback. There is no currentTime assignment, Blob recovery, frame store or animation loop. The owner explicitly approved film-scoped vertical gesture capture, superseding the earlier no-wheel-interception rule only there. Horizontal/zoom gestures and normal business scrolling stay native. Full cold-page transfer measurements are recorded in QA.md.
+Read AGENTS.md, PRD.md, DESIGN.md, CONTENT-SOURCES.md, IMPLEMENTATION.md and QA.md before changes. DESIGN.md is the unchanged visual contract. Artwork illustrates the cinematic environment and is never used as project photography. Approved real photos are still pending.
 
-Regenerating the optional PDF script requires Python, ReportLab, Pillow and the local Arial font paths referenced in that script; the existing PDF needs no Python dependency.
-
-## Publishing and maintenance
-
-The website is public on Sites. GitHub hosts its source and collaboration history; pushing to GitHub does not update the live website. `.openai/hosting.json` identifies the existing Sites project and static build directory. The owner accepted the interaction and authorized completion of the existing public release. Publish a verified `dist/` build through the Sites workflow using that existing project and preserve its public audience. Keep credentials outside the repository; the hosting manifest contains configuration only.
-
-Before changes, read `AGENTS.md`, `PRD.md`, `DESIGN.md`, `CONTENT-SOURCES.md` and `IMPLEMENTATION.md`. `DESIGN.md` is the only visual contract. `QA.md` records completed verification and remaining limits.
-
-## Current limitations
-
-- The inquiry form prepares a reviewable `mailto:` draft; it does not send messages automatically.
-- Owner-approved project photography, final copy and recipient confirmation remain outstanding.
-- The public website intentionally retains `noindex, nofollow`; public access and search indexing are separate settings.
-- No analytics, database or automatic inquiry delivery is configured.
-- Smoothness on the owner's physical phone still needs confirmation.
-
-`node_modules/`, `dist/`, test results, local environment files and logs are generated locally and excluded from Git.
+Sites configuration is .openai/hosting.json. Preserve the existing public audience and noindex metadata; publish the exact verified source/build through Sites and sync the public GitHub repository. GitHub Actions performs source checks but does not deploy. Launch-readiness Batch2 (webhook/legal/privacy/indexability) is outside this motion pass.

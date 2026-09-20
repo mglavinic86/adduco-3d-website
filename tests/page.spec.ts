@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 for (const width of [390, 768, 1440]) {
-  test(`native snap layout and readable sections at ${width}px`, async ({
+  test(`native scroll layout and readable sections at ${width}px`, async ({
     page,
   }, testInfo) => {
     const height = width === 768 ? 1024 : width === 1440 ? 900 : 844;
@@ -13,10 +13,7 @@ for (const width of [390, 768, 1440]) {
     await expect(
       page.getByRole("heading", { name: "Od vizije do stvarnosti." }),
     ).toBeVisible();
-    await expect(page.locator("html")).toHaveCSS(
-      "scroll-snap-type",
-      "y mandatory",
-    );
+    await expect(page.locator("html")).toHaveCSS("scroll-snap-type", "none");
     expect(
       await page
         .locator(".chapter")
@@ -118,7 +115,7 @@ test("all text and hash navigation work without JavaScript", async ({
     viewport: { width: 390, height: 844 },
   });
   const page = await context.newPage();
-  await page.goto("http://127.0.0.1:5184/");
+  await page.goto(process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:5184/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await page
     .getByRole("navigation", { name: "Glavna navigacija" })
@@ -148,16 +145,16 @@ for (const [width, height] of [
     ).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
     await expect(
-      page.locator('.chapter-content[data-visible="true"]'),
+      page.locator('.chapter-content[aria-hidden="false"]'),
     ).toHaveCSS("opacity", "1");
     await expect(
       page.getByRole("link", { name: "Istražite usluge" }),
     ).toBeInViewport();
     const caption = await page
-      .locator('.chapter-content[data-visible="true"]')
+      .locator('.chapter-content[aria-hidden="false"]')
       .boundingBox();
     const nav = await page
-      .getByRole("navigation", { name: "Scene filmske priče" })
+      .getByRole("navigation", { name: "Prizori" })
       .boundingBox();
     const header = await page.locator("header").boundingBox();
     expect(caption!.y).toBeGreaterThan(header!.y + header!.height);

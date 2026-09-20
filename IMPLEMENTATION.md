@@ -1,5 +1,26 @@
 # Vertical implementation slices
 
+## Full A continuation — 20 September 2026
+
+- AC1 — complete: process remaining original portrait/landscape sources with the measured A codecs, record quality and joins; no new AI generation or generation-credit spend.
+- AC2 — complete: extend native-scroll mapping to all four approved captions, prepare later films near their transitions, preserve cold recovery/rotation/exits and test both directions across joins.
+- AC3 — lab verification complete: full responsive browser QA, cold/warm real-frame and transfer measurements; exact browser probe overhead remains explicit. The owner lifted the 5 MB page ceiling for quality.
+- AC4 — release after verified AC3: complete four-scene A, preserve existing public Sites audience/noindex and synchronize its source; retain rollback. Never publish the incomplete first-transition experiment as the whole site.
+
+## Selected A optimization — 20 September 2026
+
+- AO1 — complete: original-source codec/keyframe comparison, equal framing/frame count, quality and byte evidence; cold first-requested-frame baseline independently of canplaythrough.
+- AO2 — complete: integrate the measured winner with single-format loading, compatible fallback, cold latest-intent and orientation behavior tests. Keep direct native scrolling and unchanged captions/design.
+- AO3 — complete: retire unselected B after archiving comparison evidence, full local checks and Chrome/WebKit responsive/transfer/frame QA; show the optimized A preview.
+- AO4 — owner supplied the needed confirmations and explicitly approved proceeding to all scenes on 20 September. AC slices above supersede the expansion/budget gate. Physical-device evidence remains a limitation, not an unapproved budget increase.
+
+## Local motion comparison — 20 September 2026
+
+- MC1 — complete locally: quality-first original-source opening media and A direct native scroll, with poster/captions/contact, latest-frame coalescing, stop/reversal, same-hash navigation and one-touch iOS priming coverage. Separate worktree; no production asset replacement.
+- MC2 — complete locally: B uses the same camera path in native 1.5s / 60fps forward and reverse clips. Captions follow presented frames; buffering, momentum, exits and failure settlement are covered.
+- MC3 — complete as lab verification: media bytes/RMS, Chrome/WebKit frame callbacks and cold/cache characterization, simulated 4G with CPU4x in Chrome, 390/768/1440 screenshots, original business/form/PDF regressions. QA.md reports nonzero dropped-frame counters and the larger experimental transfers, without a physical-device smoothness claim.
+- MC4 — owner selected A on 20 September; AO slices above supersede the mode-choice gate. Physical-phone acceptance and expansion remain pending. No merge, push, deployment or production-budget increase has occurred.
+
 ## Native preparation — 18 September 2026
 
 - NP1 — implemented and focused browser tests pass: retain the six native video elements; after the first canplaythrough, fully buffer one movie at a time in the approved order. Reuse those elements for playback. No fetch/preload bridge or media changes.

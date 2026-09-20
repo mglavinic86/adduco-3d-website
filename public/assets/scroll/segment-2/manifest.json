@@ -1,0 +1,166 @@
+{
+  "sources": {
+    "portrait": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_460f59fb-41bc-4318-94d6-47dd2111df4b.mp4",
+    "landscape": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190908_400576cb-2471-4ce8-bce0-4ebd5f8ac7f9.mp4"
+  },
+  "variants": {
+    "h264": [
+      "-c:v",
+      "libx264",
+      "-preset",
+      "slow",
+      "-crf",
+      "20",
+      "-g",
+      "24",
+      "-keyint_min",
+      "24",
+      "-sc_threshold",
+      "0",
+      "-bf",
+      "0",
+      "-threads",
+      "4"
+    ],
+    "hevc": [
+      "-c:v",
+      "libx265",
+      "-preset",
+      "slow",
+      "-crf",
+      "22",
+      "-tag:v",
+      "hvc1",
+      "-x265-params",
+      "keyint=24:min-keyint=24:scenecut=0:bframes=0:open-gop=0:pools=4:frame-threads=2"
+    ],
+    "av1": [
+      "-c:v",
+      "libsvtav1",
+      "-preset",
+      "6",
+      "-crf",
+      "25",
+      "-g",
+      "12",
+      "-svtav1-params",
+      "lp=4:fast-decode=1"
+    ]
+  },
+  "files": {
+    "portrait-h264.mp4": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 900,
+          "height": 1600,
+          "avg_frame_rate": "24/1",
+          "nb_frames": "193"
+        }
+      ],
+      "format": {
+        "duration": "8.042000",
+        "size": "7450468"
+      },
+      "bytes": 7450468,
+      "sha256": "efaf28d72704a1bafca4e32996a2c7333bce3a3308abc0ecaad2b37ae345774d",
+      "ssim": 0.984176
+    },
+    "portrait-hevc.mp4": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "hevc",
+          "width": 900,
+          "height": 1600,
+          "avg_frame_rate": "24/1",
+          "nb_frames": "193"
+        }
+      ],
+      "format": {
+        "duration": "8.042000",
+        "size": "6673569"
+      },
+      "bytes": 6673569,
+      "sha256": "c5c6ef086fc92f4c30500e2c8ce0e16ea6db5f8ec73c1956a74b61cc5eda1e5b",
+      "ssim": 0.985023
+    },
+    "portrait-av1.mp4": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "av1",
+          "width": 900,
+          "height": 1600,
+          "avg_frame_rate": "24/1",
+          "nb_frames": "193"
+        }
+      ],
+      "format": {
+        "duration": "8.042000",
+        "size": "5465829"
+      },
+      "bytes": 5465829,
+      "sha256": "9c32ae16c7616d37933654918ac2d72cbdc85963e20f5707960448bee13eff41",
+      "ssim": 0.985663
+    },
+    "landscape-h264.mp4": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "24/1",
+          "nb_frames": "193"
+        }
+      ],
+      "format": {
+        "duration": "8.042000",
+        "size": "11419917"
+      },
+      "bytes": 11419917,
+      "sha256": "45544148b574e35ef41866de49833ad4a986d7f5c5f82c85fbc59468aaa6eb43",
+      "ssim": 0.985137
+    },
+    "landscape-hevc.mp4": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "hevc",
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "24/1",
+          "nb_frames": "193"
+        }
+      ],
+      "format": {
+        "duration": "8.042000",
+        "size": "9723495"
+      },
+      "bytes": 9723495,
+      "sha256": "df93346c795ba8230ebdb775a46f77c690999a8d3b36f931ce31c0d431237a7e",
+      "ssim": 0.986242
+    },
+    "landscape-av1.mp4": {
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "av1",
+          "width": 1920,
+          "height": 1080,
+          "avg_frame_rate": "24/1",
+          "nb_frames": "193"
+        }
+      ],
+      "format": {
+        "duration": "8.042000",
+        "size": "7884767"
+      },
+      "bytes": 7884767,
+      "sha256": "50cac16f2934d6b3cd58ab269b2b939c296ef766b4cdb32f4a9f9441e75d9632",
+      "ssim": 0.98501
+    }
+  }
+}

@@ -9,6 +9,7 @@ import "@fontsource/manrope/latin-600.css";
 import "@fontsource/manrope/latin-ext-800.css";
 import "@fontsource/manrope/latin-800.css";
 import "./styles.css";
+import "./scroll/scroll.css";
 const root = document.getElementById("root")!;
 if (root.querySelector("main")) hydrateRoot(root, <App />);
 else createRoot(root).render(<App />);

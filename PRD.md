@@ -1,5 +1,30 @@
 # Adduco — local website
 
+## A continuation and quality budget approved — 20 September 2026
+
+After being told that optimized A exceeds the historical 5 MB complete-page ceiling, the owner explicitly gave all needed confirmations. The owner repeated that approval explicitly after the complete-journey measurements. The old byte ceiling is therefore lifted for this selected high-quality direct-scroll direction. Continue the selected A through the remaining approved scenes without repeating the budget/mode approval question. Keep minimizing actual transfer: one compatible codec/orientation, opening still before JavaScript, first film eager, later films prepared only near their transition. Report measured cold/complete bytes and genuine frame latency, including native browser range probes and any physical-device limitations.
+
+Preserve all four approved artworks/captions, the original logo, normal business sections and DESIGN.md. No new generated media or added services. The owner additionally asks to conserve Higgsfield credits for their parallel work: reuse and process the six existing masters; do not submit new generation jobs. Complete and verify the four-scene version before replacing the existing public Sites release; do not publish the two-scene prototype as the finished website. Existing public audience and noindex settings remain. Keep the previous implementation available for rollback and synchronize the tested release source with the existing GitHub repository when released. Quality approval does not justify claiming a perfect frame rate or suppressing failed measurements.
+
+## Direct-scroll A selected; optimization approved — 20 September 2026
+
+The owner selects local prototype A and explicitly requests a thorough optimization pass. Preserve its immediate native-scroll camera control, stopping and reversing, the existing visual contract and approved first-transition artwork. Optimize both orientations using original source frames, quality measurements and actual presented-frame timing under cold loading. Compare bounded codec/keyframe candidates before selecting media; codec support alone is not evidence of smooth decoding. Retain a compatible fallback without downloading unused formats.
+
+- First-transition scope remains local. No production replacement, publication, GitHub push, new generation or increased production transfer budget is authorized by this selection. The existing 5 MB complete production-page budget remains; report any incompatible quality/size constraint explicitly.
+- Separate initial still paint, first requested decoded frame, full-buffer readiness, warm seek latency and complete transfer. Test cold input and reversal before full buffering, not only cached playback. Keep reduced-motion/Data Saver, accessible exits, existing captions and bounded failure handling.
+- Archive comparison evidence outside the deliverable and retire the unselected B prototype after selection. Extend only the selected A implementation in runnable, behavior-tested slices; stop with measured local results and a reviewable preview before expanding to later transitions.
+
+## Local motion comparison approved — 20 September 2026
+
+The owner is dissatisfied with desktop media quality and the feel of the interaction, and explicitly approves two isolated local prototypes of the first opening-to-detail transition: A, direct scroll-controlled camera; B, a shorter complete native transition. Use the computer/browser for visual inspection and measured QA. This is a local experiment, not approval to replace or publish the current four-scene experience.
+
+- Preserve DESIGN.md, approved construction artwork, original logo, Croatian captions, normal business sections and contact access. Reuse the original Higgsfield landscape and separately composed portrait masters; no new generated scenes or paid generation. Keep the production forward clips/stills byte-for-byte unchanged.
+- A uses native vertical document scrolling, with readable holds at the two endpoints and camera progress between them. No wheel interception, artificial catch-up/easing or permanent idle render loop. Coalesce decoder work to the latest requested frame and verify actual presented frames in both directions. Direct scroll seeking is authorized only for this isolated prototype, superseding the production prohibition within this explicitly limited scope.
+- B keeps one gesture per complete native movie, including reverse, with approximately 1.5 seconds of actual playback. Use the same source camera path and comparable image quality as A. Keep early text entrance, immediate exits, momentum protection, reduced motion/Data Saver and bounded media-failure fallback. No play/pause button on mobile.
+- Use quality-first experimental encodes rather than overwriting production media to satisfy the old 5MB ceiling. Report exact bytes and cold/cache measurements; this experiment does not approve a new production budget or guarantee the earlier load targets. Scope is one transition in two orientations only.
+- Test through existing public browser seams: actual scrolling/gestures, decoded/presented video, visible captions/navigation and requests. TDD for changed behavior, Chrome and WebKit, 390/768/1440 widths, rapid reversal, stop-and-hold, slow/unavailable media, reduced motion, orientation, keyboard, contact and PDF. Full-resolution desktop quality inspection is additional evidence. Distinguish lab emulation from physical-phone acceptance.
+- Deliver two clearly named local previews and a concise comparison in QA.md. Keep the published site and GitHub main unchanged. Stop for owner/device review before expansion, merge, push or publication. Retire the unselected prototype after a decision rather than leaving an experimental production route.
+
 ## Native media preparation approved — 18 September 2026
 
 The owner approves replacing the rejected fetch-based warm-up with preparation in the persistent native video elements that actually play the movies. Preserve Gate 1 behavior, three-second films, captions, artwork and DESIGN.md. The opening-image-only slice was published separately as Sites version 20.

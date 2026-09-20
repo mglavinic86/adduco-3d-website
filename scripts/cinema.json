@@ -3264,5 +3264,69 @@
         "sourceSha256": "ed65f97a5629950a3d7cab998d04112636fb2ce26eddb511785ba4c429862dd8"
       }
     }
+  },
+  "directScroll20260920": {
+    "source": "Original six Seedance masters, no new generation",
+    "authorization": "Owner selected A and lifted historical 5 MB ceiling; conserve Higgsfield generation credits",
+    "manifests": [
+      "public/assets/scroll/manifest.json",
+      "public/assets/scroll/segment-2/manifest.json",
+      "public/assets/scroll/segment-3/manifest.json"
+    ],
+    "archives": {
+      "transition2": "aa398fa2-0650-4b3e-a6d7-f123f2be0630",
+      "transition3": "79e9197a-d95c-480c-8625-ed2f195ea4b8"
+    },
+    "joinCompensation": "Hold outgoing decoded movie underneath incoming frame, 150 ms opacity blend at movie handoff; source endpoint RMS remains disclosed",
+    "joinRms": {
+      "portrait-av1-2": {
+        "join": 9.269,
+        "endStill": 1.2412
+      },
+      "portrait-av1-3": {
+        "join": 13.7417,
+        "endStill": 1.3235
+      },
+      "portrait-hevc-2": {
+        "join": 9.4698,
+        "endStill": 2.3935
+      },
+      "portrait-hevc-3": {
+        "join": 13.6753,
+        "endStill": 2.7628
+      },
+      "portrait-h264-2": {
+        "join": 9.5026,
+        "endStill": 2.4239
+      },
+      "portrait-h264-3": {
+        "join": 13.7556,
+        "endStill": 2.7878
+      },
+      "landscape-av1-2": {
+        "join": 8.6874,
+        "endStill": 1.092
+      },
+      "landscape-av1-3": {
+        "join": 10.8969,
+        "endStill": 1.1881
+      },
+      "landscape-hevc-2": {
+        "join": 8.8322,
+        "endStill": 2.1927
+      },
+      "landscape-hevc-3": {
+        "join": 11.0361,
+        "endStill": 2.3128
+      },
+      "landscape-h264-2": {
+        "join": 8.841,
+        "endStill": 2.2011
+      },
+      "landscape-h264-3": {
+        "join": 11.0831,
+        "endStill": 2.3271
+      }
+    }
   }
 }

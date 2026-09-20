@@ -8,7 +8,6 @@ export const scenes = [
     copy: ["Visokogradnja i niskogradnja.", "Betonski radovi i prometnice."],
     action: "Upoznajte Adduco",
     href: "#o-nama",
-    still: "transition-1/ORIENTATION-start.webp",
   },
   {
     id: "povjerenje",
@@ -18,7 +17,6 @@ export const scenes = [
     copy: ["Betoniranje i izvedba betonskih konstrukcijskih elemenata."],
     action: "Istražite usluge",
     href: "#usluge",
-    still: "transition-1/ORIENTATION-end.webp",
   },
   {
     id: "preciznost",
@@ -28,7 +26,6 @@ export const scenes = [
     copy: ["Izvedba objekata i njihovih nosivih konstrukcija."],
     action: "Istražite usluge",
     href: "#usluge",
-    still: "transition-2/ORIENTATION-end.webp",
   },
   {
     id: "projekt",
@@ -38,17 +35,5 @@ export const scenes = [
     copy: ["Visokogradnja, niskogradnja i betonski radovi."],
     action: "Razgovarajmo",
     href: "#kontakt",
-    still: "transition-3/ORIENTATION-end.webp",
   },
 ] as const;
-
-export const sceneStill = (scene: number, portrait: boolean) =>
-  `/assets/${scenes[scene].still.replace("ORIENTATION", portrait ? "portrait" : "landscape")}`;
-
-export const sceneMedia = [1, 2, 3].flatMap((segment) =>
-  (["forward", "reverse"] as const).map((direction) => ({
-    key: `${segment}-${direction}`,
-    segment,
-    direction,
-  })),
-);

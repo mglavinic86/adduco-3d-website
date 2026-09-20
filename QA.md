@@ -1,5 +1,156 @@
 # QA — mobile scroll smoothness
 
+## Full selected A — 20 September 2026
+
+The owner selected direct-scroll A, authorized all four scenes and lifted the historical5MB page ceiling for quality. The complete implementation replaces the two-scene experiment and retires its route, unselected B, and the previous three-second gesture controller. DESIGN.md, Croatian captions, original logo and business content are unchanged. No new AI generation was submitted; all six existing masters were processed through Higgsfield. Final measurements and release record follow below.
+
+### Runtime and quality corrections
+
+Native vertical page scrolling controls three persistent videos, with reading holds between camera moves. No wheel capture, artificial easing, Blob bridge or idle animation loop. One seek per movie is outstanding; completion drains the newest intent while actual video-frame callbacks control captions. Later movies prepare near their transitions via IntersectionObserver. The first image is discovered before deferred JavaScript; both orientation source-selection tests and no-hydration LQIP tests pass.
+
+Original-source codec study: AV1 CRF25/GOP12, HEVC CRF22/GOP24 and H.264 CRF20/GOP24. All193 original frames are retained at24fps; portrait900×1600, landscape1920×1080. AV1 requires supported/smooth/power-efficient predictions; measured WebKit AV1 seek stalls override that prediction and select qualifying HEVC instead. Capability timeout/unsupported/error falls back to H.264. Failed-format retry may incur that failed request plus H.264; normal visits load exactly one format/orientation. Source is1080p, not4K.
+
+Fixed cold metadata-ready seeks, stale compositor callbacks blocking subsequent input, rotation position jumps, and initial decoded-frame/seek races during codec retry. Direct hash navigation exposes the scene immediately; during normal cold scrolling the outgoing caption remains until a frame arrives.300ms buffering indicator and6.5s fallback remain. Accessible primary heading remains available when the visual opening caption is offscreen.
+
+### First-transition optimization evidence
+
+Before expansion, built-loopback Chrome4G (9Mbps down,1.5Mbps up,85ms latency, CPU4×) measured: portrait opening paint-opportunity bound621–726ms, first canplaythrough1064–1161ms; landscape614–640ms and1079–1098ms. These are two lab samples, not a field guarantee. Baseline A first-canplaythrough was3995ms portrait/6892ms landscape. Still bounds were similar; no meaningful still-speed gain is claimed. Optimized first-view transfers were6,293,938/7,089,619bytes vs baseline13,182,748/16,455,478bytes.
+
+Warm isolated seeks were mostly33ms; the scripted5.3s continuous trajectory varied from200 to285 callbacks in desktop Chrome under CPU4×. This does not establish100% smoothness. First input immediately after still decode waited439–459ms for its actual frame; cold arbitrary subsequent jumps waited205–600ms. They do not meet a200ms warm-cache response target until those ranges arrive. canplaythrough is a prediction, not complete buffering.
+
+A first full-journey measurement attempted to jump straight to all movie ends, then incorrectly expected every sparse native buffer to become contiguous without visiting the skipped ranges. It timed out. The warm-reuse fixture now approaches each movie and waits for its complete buffer before measuring warm movement; cold arbitrary jumps remain measured separately and are not relabelled as warm.
+
+### Continuity
+
+RMS measured in RGB after Lanczos scaling to640px long edge. First-transition first/last RMS against its preserved WebP: portraitAV1 2.7719/2.5243, HEVC2.4450/2.4183, H.2642.1436/1.1625; landscapeAV1 2.3111/2.1677, HEVC2.0229/2.0714, H.2641.7970/1.0738.
+
+The original independently generated adjacent sources are not identical at their boundaries. All12 raw movie-to-movie joins exceed3.0 and use the150ms incoming-frame blend over the held outgoing movie. This is visual compensation, not a claim that their raw RMS passes. New destination WebP92 RMS remains below3.0 in every codec.
+
+
+| Orientation / codec / incoming transition | Raw join RMS | Destination-still RMS |
+| --- | ---: | ---: |
+| portrait-av1-2 | 9.2690 | 1.2412 |
+| portrait-av1-3 | 13.7417 | 1.3235 |
+| portrait-hevc-2 | 9.4698 | 2.3935 |
+| portrait-hevc-3 | 13.6753 | 2.7628 |
+| portrait-h264-2 | 9.5026 | 2.4239 |
+| portrait-h264-3 | 13.7556 | 2.7878 |
+| landscape-av1-2 | 8.6874 | 1.0920 |
+| landscape-av1-3 | 10.8969 | 1.1881 |
+| landscape-hevc-2 | 8.8322 | 2.1927 |
+| landscape-hevc-3 | 11.0361 | 2.3128 |
+| landscape-h264-2 | 8.8410 | 2.2011 |
+| landscape-h264-3 | 11.0831 | 2.3271 |
+
+
+### Exact encoded media bytes
+
+Each row is one selected runtime format, not simultaneous downloads. Stills total1,166,226bytes portrait /1,344,924bytes landscape.
+
+| Orientation / codec | Transition1 | Transition2 | Transition3 | Movie total |
+| --- | ---: | ---: | ---: | ---: |
+| portrait / av1 | 5,846,920 | 5,465,829 | 5,135,380 | 16,448,129 |
+| portrait / hevc | 6,990,223 | 6,673,569 | 5,579,738 | 19,243,530 |
+| portrait / h264 | 7,956,893 | 7,450,468 | 6,979,531 | 22,386,892 |
+| landscape / av1 | 6,620,349 | 7,884,767 | 6,400,386 | 20,905,502 |
+| landscape / hevc | 8,855,012 | 9,723,495 | 7,436,208 | 26,014,715 |
+| landscape / h264 | 9,871,107 | 11,419,917 | 9,074,669 | 30,365,693 |
+
+All second/third movie SSIM values vs normalized original frames are0.984176–0.989618. SSIM is an encoding comparison, not proof of perceived realism; full-resolution construction detail and390/768/1440 responsive captures were visually inspected.
+
+
+### Final complete-journey lab measurement
+
+Built preview, Chrome153.0.8010.48 and WebKit26.6 on Apple M4. One final sample per profile/orientation, fresh cache. Chrome4G:9Mbps down,1.5Mbps up,85ms latency, CPU4×. WebKit is local/unthrottled, not an iPhone. Opening is image.decode plus two animation frames, a paint-opportunity upper bound. First-ready is canplaythrough, not a complete download. Warm response uses actual requested-frame callbacks across all three movies in both directions.
+
+| Engine / profile / orientation | Opening bound | First ready | Warm maximum | Initial settled transfer | Full journey transfer |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| chromium / 4g-cpu4 / landscape | 817 ms | 1174 ms | 51.6 ms | 7,107,685 B | 21,393,911 B |
+| chromium / 4g-cpu4 / portrait | 889 ms | 1253 ms | 51.3 ms | 6,312,004 B | 16,914,286 B |
+| chromium / local / landscape | 187 ms | 125 ms | 45.9 ms | 7,107,685 B | 22,108,761 B |
+| chromium / local / portrait | 209 ms | 213 ms | 34.3 ms | 6,312,004 B | 17,813,310 B |
+| webkit / local / landscape | 182 ms | 189 ms | 50.0 ms | not instrumented | not instrumented |
+| webkit / local / portrait | 236 ms | 387 ms | 38.0 ms | not instrumented | not instrumented |
+
+Transfer totals include completed requests observed in the scripted normal journey. Depending on timing, direct navigation may request a fallback still before its already-buffered movie presents; these requests can be cancelled, so do not interpret the varying full-page total as an exact all-assets ceiling. Exact movie payload is verified independently: Chrome16,448,129bytes portrait/20,905,502landscape, one complete body per movie; WebKit19,243,536/26,014,721bytes, each total includes three native two-byte probes. No additional movie request after20 warm seeks. All four fallback stills total1,166,226/1,344,924bytes; add those and the ordinary page assets when budgeting a visit that also uses every fallback. H.264 full-movie fallback totals22,386,892/30,365,693bytes. Opposite orientation/unused codecs are not transferred in normal initial navigation.
+
+The prior5MB ceiling is lifted by explicit owner approval; no claim that this quality pass fits it. One4G sample meets the opening≤1s and first-ready≤2.5s targets locally. This does not establish a public-network percentile or cold arbitrary-seek≤200ms. Source-generated depth-of-field blur and the source1080p resolution remain; encoding cannot reconstruct missing source detail.
+
+Behavior suite:94 applicable Chrome/WebKit cases pass across the full run and corrected native-keyboard rerun, with16 opt-in measurement cases skipped. The WebKit Home-key expectation was removed because the test must respect browser-native key handling; Space/PageDown both move the document without interception. The codec-retry and accessibility corrections passed three repeated runs in both engines. A playback-policy rejection is handled as a still fallback, not as an unsupported codec; its new behavioral test first reproduced an unnecessary format download and then verifies no extra format transfer. Full-journey performance:6applicable profiles pass,2WebKit CDP-only profiles skipped. Screenshots cover all4scenes at390/768/1440. They and source-detail crops were visually inspected. The in-app browser was used for direct scroll review. No physical-phone acceptance or perfect-frame-rate claim.
+
+
+### Final cold-input retest
+
+After the complete-journey integration, first input at the opening decode boundary took435ms portrait/452ms landscape on the same4G/CPU4× profile. Subsequent abrupt jumps into unbuffered ranges took153–832ms portrait and154–950ms landscape. All requested frames arrived, including reversal, without a stuck player. Later-film preparation can compete with a first movie that is still sparse; these are explicitly cold timings, not the33–52ms warm result.6applicable cold-input cases pass;2WebKit CDP-only cases skip. Physical-device validation remains necessary.
+
+On20September the owner explicitly repeated approval of the higher transfer size after the distinction from Higgsfield generation credits was discussed. No new generation jobs were submitted in this pass.
+
+## Local first-transition comparison — 20 September 2026
+
+**Delivery: two local prototypes, not a production release.** A: `http://127.0.0.1:5192/motion-lab.html?mode=scroll`; B: `http://127.0.0.1:5192/motion-lab.html?mode=native`. The original main checkout remains clean at `b263a1e`; DESIGN.md, production media, captions and the published Sites site are unchanged. No commit, push or deployment was made. This experiment explicitly exceeds the production transfer budget and stops at owner/device review.
+
+### Behavior and visual evidence
+
+- **A — direct camera:** ordinary vertical document scrolling with a sticky stage, readable endpoint holds, exact source frames, one outstanding seek and latest-target coalescing. Stop and reverse anywhere; no wheel interception, artificial easing or idle render loop. An untouched opening retains its still; the video appears only after an actual presentation callback. A single muted play/pause on first one-finger touch primes iOS painting. Pinch is neither captured nor primed. The two scene links remain repeatable after free scrolling away from the current hash.
+- **B — shorter native film:** one gesture plays the full 1.5s transition, forward or reverse, using 90 distinct original frames at 60fps. This is retiming, not synthetic frame generation. Momentum and reversal during playback do not queue another film. The caption changes during actual playback; outgoing copy remains while buffering. The 300ms indicator, 6.5s fallback, still/caption settlement and visible contact/exit remain. The reverse native element prepares after the forward element is ready.
+- Reused the installed Scroll World approach to scene framing, native scroll mapping, seek coalescing and touch priming, within the local amendment. Its generic Blob/eased player was not copied: the local server supports byte ranges and both engines expose the full seekable interval. A range request returned HTTP206, `Accept-Ranges: bytes`, and the requested 1,000-byte range. No Blob URLs or new dependencies were needed.
+- Inspected both versions in the actual in-app browser by scrolling, and inspected transition screenshots at390,768,1440 widths from Chrome/WebKit. Concrete and rebar retain visibly finer texture than the published low-bitrate derivative. Header contact and scene exit are visible, hit-testable and at least44×44px during motion. Existing dark art, typography and Croatian content remain. Temporary A/B controls are comparison UI only.
+- Browser evidence includes unavailable/rejected/stalled media, reduced motion, touch priming/pinch, held/rapidly reversed scroll, 1.2s wheel momentum, keyboard, same-hash navigation and exits during playback. Existing menu, direct hashes/Back, no-JS content, inquiry validation, PDF and sharing checks also pass.
+
+### Media, exact on-disk bytes
+
+Original Higgsfield masters were processed in Higgsfield; no new video generation or source-art replacement. H.264, x264 slow CRF20, yuv420p, silent, fast-start. A retains all193 original frames at24fps, keyframe every4frames, no B-frames. B selects90 source frames uniformly, including the exact endpoints, and encodes each direction independently at60fps, keyframe at the start. Stills are WebP92 from decoded A endpoints. Manifest and reproducible sandbox script: `public/assets/motion-lab/manifest.json`, `scripts/motion-lab-media.py`.
+
+| File | Portrait900×1600 | Landscape1920×1080 |
+| --- | ---: | ---: |
+| A scroll MP4,8.042s | 12,720,844 | 15,971,322 |
+| B forward MP4,1.5s | 2,384,598 | 2,739,467 |
+| B reverse MP4,1.5s | 2,303,312 | 2,712,239 |
+| Opening still | 268,012 | 290,264 |
+| Destination still | 300,768 | 331,464 |
+
+The first B encoding used48fps. The final60fps version produced75–88 observed frame callbacks per1.5s in Chrome versus45–51 in the initial48fps sample, with a small size increase. These callbacks are observations, not a guarantee that every physical display presents every encoded frame. The desktop source is native1080p; this is not a4K master.
+
+### Endpoint RMS at640px long edge
+
+RGB RMS after Lanczos scaling, against the matching WebP anchor; lower is closer. All12 final prototype measurements:
+
+| Clip | First vs origin | Last vs destination |
+| --- | ---: | ---: |
+| Portrait A | 1.2606 | 1.1625 |
+| Landscape A | 1.0804 | 1.0738 |
+| Portrait B forward | 2.5405 | 2.9321 |
+| Portrait B reverse | 2.1392 | **3.5423** |
+| Landscape B forward | 1.9481 | 2.4343 |
+| Landscape B reverse | 1.7977 | 2.9493 |
+
+For reverse, origin means the detail/end still and destination the opening/start still. Portrait reverse→opening exceeds3.0; it uses the accepted compensation: hold the decoded final frame150ms, then dissolve the still over it for150ms. The same settlement is used consistently for B's other joins. The raw result remains disclosed; no claim of numeric seam acceptance without compensation.
+
+### Cold-load and warm-motion measurements — local lab
+
+Built preview on loopback; fresh browser contexts/cache. Chrome153.0.8010.48; WebKit26.6. Phone390×844 and desktop1440×900. Chrome profile:9Mbps down,1.5Mbps up,85ms simulated network latency, CPU4× slowdown. One final run per combination, not a statistical field sample. WebKit measured unthrottled; its four unsupported CDP-throttle cases are explicitly skipped.
+
+“Still” below is a conservative DOM-image-ready/paint-opportunity bound: image decode followed by two animation frames, not a physical screen sensor. The initial HTML CSS background can appear earlier. “Ready” is first `canplaythrough`; it predicts playback readiness, not completion of the whole download or readiness of every arbitrary scroll target. Motion latency is measured after the complete buffers are warm using actual `requestVideoFrameCallback` observations, never just a currentTime assignment.
+
+| Chrome4G / CPU4× | Still bound | First canplaythrough | Warm response | Measured page transfer |
+| --- | ---: | ---: | ---: | ---: |
+| A portrait | 0.615s | 3.995s | seek median33.3ms; max34.2ms | ≈13.18MB |
+| A landscape | 0.632s | 6.892s | seek median33.3ms; max34.1ms | ≈16.46MB |
+| B portrait | 0.625s | 1.957s | playing12.3ms forward /5.7ms reverse | ≈5.45MB |
+| B landscape | 0.624s | 2.271s | playing7.8ms forward /2.9ms reverse | ≈6.27MB |
+
+Transfers are decimal MB including HTTP overhead and the assets requested by the complete first-transition comparison. Chrome video body totals exactly match the on-disk selected files: A12,720,844/15,971,322 bytes; B4,687,910/5,451,706 bytes portrait/landscape. No duplicate body transfer or opposite-orientation clip was observed. WebKit byte-level transport was not instrumented in this experiment; its empty CDP request arrays do not mean zero transfer. These are local serving measurements, not public Sites measurements. The final small anchor-navigation markup correction does not change the media or decoder; byte totals are intentionally rounded.
+
+Unthrottled WebKit: A seek median33ms/max34ms in both orientations, opening bound175ms portrait/112ms landscape; B gesture-to-playing1–2ms, opening bound104ms/121ms. A's5.3s scripted forward/back/rapid-reversal trajectory recorded282–287 presented-frame callbacks across engines, maximum observed callback gap34ms, and no post-stop drift. B completed in approximately1.50–1.52s, with84–88 callbacks in WebKit and75–88 in Chrome. Chrome's playback-quality counter reported1–3 dropped frames per90-frame clip. WebKit's total-frame counters were inconsistent with its callback counts, so no zero-drop rate is inferred from them. **This is not a claim of100% smooth physical-phone playback.**
+
+### Verification and decision gate
+
+Typecheck, ESLint,4unit tests and production build pass. Focused comparison coverage:32 applicable Chrome/WebKit cases; original content/loading/sharing regressions:40 applicable cases, passing across the run and focused correction reruns. One initial root-loading check ran against a stale build before the entry-name correction; it passes on the final index entry. Performance characterization:12runs pass,4WebKit CDP-only cases skipped. No production transition-controller code was changed.
+
+Evidence directory: `/Users/mato/.codex/visualizations/2026/09/20/adduco-motion-comparison/` contains JSON samples, the48fps baseline, final media manifest and screenshots. Opt-in reproduction: `MOTION_LAB_METRICS=1 npx playwright test tests/motion-lab-metrics.spec.ts --workers=1` against preview5192. Behavior tests use dev5191; the original tests can use `PLAYWRIGHT_BASE_URL=http://127.0.0.1:5192`.
+
+**Decision:** A best matches the requested stop/reverse camera control and is responsive when warm; its quality-first files require substantially more initial transfer. B has quicker readiness and a steadier native60fps cadence, while deliberately committing each gesture to1.5s. Both exceed the current5MB production page ceiling. Select the feel and verify on the owner's actual phone before further encoding/budget decisions, expansion to all scenes or publication. Physical iOS Low Power Mode, Android Data Saver hardware behavior, thermal/GPU limits, browser-toolbar motion and Sites CDN delivery remain unverified for these prototypes. Existing source1080p also limits detail on4K/Retina displays.
+
 ## Native video preparation — 18 September 2026
 
 **Published successfully:** https://adduco-crveni-monolit.mglavinic.chatgpt.site/ — Sites version21, application source `3ff139cef9ae6451214734a781ddf06f8376e03c`, deployment `appgdep_6aad08c3bbe88191a0643f552d9824a3`. The measured public bundle is `index-C66FVxC3.js`, matching the tested local build. Native preparation and transfer acceptance pass. The opening-paint≤1s target is **not consistently met** because one of the three new portrait cold samples waited1.724s for the initial HTML response; this remaining delivery latency is disclosed below.

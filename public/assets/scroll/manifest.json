@@ -1,0 +1,127 @@
+{
+  "date": "2026-09-20",
+  "scope": "Selected direct-scroll journey, transition 1. All three transitions use the same codec policy; segment-2 and segment-3 carry their own manifests.",
+  "sources": {
+    "landscape": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_190739_83bee30f-abd2-4f75-9d09-5c1af2921dfa.mp4",
+    "portrait": "https://d8j0ntlcm91z4.cloudfront.net/user_3EgWxUve03N2S8I03MuafhGEfbZ/hf_20260915_191145_6d658000-6802-4572-8356-74c5eb5b0138.mp4"
+  },
+  "selection": "AV1 only when supported, smooth and powerEfficient. WebKit excludes AV1 after repeated paused-seek failures and prefers qualifying HEVC. H.264 is bounded/default/error fallback. One orientation/format loads at a time.",
+  "encoding": {
+    "av1": "libsvtav1 preset6 CRF25 GOP12 lp4 fast-decode1",
+    "hevc": "libx265 slow CRF22 GOP24 no B frames closed GOP hvc1 pools4 frame-threads2",
+    "h264": "libx264 slow CRF20 GOP24 no B frames threads4",
+    "shared": "193 original frames at24fps; faststart; yuv420p; no audio; landscape1920x1080 portrait900x1600",
+    "stills": "Preserved baseline decoded-H.264-GOP4 WebP92 derivatives; original approved artwork unchanged"
+  },
+  "files": {
+    "landscape-av1.mp4": {
+      "bytes": 6620349,
+      "sha256": "3d06f8eb21257028ab76b387cac2ef32382b662949017f8d51b1c52deb646f50",
+      "ssim": 0.986967,
+      "start_rms": 2.3111,
+      "end_rms": 2.1677
+    },
+    "landscape-end.webp": {
+      "bytes": 331464,
+      "sha256": "6855dbc54be0371b4fac972274fe829e1ae7885d9882626136c10d7a97712512"
+    },
+    "landscape-h264.mp4": {
+      "bytes": 9871107,
+      "sha256": "6c8bece4589105311d7bd1c7c716c64b179772f44d59111edb333332dca13b0d",
+      "ssim": 0.985703,
+      "start_rms": 1.797,
+      "end_rms": 1.0738
+    },
+    "landscape-hevc.mp4": {
+      "bytes": 8855012,
+      "sha256": "22aa3503190c2e05c5284e0d9a5185b39c966f578f6956d5fad88bebb7f0c652",
+      "ssim": 0.986421,
+      "start_rms": 2.0229,
+      "end_rms": 2.0714
+    },
+    "landscape-start.webp": {
+      "bytes": 290264,
+      "sha256": "9a3d3153094e37e585ab3f72db4314fbbf978757381a53c1d350d7eea2411585"
+    },
+    "portrait-av1.mp4": {
+      "bytes": 5846920,
+      "sha256": "6294a23aaf43a9fdaadf287310c55b150f200e715b5fe4a9347ace0c66c170ee",
+      "ssim": 0.986754,
+      "start_rms": 2.7719,
+      "end_rms": 2.5243
+    },
+    "portrait-end.webp": {
+      "bytes": 300768,
+      "sha256": "d107324ce0841d70c231a2557a901e52c10e9878498a1da86ee1d97aa008a82c"
+    },
+    "portrait-h264.mp4": {
+      "bytes": 7956893,
+      "sha256": "ddc1bad3a18e9404881368b5b08d5875ed7ab75bdb715a5ce7f6a9a62520ed46",
+      "ssim": 0.984904,
+      "start_rms": 2.1436,
+      "end_rms": 1.1625
+    },
+    "portrait-hevc.mp4": {
+      "bytes": 6990223,
+      "sha256": "2f8905fb897f5ae91e5687934fab22206e4eaadd76b5735aaa60c8dec6c2b46e",
+      "ssim": 0.985605,
+      "start_rms": 2.445,
+      "end_rms": 2.4183
+    },
+    "portrait-start.webp": {
+      "bytes": 268012,
+      "sha256": "b14cf7c9a6e53a6c791590ba92a7da3ce832742c0e3dfd1ec613ce412ef9aa63"
+    }
+  },
+  "quality_reference": "SSIM against original source with matched timebase24fps; RGB endpoint RMS at640px against preserved stills.",
+  "joinRms": {
+    "portrait-av1-2": {
+      "join": 9.269,
+      "endStill": 1.2412
+    },
+    "portrait-av1-3": {
+      "join": 13.7417,
+      "endStill": 1.3235
+    },
+    "portrait-hevc-2": {
+      "join": 9.4698,
+      "endStill": 2.3935
+    },
+    "portrait-hevc-3": {
+      "join": 13.6753,
+      "endStill": 2.7628
+    },
+    "portrait-h264-2": {
+      "join": 9.5026,
+      "endStill": 2.4239
+    },
+    "portrait-h264-3": {
+      "join": 13.7556,
+      "endStill": 2.7878
+    },
+    "landscape-av1-2": {
+      "join": 8.6874,
+      "endStill": 1.092
+    },
+    "landscape-av1-3": {
+      "join": 10.8969,
+      "endStill": 1.1881
+    },
+    "landscape-hevc-2": {
+      "join": 8.8322,
+      "endStill": 2.1927
+    },
+    "landscape-hevc-3": {
+      "join": 11.0361,
+      "endStill": 2.3128
+    },
+    "landscape-h264-2": {
+      "join": 8.841,
+      "endStill": 2.2011
+    },
+    "landscape-h264-3": {
+      "join": 11.0831,
+      "endStill": 2.3271
+    }
+  }
+}

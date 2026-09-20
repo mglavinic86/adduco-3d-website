@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="hr">
+<html lang="hr" class="scroll">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,14 +7,14 @@
     <link
       rel="preload"
       as="image"
-      href="/assets/transition-1/portrait-start.webp"
+      href="/assets/scroll/portrait-start.webp"
       media="(max-aspect-ratio: 9/10)"
       fetchpriority="high"
     />
     <link
       rel="preload"
       as="image"
-      href="/assets/transition-1/landscape-start.webp"
+      href="/assets/scroll/landscape-start.webp"
       media="not all and (max-aspect-ratio: 9/10)"
       fetchpriority="high"
     />
@@ -99,8 +99,26 @@
   <body>
     <noscript
       ><style>
-        .chapter-content {
+        .scroll-track {
+          height: auto;
+        }
+        .scroll-stage {
+          height: auto;
+          position: relative;
+          padding-top: 130px;
+        }
+        .scroll-caption {
+          position: relative;
+          bottom: auto;
+          left: auto;
+          right: auto;
+          margin: 0 var(--gutter) 70px;
           opacity: 1 !important;
+          visibility: visible !important;
+        }
+        .scene-nav,
+        .chapter-hint {
+          display: none;
         }
         .inquiry-form,
         .menu-heading,
