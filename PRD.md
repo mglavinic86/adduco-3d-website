@@ -1,5 +1,11 @@
 # Adduco — local website
 
+## Sites delivery correction — 20 September 2026
+
+Public verification of the complete A release reproduced a host-specific failure: Sites returns HTTP200 to movie Range requests and Chrome reports a zero-length seekable interval. The previous functional publication was restored. The owner has already authorized completing A, public Sites release and GitHub main synchronization; this is a delivery correction within that scope, not a visual or media change.
+
+Add a narrowly scoped, same-origin service worker for the approved cinematic MP4s on Sites. It streams requested byte ranges to native video elements from one upstream movie request, retains only compressed media chunks and bounds retained memory. It must not cache/intercept HTML, forms, navigation, images, scripts or third-party traffic. No Blob URLs, duplicate native-plus-fetch downloads, new services or AI generation. Local range-capable previews retain their direct native path. If registration is unavailable or fails, retain accessible artwork/captions and normal business navigation. Verify against a chunked HTTP200/no-range server in both browser engines, count actual upstream movie bytes, then repeat public checks. Preserve the opening-before-JS behavior, selected quality, direct scrolling, interruption/reversal and all fallbacks. Record any additional cold latency honestly.
+
 ## A continuation and quality budget approved — 20 September 2026
 
 After being told that optimized A exceeds the historical 5 MB complete-page ceiling, the owner explicitly gave all needed confirmations. The owner repeated that approval explicitly after the complete-journey measurements. The old byte ceiling is therefore lifted for this selected high-quality direct-scroll direction. Continue the selected A through the remaining approved scenes without repeating the budget/mode approval question. Keep minimizing actual transfer: one compatible codec/orientation, opening still before JavaScript, first film eager, later films prepared only near their transition. Report measured cold/complete bytes and genuine frame latency, including native browser range probes and any physical-device limitations.

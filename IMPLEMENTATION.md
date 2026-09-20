@@ -5,7 +5,7 @@
 - AC1 — complete: process remaining original portrait/landscape sources with the measured A codecs, record quality and joins; no new AI generation or generation-credit spend.
 - AC2 — complete: extend native-scroll mapping to all four approved captions, prepare later films near their transitions, preserve cold recovery/rotation/exits and test both directions across joins.
 - AC3 — lab verification complete: full responsive browser QA, cold/warm real-frame and transfer measurements; exact browser probe overhead remains explicit. The owner lifted the 5 MB page ceiling for quality.
-- AC4 — release after verified AC3: complete four-scene A, preserve existing public Sites audience/noindex and synchronize its source; retain rollback. Never publish the incomplete first-transition experiment as the whole site.
+- AC4 — public verification found a Sites byte-range incompatibility in Chrome after version22; version21 was restored. The scoped delivery correction passes its no-range browser fixture; final public verification is required before completion. Release scope: complete four-scene A, preserve existing public Sites audience/noindex and synchronize its source; retain rollback. Never publish the incomplete first-transition experiment as the whole site.
 
 ## Selected A optimization — 20 September 2026
 

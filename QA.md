@@ -1,5 +1,15 @@
 # QA — mobile scroll smoothness
 
+## Public delivery correction — 20 September 2026
+
+Complete A was pushed to GitHub main and published as Sites version22 from21d3c62. Public verification then failed Chrome actual-frame reveal/reversal despite passing locally: Sites returned HTTP200 to Range requests and the video reported seekable[0,0]. WebKit's equivalent two checks passed. The full-buffer performance fixture also failed; no public-after performance figures are claimed from that failed run. Version21 was successfully restored while fixing delivery. The earlier local numbers remain local evidence only.
+
+A controlled chunked HTTP200/no-range server reproduced the zero-time seek in Chrome for AV1, HEVC and H.264, with and without Content-Length. A narrowly scoped same-origin service worker now serves byte ranges progressively from one upstream fetch per movie. It neither intercepts nor caches HTML, forms or navigation. No Blob URLs, external services, new media or generation. Compressed completed entries use a48MiB LRU retention target; active streams are not evicted, and browser decoder/HTTP-cache memory is separate. The fixed immutable media revision avoids stale source reuse. Failed registration leaves artwork and normal content navigation usable.
+
+Behavior-first regression failed before the correction. All six delivery cases now pass across Chrome and WebKit: every movie forward/reverse at390/1440, exact requested range bytes and suffixes,416 invalid ranges, one complete upstream body per requested movie, and worker-unavailable fallback/contact. The complete preceding behavior run passed98 cases/16 measurement skips; the expanded delivery rerun adds both portrait all-movie cases (100 applicable cases covered in total). Unit tests, typecheck, lint and build pass. The original94-case suite's visual contract remains unchanged. Public release re-verification follows separately; do not substitute the local no-range fixture for live evidence.
+
+References used in delivery diagnosis: [MDN Range requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests) and [Chrome cached media guidance](https://developer.chrome.com/docs/workbox/serving-cached-audio-and-video). The implemented adapter streams arriving chunks instead of waiting for a complete Blob.
+
 ## Full selected A — 20 September 2026
 
 The owner selected direct-scroll A, authorized all four scenes and lifted the historical5MB page ceiling for quality. The complete implementation replaces the two-scene experiment and retires its route, unselected B, and the previous three-second gesture controller. DESIGN.md, Croatian captions, original logo and business content are unchanged. No new AI generation was submitted; all six existing masters were processed through Higgsfield. Final measurements and release record follow below.

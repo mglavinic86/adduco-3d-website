@@ -1,3 +1,4 @@
+import { prepareMediaDelivery } from "./mediaDelivery";
 import { useEffect, useRef, useState } from "react";
 import { scenes } from "../scenes";
 import { Arrow } from "../ui";
@@ -92,6 +93,7 @@ function DirectScroll({
   const [prepared, setPrepared] = useState([true, false, false]);
   const [buffering, setBuffering] = useState(false);
   const [codec, setCodec] = useState<ScrollCodec>();
+  const [deliveryUnavailable, setDeliveryUnavailable] = useState(false);
   const position = useRef<{
     units: number;
     height: number;
@@ -101,9 +103,13 @@ function DirectScroll({
   useEffect(() => {
     if (stillOnly) return;
     let active = true;
-    selectScrollCodec(portrait).then((value) => {
-      if (active) setCodec(value);
-    });
+    Promise.all([selectScrollCodec(portrait), prepareMediaDelivery()]).then(
+      ([value, ready]) => {
+        if (!active) return;
+        if (ready) setCodec(value);
+        else setDeliveryUnavailable(true);
+      },
+    );
     return () => {
       active = false;
     };
@@ -195,7 +201,7 @@ function DirectScroll({
       const i = activeSegment;
       const state = states[i];
       const film = state?.film;
-      if (stillOnly || state?.failed) {
+      if (stillOnly || deliveryUnavailable || state?.failed) {
         showFallback();
         return;
       }
@@ -396,7 +402,7 @@ function DirectScroll({
       window.removeEventListener("hashchange", hash);
       document.removeEventListener("visibilitychange", scroll);
     };
-  }, [stillOnly, codec, portrait]);
+  }, [stillOnly, codec, portrait, deliveryUnavailable]);
   const scene = fallback ?? 0;
   const visible =
     fallback === undefined && painted?.portrait === portrait
