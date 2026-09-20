@@ -131,6 +131,10 @@ test("failed efficient codec retries compatible video and retains scroll intent"
 test("WebKit avoids AV1 despite optimistic capability predictions", async ({
   page,
 }) => {
+  const files: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().endsWith(".mp4")) files.push(request.url());
+  });
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "userAgent", {
       value: "Mozilla/5.0 AppleWebKit/605.1.15 Version/26.0 Safari/605.1.15",
@@ -146,8 +150,15 @@ test("WebKit avoids AV1 despite optimistic capability predictions", async ({
     });
   });
   await page.goto("/");
-  await expect(page.locator("video").first()).toHaveAttribute(
-    "src",
-    /-hevc.mp4$/,
-  );
+  await expect.poll(() => files.length).toBeGreaterThan(0);
+  expect(files[0]).toMatch(/-hevc\.mp4$/);
+  await expect
+    .poll(() =>
+      page
+        .locator("video")
+        .first()
+        .evaluate((video: HTMLVideoElement) => video.readyState),
+    )
+    .toBe(4);
+  expect(files.some((file) => file.endsWith("-av1.mp4"))).toBe(false);
 });

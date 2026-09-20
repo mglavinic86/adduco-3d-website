@@ -141,39 +141,36 @@ test("a cold requested film keeps outgoing copy, shows buffering, and settles af
   );
   await expect(page.locator(".header-cta")).toBeInViewport();
 });
-test("keyboard, horizontal input and pinch retain browser-owned scrolling", async ({
-  page,
-}) => {
-  await page.goto("/");
-  const prevented = await page.locator(".scroll-stage").evaluate((stage) => {
-    const events = [
-      new WheelEvent("wheel", {
-        deltaX: 100,
-        deltaY: 0,
-        bubbles: true,
-        cancelable: true,
-      }),
-      new WheelEvent("wheel", {
-        deltaY: 100,
-        ctrlKey: true,
-        bubbles: true,
-        cancelable: true,
-      }),
-    ];
-    return events.map((event) => {
-      stage.dispatchEvent(event);
-      return event.defaultPrevented;
+for (const key of ["PageDown", "Space"]) {
+  test(`${key}, horizontal input and pinch retain browser-owned scrolling`, async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const prevented = await page.locator(".scroll-stage").evaluate((stage) => {
+      const events = [
+        new WheelEvent("wheel", {
+          deltaX: 100,
+          deltaY: 0,
+          bubbles: true,
+          cancelable: true,
+        }),
+        new WheelEvent("wheel", {
+          deltaY: 100,
+          ctrlKey: true,
+          bubbles: true,
+          cancelable: true,
+        }),
+      ];
+      return events.map((event) => {
+        stage.dispatchEvent(event);
+        return event.defaultPrevented;
+      });
     });
+    expect(prevented).toEqual([false, false]);
+    await page.keyboard.press(key);
+    await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
   });
-  expect(prevented).toEqual([false, false]);
-  await page.keyboard.press("PageDown");
-  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
-  const beforeSpace = await page.evaluate(() => scrollY);
-  await page.keyboard.press("Space");
-  await expect
-    .poll(() => page.evaluate(() => scrollY))
-    .toBeGreaterThan(beforeSpace + 100);
-});
+}
 
 test("a touch playback policy rejection uses a still without downloading another codec", async ({
   page,
