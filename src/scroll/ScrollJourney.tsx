@@ -538,7 +538,7 @@ export function SceneNav({ progress }: { progress: number }) {
         <a
           key={scene.id}
           href={`#${scene.id}`}
-          aria-label={`${i + 1} — ${scene.name}`}
+          aria-label={`0${i + 1} — ${scene.name}`}
           aria-current={Math.round(progress) === i ? "step" : undefined}
         >{`0${i + 1}`}</a>
       ))}

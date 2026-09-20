@@ -5,10 +5,10 @@ test("all four scenes follow native scrolling, reverse, and keep normal exits", 
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Prizori", exact: true });
   for (const [name, title] of [
-    ["3 — Visokogradnja", "Gradimo u visinu."],
-    ["4 — Vaš projekt", "Vaš projekt počinje razgovorom."],
-    ["2 — Betonski radovi", "Snaga je u detalju."],
-    ["1 — Vizija", "Od vizije do stvarnosti."],
+    ["03 — Visokogradnja", "Gradimo u visinu."],
+    ["04 — Vaš projekt", "Vaš projekt počinje razgovorom."],
+    ["02 — Betonski radovi", "Snaga je u detalju."],
+    ["01 — Vizija", "Od vizije do stvarnosti."],
   ]) {
     await nav.getByRole("link", { name, exact: true }).click();
     await expect(page.getByRole("heading", { name: title })).toBeVisible();
@@ -28,7 +28,7 @@ test("later films remain unrequested until approaching their transitions", async
   await page.waitForTimeout(350);
   expect(new Set(requests).size).toBe(1);
   await page
-    .getByRole("link", { name: "3 — Visokogradnja", exact: true })
+    .getByRole("link", { name: "03 — Visokogradnja", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: "Gradimo u visinu." }),
@@ -51,7 +51,7 @@ test("reduced motion supports every scene and requests no movies", async ({
     page.getByRole("heading", { name: "Vaš projekt počinje razgovorom." }),
   ).toBeVisible();
   await page
-    .getByRole("link", { name: "3 — Visokogradnja", exact: true })
+    .getByRole("link", { name: "03 — Visokogradnja", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: "Gradimo u visinu." }),
@@ -95,10 +95,10 @@ for (const width of [390, 768, 1440]) {
       expect(await film.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
     }
     for (const [i, name] of [
-      "1 — Vizija",
-      "2 — Betonski radovi",
-      "3 — Visokogradnja",
-      "4 — Vaš projekt",
+      "01 — Vizija",
+      "02 — Betonski radovi",
+      "03 — Visokogradnja",
+      "04 — Vaš projekt",
     ].entries()) {
       await page.getByRole("link", { name, exact: true }).click();
       await page.waitForTimeout(250);
@@ -205,7 +205,7 @@ test("a touch playback policy rejection uses a still without downloading another
   await page.waitForTimeout(300);
   expect(movies.size).toBe(1);
   await page
-    .getByRole("link", { name: "2 — Betonski radovi", exact: true })
+    .getByRole("link", { name: "02 — Betonski radovi", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: "Snaga je u detalju." }),

@@ -156,7 +156,7 @@ test("unavailable delivery worker keeps artwork, captions and contact without mo
   movieBytes = new Map();
   await page.goto(origin);
   await page
-    .getByRole("link", { name: "3 — Visokogradnja", exact: true })
+    .getByRole("link", { name: "03 — Visokogradnja", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: "Gradimo u visinu." }),

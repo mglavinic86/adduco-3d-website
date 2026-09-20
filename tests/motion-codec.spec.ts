@@ -1,12 +1,26 @@
 import { test, expect } from "@playwright/test";
 for (const preferred of ["av1", "hevc", "h264"]) {
-  test(`loads only ${preferred} when capability prediction qualifies it`, async ({
+  test(`selects ${preferred} and retries H.264 only after a native decoder error`, async ({
     page,
     browserName,
   }) => {
     const expected =
       browserName === "webkit" && preferred === "av1" ? "h264" : preferred;
     await page.addInitScript((preferred) => {
+      const decoderErrors: { src: string; code: number }[] = [];
+      Object.assign(window, { decoderErrors });
+      document.addEventListener(
+        "error",
+        (event) => {
+          if (event.target instanceof HTMLVideoElement && event.target.error) {
+            decoderErrors.push({
+              src: event.target.currentSrc,
+              code: event.target.error.code,
+            });
+          }
+        },
+        true,
+      );
       Object.defineProperty(navigator, "mediaCapabilities", {
         value: {
           decodingInfo: async (config: MediaDecodingConfiguration) => {
@@ -36,7 +50,34 @@ for (const preferred of ["av1", "hevc", "h264"]) {
       )
       .toBe(4);
     expect(files.length).toBeGreaterThan(0);
-    expect(files.every((f) => f.includes(`-${expected}.mp4`))).toBe(true);
+    expect(files[0]).toContain(`-${expected}.mp4`);
+    const finalSource = await page.locator("video").first().getAttribute("src");
+    if (expected !== "h264" && finalSource?.endsWith("-h264.mp4")) {
+      // Optimistic predictions cannot add an HEVC decoder to Linux Chrome.
+      // A format retry is valid only after the actual media element rejects it.
+      const errors = await page.evaluate(
+        () =>
+          (
+            window as Window & {
+              decoderErrors?: { src: string; code: number }[];
+            }
+          ).decoderErrors ?? [],
+      );
+      expect(
+        errors.some(
+          ({ src, code }) =>
+            src.endsWith(`-${expected}.mp4`) && [3, 4].includes(code),
+        ),
+      ).toBe(true);
+      expect(
+        files.every(
+          (f) => f.endsWith(`-${expected}.mp4`) || f.endsWith("-h264.mp4"),
+        ),
+      ).toBe(true);
+    } else {
+      expect(finalSource).toMatch(new RegExp(`-${expected}\\.mp4$`));
+      expect(files.every((f) => f.endsWith(`-${expected}.mp4`))).toBe(true);
+    }
   });
 }
 test("bounded capability detection falls back without a second format request", async ({
@@ -75,7 +116,7 @@ test("failed efficient codec retries compatible video and retains scroll intent"
   );
   await page.goto("/", { waitUntil: "domcontentloaded" });
   await page
-    .getByRole("link", { name: "2 — Betonski radovi", exact: true })
+    .getByRole("link", { name: "02 — Betonski radovi", exact: true })
     .click();
   await expect(page.locator("video").first()).toHaveAttribute(
     "src",

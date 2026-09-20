@@ -2,6 +2,12 @@
 
 ## Finishing pass — 20 September 2026
 
+### Additional accessibility finding
+
+Follow-up checks: all118 local Chrome/WebKit behavior cases passed (16 opt-in measurements skipped); the12 codec cases also passed after the portability correction below. Unit tests, typecheck, lint and build pass. The first Linux CI browser run exposed a test assumption: mocking a positive HEVC capability prediction cannot install a decoder on Linux Chrome. The app correctly retried H.264. The test now checks the first selected format, requires a real native decode/unsupported-source error before accepting H.264 retry, rejects any unrelated format, and waits for canplaythrough. No production playback change was made for this finding.
+
+Lighthouse13.4.1 mobile lab on the live version24 reported Performance73, Accessibility100 and Best Practices81; FCP2.4s, LCP4.1s, TBT220ms, CLS0.001. The document response took2330ms. These are a separate Lighthouse simulated-mobile sample, not the above9Mbps live timings or field scores. Its experimental label-content-name check correctly found visible scene numbers01–04 missing their leading zero in accessible names. The browser regression first failed against the public version; accessible labels now include the exact visible number. No artwork, layout or playback change. The two API-deprecation warnings originate from the hosting provider's /cdn-cgi/challenge-platform/scripts/jsd/main.js; app code does not call those APIs. Image-size savings are suggestions, not measured accepted recompression; source/still quality remains unchanged.
+
 Published as public Sites version24 from6626cd872e3644aeee23a21213d76927ee6c1191; subsequent report-only commit does not change the public app. All16 finishing-specific browser cases pass on the live URL in Chrome and WebKit, in addition to116 local behavior cases and5 unit tests. The actual in-app public browser also showed the updated projects and advancing video with readable stopped captions.
 
 Live AFTER lab (one fresh-context sample/orientation), same Chrome4G/CPU4× setup as BEFORE, including service-worker throttling; WebKit unthrottled desktop emulation:

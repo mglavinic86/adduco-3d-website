@@ -1,5 +1,22 @@
 import { expect, test } from "@playwright/test";
 
+test("scene links include their visible number in the accessible name", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const links = page
+    .getByRole("navigation", { name: "Prizori", exact: true })
+    .getByRole("link");
+  for (const [index, name] of [
+    "01 — Vizija",
+    "02 — Betonski radovi",
+    "03 — Visokogradnja",
+    "04 — Vaš projekt",
+  ].entries()) {
+    await expect(links.nth(index)).toHaveAccessibleName(name);
+  }
+});
+
 for (const hash of ["o-nama", "usluge", "projekti", "kontakt"]) {
   test(`direct ${hash} reads without movies and returns to the full journey`, async ({
     page,

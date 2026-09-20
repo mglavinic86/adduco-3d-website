@@ -138,9 +138,9 @@ for (const profile of ["local", "4g-cpu4"])
         await full(i);
       }
       for (const name of [
-        "2 — Betonski radovi",
-        "3 — Visokogradnja",
-        "4 — Vaš projekt",
+        "02 — Betonski radovi",
+        "03 — Visokogradnja",
+        "04 — Vaš projekt",
       ])
         await page.getByRole("link", { name, exact: true }).click();
       await page.waitForLoadState("networkidle");

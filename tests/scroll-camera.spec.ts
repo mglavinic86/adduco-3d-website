@@ -6,7 +6,7 @@ test("direct scene links work again after free scrolling away from the same hash
   await page.goto("/");
   const film = page.locator("video").first();
   const end = page.getByRole("link", {
-    name: "2 — Betonski radovi",
+    name: "02 — Betonski radovi",
     exact: true,
   });
   await end.click();
@@ -121,7 +121,7 @@ test("direct camera follows native scroll, holds, and returns to the latest posi
     .poll(() => film.evaluate((v: HTMLVideoElement) => v.currentTime))
     .toBeLessThan(held - 0.5);
   expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
-  await page.getByRole("link", { name: "1 — Vizija", exact: true }).click();
+  await page.getByRole("link", { name: "01 — Vizija", exact: true }).click();
   await expect
     .poll(() => film.evaluate((v: HTMLVideoElement) => v.currentTime))
     .toBeLessThan(0.05);
@@ -144,7 +144,7 @@ for (const mode of ["scroll"]) {
       page.getByRole("heading", { name: "Od vizije do stvarnosti." }),
     ).toBeVisible();
     await page
-      .getByRole("link", { name: "2 — Betonski radovi", exact: true })
+      .getByRole("link", { name: "02 — Betonski radovi", exact: true })
       .click();
     await expect(
       page.getByRole("heading", { name: "Snaga je u detalju." }),
@@ -165,7 +165,7 @@ for (const mode of ["scroll"]) {
     );
     await page.goto(`/`);
     await page
-      .getByRole("link", { name: "2 — Betonski radovi", exact: true })
+      .getByRole("link", { name: "02 — Betonski radovi", exact: true })
       .click();
     await expect(
       page.getByRole("heading", { name: "Snaga je u detalju." }),
@@ -264,7 +264,7 @@ test("a late compositor callback never locks subsequent scroll input", async ({
   await page.evaluate(() => window.scrollTo(0, innerHeight));
   await page.waitForTimeout(150);
   await page
-    .getByRole("link", { name: "2 — Betonski radovi", exact: true })
+    .getByRole("link", { name: "02 — Betonski radovi", exact: true })
     .click();
   await expect
     .poll(() =>
@@ -349,7 +349,7 @@ test("Data Saver keeps the scene stills and never requests a movie", async ({
   });
   await page.goto("/");
   await page
-    .getByRole("link", { name: "2 — Betonski radovi", exact: true })
+    .getByRole("link", { name: "02 — Betonski radovi", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: "Snaga je u detalju." }),
