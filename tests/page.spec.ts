@@ -1,58 +1,134 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-for (const width of [390, 768, 1440]) {
-  test(`native snap layout and readable sections at ${width}px`, async ({
+for (const width of [320, 390, 768, 1440]) {
+  test(`business content and a long inquiry remain usable at ${width}px`, async ({
     page,
-  }, testInfo) => {
-    const height = width === 768 ? 1024 : width === 1440 ? 900 : 844;
-    await page.setViewportSize({ width, height });
+  }) => {
     const errors: string[] = [];
-    page.on("pageerror", (e) => errors.push(e.message));
-    await page.goto("/");
-    await expect(
-      page.getByRole("heading", { name: "Od vizije do stvarnosti." }),
-    ).toBeVisible();
-    await expect(page.locator("html")).toHaveCSS(
-      "scroll-snap-type",
-      "y mandatory",
-    );
-    expect(
-      await page
-        .locator(".chapter")
-        .evaluate((e) => e.getBoundingClientRect().height),
-    ).toBe(height);
-    expect(
-      await page.locator("body").evaluate((e) => e.scrollWidth),
-    ).toBeLessThanOrEqual(width);
-    await expect(
-      page.getByRole("link", { name: "Upoznajte Adduco", exact: true }),
-    ).toBeInViewport();
-    await expect(page.getByRole("button", { name: /animaciju/ })).toHaveCount(
-      0,
-    );
-    await expect(page.locator("video").first()).toHaveJSProperty("muted", true);
-    await expect(page.locator("video").first()).toHaveJSProperty(
-      "playsInline",
-      true,
-    );
-    await expect(page.locator("video").first()).toHaveJSProperty(
-      "controls",
-      false,
-    );
-    await page.screenshot({
-      path: `/tmp/adduco-chapter1-${testInfo.project.name}-${width}.png`,
-    });
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/#o-nama");
+    if (width < 768) {
+      await expect(
+        page.getByRole("button", { name: "Otvori izbornik" }),
+      ).toBeInViewport({ ratio: 1 });
+    }
+    for (const id of ["o-nama", "usluge", "priprema", "projekti", "kontakt"]) {
+      await page.locator(`#${id}`).scrollIntoViewIfNeeded();
+      expect(
+        await page.evaluate(
+          () =>
+            document.documentElement.scrollWidth -
+            document.documentElement.clientWidth,
+        ),
+      ).toBeLessThanOrEqual(1);
+    }
+    await page.getByLabel("Ime i prezime *").fill("Ana Horvat");
+    await page.getByLabel("E-pošta *").fill("ana@example.com");
     await page
-      .getByRole("link", { name: "Upoznajte Adduco", exact: true })
-      .click();
-    await expect(page.locator("#o-nama")).toBeInViewport();
-    await page.screenshot({
-      path: `/tmp/adduco-business-${testInfo.project.name}-${width}.png`,
-    });
+      .getByLabel("O vašem projektu *")
+      .fill("Planiramo uređenje prilaza. ".repeat(40));
+    await page.getByRole("button", { name: "Pripremite upit" }).click();
+    await expect(
+      page.getByRole("region", { name: "Vaš upit je pripremljen." }),
+    ).toBeFocused();
+    await expect(
+      page.getByRole("button", { name: "Kopirajte tekst upita" }),
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth,
+      ),
+    ).toBeLessThanOrEqual(1);
     expect(errors).toEqual([]);
   });
 }
+
+for (const mode of ["denied", "unavailable"]) {
+  test(`inquiry offers manual copying when clipboard is ${mode}`, async ({
+    page,
+  }) => {
+    await page.addInitScript((mode) => {
+      Object.defineProperty(navigator, "clipboard", {
+        value:
+          mode === "unavailable"
+            ? undefined
+            : {
+                writeText: () =>
+                  Promise.reject(new DOMException("Denied", "NotAllowedError")),
+              },
+      });
+    }, mode);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/#kontakt");
+    await page.getByLabel("Ime i prezime *").fill("Ana Horvat");
+    await page.getByLabel("E-pošta *").fill("ana@example.com");
+    await page.getByLabel("O vašem projektu *").fill("Uređenje prilaza kući.");
+    await page.getByRole("button", { name: "Pripremite upit" }).click();
+    await page.getByRole("button", { name: "Kopirajte tekst upita" }).click();
+    const text = page.getByRole("textbox", {
+      name: "Tekst upita za ručno kopiranje",
+    });
+    await expect(text).toBeFocused();
+    await expect(text).toHaveValue(/Uređenje prilaza kući\./);
+    expect(
+      await text.evaluate(
+        (el: HTMLTextAreaElement) => el.selectionEnd - el.selectionStart,
+      ),
+    ).toBe((await text.inputValue()).length);
+    await expect(
+      page.getByText("Tekst upita je kopiran. Upit još nije poslan."),
+    ).toHaveCount(0);
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  });
+}
+
+test("mobile menu keeps every action reachable on a short screen", async ({
+  page,
+  browserName,
+}) => {
+  await page.setViewportSize({ width: 640, height: 360 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Otvori izbornik" }).click();
+  const tabKey = browserName === "webkit" ? "Alt+Tab" : "Tab";
+  for (let i = 0; i < 3; i++) await page.keyboard.press(tabKey);
+  const contact = page
+    .getByRole("navigation", { name: "Glavna navigacija" })
+    .getByRole("link", { name: "Kontakt", exact: true });
+  await expect(contact).toBeFocused();
+  await expect(contact).toBeInViewport({ ratio: 1 });
+  await contact.press("Enter");
+  await expect(page.locator("#kontakt")).toBeFocused();
+});
+
+test("mobile keyboard navigation continues in the chosen section and closes on focus exit", async ({
+  page,
+  browserName,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Otvori izbornik" }).click();
+  await page
+    .getByRole("navigation", { name: "Glavna navigacija" })
+    .getByRole("link", { name: "O nama", exact: true })
+    .press("Enter");
+  await expect(page.locator("#o-nama")).toBeFocused();
+  const tabKey = browserName === "webkit" ? "Alt+Tab" : "Tab";
+  await page.keyboard.press(tabKey);
+  await expect(page.locator("#o-nama").getByRole("link")).toBeFocused();
+  await page.getByRole("button", { name: "Otvori izbornik" }).click();
+  // Tab out of the non-modal navigation and past the persistent header controls.
+  for (let i = 0; i < 6; i++) await page.keyboard.press(tabKey);
+  await expect(
+    page.getByRole("button", { name: "Otvori izbornik" }),
+  ).toHaveAttribute("aria-expanded", "false");
+});
 
 for (const hash of ["o-nama", "usluge", "priprema", "projekti", "kontakt"]) {
   test(`direct #${hash} opens ordinary content and survives Back`, async ({
@@ -112,78 +188,22 @@ test("mobile menu, keyboard access, inquiry and PDF work without playback", asyn
 
 test("all text and hash navigation work without JavaScript", async ({
   browser,
+  baseURL,
 }) => {
   const context = await browser.newContext({
     javaScriptEnabled: false,
     viewport: { width: 390, height: 844 },
   });
   const page = await context.newPage();
-  await page.goto("http://127.0.0.1:5184/");
+  await page.goto(baseURL!);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await page
     .getByRole("navigation", { name: "Glavna navigacija" })
     .getByRole("link", { name: "Usluge" })
     .click();
   await expect(page.locator("#usluge")).toBeInViewport();
-  await expect(page.locator("video").first()).toHaveAttribute(
-    "preload",
-    "none",
+  await expect(page.locator(".construction-story")).not.toHaveClass(
+    /is-enhanced/,
   );
   await context.close();
-});
-
-for (const [width, height] of [
-  [360, 640],
-  [390, 844],
-  [768, 1024],
-  [1440, 900],
-]) {
-  test(`destination caption and navigation fit ${width}x${height}`, async ({
-    page,
-  }, testInfo) => {
-    await page.setViewportSize({ width, height });
-    await page.goto("/#povjerenje");
-    await expect(
-      page.getByRole("heading", { name: "Snaga je u detalju." }),
-    ).toBeVisible();
-    await page.evaluate(() => document.fonts.ready);
-    await expect(
-      page.locator('.chapter-content[data-visible="true"]'),
-    ).toHaveCSS("opacity", "1");
-    await expect(
-      page.getByRole("link", { name: "Istražite usluge" }),
-    ).toBeInViewport();
-    const caption = await page
-      .locator('.chapter-content[data-visible="true"]')
-      .boundingBox();
-    const nav = await page
-      .getByRole("navigation", { name: "Scene filmske priče" })
-      .boundingBox();
-    const header = await page.locator("header").boundingBox();
-    expect(caption!.y).toBeGreaterThan(header!.y + header!.height);
-    expect(caption!.y + caption!.height).toBeLessThan(nav!.y);
-    expect(
-      await page.locator("body").evaluate((e) => e.scrollWidth),
-    ).toBeLessThanOrEqual(width);
-    await page.screenshot({
-      path: `/tmp/adduco-detail-${testInfo.project.name}-${width}.png`,
-    });
-  });
-}
-
-test("a direct scene change never paints both captions on top of one another", async ({
-  page,
-}) => {
-  await page.goto("/#povjerenje");
-  await expect(
-    page.getByRole("heading", { name: "Snaga je u detalju." }),
-  ).toBeVisible();
-  const painted = await page.locator(".chapter-content").evaluateAll(
-    (captions) =>
-      captions.filter((caption) => {
-        const style = getComputedStyle(caption);
-        return style.visibility === "visible" && Number(style.opacity) > 0;
-      }).length,
-  );
-  expect(painted).toBeLessThanOrEqual(1);
 });

@@ -3,10 +3,11 @@ import { test, expect } from "@playwright/test";
 test("link previews have complete Croatian metadata and a reachable image without JavaScript", async ({
   browser,
   request,
+  baseURL,
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto("http://127.0.0.1:5184/");
+  await page.goto(baseURL!);
   const title = await page.title();
   await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
     "content",
@@ -38,9 +39,16 @@ test("link previews have complete Croatian metadata and a reachable image withou
   const image = await page
     .locator('meta[property="og:image"]')
     .getAttribute("content");
-  expect(image).toMatch(
-    /^https:\/\/adduco-crveni-monolit\.mglavinic\.chatgpt\.site\/assets\/.*\.jpg$/,
+  const canonical = await page
+    .locator('link[rel="canonical"]')
+    .getAttribute("href");
+  expect(canonical).toBe("https://adduco-crveni-monolit.mglavinic.chatgpt.site/");
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    "content",
+    canonical!,
   );
+  expect(new URL(image!).origin).toBe(new URL(canonical!).origin);
+  expect(image).toMatch(/\/assets\/.*\.jpg$/);
   await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
     "content",
     image!,

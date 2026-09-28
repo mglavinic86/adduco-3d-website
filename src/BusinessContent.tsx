@@ -3,10 +3,15 @@ import { Arrow, Wordmark } from "./ui";
 export default function BusinessContent() {
   return (
     <>
-      <section className="editorial intro-section" id="o-nama">
+      <section
+        className="editorial intro-section"
+        id="o-nama"
+        tabIndex={-1}
+        aria-labelledby="about-title"
+      >
         <div className="section-label">01 — VIZIJA</div>
         <div className="intro-grid">
-          <h2>
+          <h2 id="about-title">
             Dobro izgrađeno
             <br />
             počinje <em>dobro promišljenim.</em>
@@ -27,8 +32,15 @@ export default function BusinessContent() {
           </div>
         </div>
       </section>
-      <section className="editorial services" id="usluge">
-        <div className="section-label">ŠTO RADIMO</div>
+      <section
+        className="editorial services"
+        id="usluge"
+        tabIndex={-1}
+        aria-labelledby="services-title"
+      >
+        <h2 className="section-label" id="services-title">
+          ŠTO RADIMO
+        </h2>
         {[
           {
             name: "Visokogradnja",
@@ -61,10 +73,15 @@ export default function BusinessContent() {
           Kako pripremiti projekt <Arrow diagonal />
         </a>
       </section>
-      <section className="editorial process-section" id="priprema">
+      <section
+        className="editorial process-section"
+        id="priprema"
+        tabIndex={-1}
+        aria-labelledby="process-title"
+      >
         <div className="section-label">PRIJE PRVOG RAZGOVORA</div>
         <div className="section-heading">
-          <h2>
+          <h2 id="process-title">
             Jasan početak.
             <br />
             <em>Čvrst oslonac za dalje.</em>
@@ -113,10 +130,15 @@ export default function BusinessContent() {
           </a>
         </div>
       </section>
-      <section className="editorial projects-section" id="projekti">
+      <section
+        className="editorial projects-section"
+        id="projekti"
+        tabIndex={-1}
+        aria-labelledby="projects-title"
+      >
         <div className="section-label">IZ NAŠEG RADA</div>
         <div className="section-heading">
-          <h2>
+          <h2 id="projects-title">
             Stvarni projekti.
             <br />
             <em>Konkretna uloga.</em>
@@ -195,11 +217,16 @@ export default function BusinessContent() {
           </dl>
         </article>
       </section>
-      <section className="contact-section" id="kontakt">
+      <section
+        className="contact-section"
+        id="kontakt"
+        tabIndex={-1}
+        aria-labelledby="contact-title"
+      >
         <p className="eyebrow">KONTAKT</p>
         <div className="contact-grid">
           <div className="contact-intro">
-            <h2>
+            <h2 id="contact-title">
               Što želite
               <br />
               <em>izgraditi?</em>

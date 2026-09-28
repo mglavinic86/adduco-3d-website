@@ -1,0 +1,17 @@
+{
+  "master": "adduco-story-landscape.blend",
+  "faces": 13,
+  "maxFinalVertexErrorMetres": 0,
+  "finalCameraBoundingBoxNormalized": {
+    "left": 0.3712143898010254,
+    "right": 0.8389565944671631,
+    "bottom": 0.14475850760936737,
+    "top": 0.912665605545044
+  },
+  "castVisibilityChecks": [
+    1,
+    192,
+    480
+  ],
+  "frameEnd": 480
+}

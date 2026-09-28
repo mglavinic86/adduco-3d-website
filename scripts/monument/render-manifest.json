@@ -1,0 +1,19 @@
+{
+  "fps": 24,
+  "intendedFrames": 144,
+  "sourceLogoSha256": "e081a1a8615e6d755478fe7f38dfd2f6745cf47a7af107854547c75feabef214",
+  "variants": {
+    "landscape": {
+      "frames": 144,
+      "bytes": 3169118,
+      "width": 960,
+      "height": 540
+    },
+    "portrait": {
+      "frames": 144,
+      "bytes": 2981080,
+      "width": 540,
+      "height": 960
+    }
+  }
+}

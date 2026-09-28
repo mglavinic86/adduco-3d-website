@@ -2,7 +2,12 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: false,
-  use: { baseURL: "http://127.0.0.1:5184", headless: true },
+  workers: 1,
+  use: {
+    baseURL: process.env.ADDUCO_BASE_URL || "http://127.0.0.1:5277",
+    headless: true,
+    viewport: { width: 1440, height: 900 },
+  },
   projects: [
     {
       name: "chrome",
@@ -12,9 +17,7 @@ export default defineConfig({
       name: "webkit",
       use: {
         browserName: "webkit",
-        viewport: { width: 390, height: 844 },
-        hasTouch: true,
-        isMobile: true,
+        viewport: { width: 1440, height: 900 },
       },
     },
   ],

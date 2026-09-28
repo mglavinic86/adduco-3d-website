@@ -1,0 +1,263 @@
+{
+  "public_url": "https://adduco-crveni-monolit.mglavinic.chatgpt.site/",
+  "viewer_url": "https://unfold-clover-qwvx.here.now/",
+  "portrait_generation": "e1e24848-62d4-4081-9faa-439841809c7f",
+  "duration_seconds": 20.041667,
+  "frames": 481,
+  "fps": 24,
+  "codec": "H.264/yuv420p",
+  "gop": 24,
+  "b_frames": 2,
+  "audio": false,
+  "source_masters": {
+    "landscape": "deliverables/adduco-story/higgsfield/adduco-active-site-v2.mp4",
+    "portrait": "deliverables/adduco-story/higgsfield/portrait-film-result.mp4"
+  },
+  "web": {
+    "landscape": {
+      "bytes": 24531403,
+      "sha256": "cf43f8f319a5754442da5458ff941713c6f8cabb3f871ed5cf6e3c413110d277",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "crf": 20,
+      "parts": [
+        {
+          "file": "public/assets/story-hd/landscape/part-00.mp4",
+          "bytes": 1618680
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-01.mp4",
+          "bytes": 1946654
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-02.mp4",
+          "bytes": 1891513
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-03.mp4",
+          "bytes": 1905361
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-04.mp4",
+          "bytes": 1975406
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-05.mp4",
+          "bytes": 1118557
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-06.mp4",
+          "bytes": 981347
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-07.mp4",
+          "bytes": 991041
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-08.mp4",
+          "bytes": 1277648
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-09.mp4",
+          "bytes": 1191022
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-10.mp4",
+          "bytes": 861707
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-11.mp4",
+          "bytes": 831545
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-12.mp4",
+          "bytes": 868122
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-13.mp4",
+          "bytes": 916408
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-14.mp4",
+          "bytes": 936042
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-15.mp4",
+          "bytes": 978445
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-16.mp4",
+          "bytes": 981141
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-17.mp4",
+          "bytes": 997704
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-18.mp4",
+          "bytes": 1061109
+        },
+        {
+          "file": "public/assets/story-hd/landscape/part-19.mp4",
+          "bytes": 1218466
+        }
+      ],
+      "parts_total_bytes": 24547918
+    },
+    "portrait": {
+      "bytes": 19811247,
+      "sha256": "f4a97d759d2acbe498d75ae3624c89ff9dd65be85777c2e515557c0d701d361d",
+      "resolution": [
+        1080,
+        1920
+      ],
+      "crf": 20,
+      "parts": [
+        {
+          "file": "public/assets/story-hd/portrait/part-00.mp4",
+          "bytes": 656046
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-01.mp4",
+          "bytes": 835203
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-02.mp4",
+          "bytes": 1111708
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-03.mp4",
+          "bytes": 1447199
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-04.mp4",
+          "bytes": 1500547
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-05.mp4",
+          "bytes": 873790
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-06.mp4",
+          "bytes": 848526
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-07.mp4",
+          "bytes": 852875
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-08.mp4",
+          "bytes": 1074429
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-09.mp4",
+          "bytes": 931047
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-10.mp4",
+          "bytes": 623128
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-11.mp4",
+          "bytes": 702638
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-12.mp4",
+          "bytes": 741097
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-13.mp4",
+          "bytes": 879644
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-14.mp4",
+          "bytes": 965440
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-15.mp4",
+          "bytes": 1047133
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-16.mp4",
+          "bytes": 1117584
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-17.mp4",
+          "bytes": 1199099
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-18.mp4",
+          "bytes": 1215542
+        },
+        {
+          "file": "public/assets/story-hd/portrait/part-19.mp4",
+          "bytes": 1205115
+        }
+      ],
+      "parts_total_bytes": 19827790
+    }
+  },
+  "delivery": {
+    "renderer": "One MediaSource/ManagedMediaSource, one native video decoder, one canvas; native compatibility fallback if MSE unavailable",
+    "max_simultaneous_downloads": 2,
+    "selection": "HEVC when MediaSource.isTypeSupported; otherwise unchanged AVC encodes",
+    "hevc": {
+      "encoder": "libx265",
+      "preset": "medium",
+      "crf": 23,
+      "keyint": {
+        "portrait": 12,
+        "landscape": 6
+      },
+      "min_keyint": {
+        "portrait": 12,
+        "landscape": 6
+      },
+      "scenecut": 0,
+      "bframes": 2,
+      "open_gop": 0,
+      "pixel_format": "yuv420p",
+      "tag": "hvc1",
+      "quality_threshold_ssim": 0.98,
+      "files": {
+        "portrait": {
+          "file": "deliverables/adduco-story/web-encodes/hevc/portrait.mp4",
+          "sha256": "ebd873f05f441a52b1e7eeda033b7ed90affdfba7870baf7f60d2e1ace589195",
+          "fragments": 41,
+          "ssim": 0.986533,
+          "native_resolution": true,
+          "frames": 481,
+          "bytes": 13510261,
+          "passes": true
+        },
+        "landscape": {
+          "file": "deliverables/adduco-story/web-encodes/hevc/landscape.mp4",
+          "sha256": "4642697cf9ba2af9db030722b66e9b84295a7752df8590efca6b3e81dc0262e2",
+          "fragments": 81,
+          "ssim": 0.983539,
+          "native_resolution": true,
+          "frames": 481,
+          "bytes": 20263045,
+          "passes": true
+        }
+      }
+    },
+    "avc": {
+      "description": "Existing HD encoded frames remuxed without recompression",
+      "fragments_per_orientation": 21
+    }
+  },
+  "credits_quality_correction": 0,
+  "credits_portrait_generation": 240,
+  "last_verified_balance": 156,
+  "quality_policy": {
+    "native_1080p": true,
+    "crf": 20,
+    "previous_5MB_budget_met": false,
+    "disclosed_transfer_ceiling_bytes": 26000000,
+    "initial_target_bytes": 2000000
+  },
+  "delivery_revision": "continuous-stream-2026-09-20"
+}

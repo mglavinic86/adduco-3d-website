@@ -1,93 +1,69 @@
-# Adduco — Filmska šetnja
+# Adduco — monumentalna priča pod skrolom
 
-Croatian construction-company website built with React, TypeScript and Vite. Essential content is built into HTML before hydration. Three cinematic transitions connect four stationary scenes using separate native forward/reverse MP4s. One deliberate vertical gesture starts one complete three-second film, with the next caption appearing halfway through playback and remaining at the ending. Business content follows in ordinary document sections. The owner accepted the first transition and authorized completing the public release.
+Aktivna verzija: `web/monumentalni-v2/adduco`, grana `codex/monumental-scroll`. Korisnik je 21.9.2026. odabrao nastavak na ovoj verziji i dao pozitivnu povratnu informaciju nakon pregleda na mobitelu. Stariji filmski i korporativni web ostaju odvojeni.
 
-**Live website:** [adduco-crveni-monolit.mglavinic.chatgpt.site](https://adduco-crveni-monolit.mglavinic.chatgpt.site/).
+Sites adresa ovog izdanja: https://adduco-crveni-monolit.mglavinic.chatgpt.site/ — monumentalna verzija s doradama navigacije i upita od 21.9.2026., pripremljena za objavu 28.9.2026. Rezultati i granice provjere vode se u [QA.md](QA.md).
 
-## Run
+## Što je spremno
 
-Requirements: Git, Node.js **22.22.0** (pinned in `.nvmrc`) and npm. With nvm, run `nvm install` and `nvm use` after cloning.
+- Prirodni skrol upravlja gradnjom znaka: armatura → oplata/beton → crveni paneli → cijeli simbol. Jedna priča, posebno portretno i vodoravno kadriranje, originalni logo i Manrope.
+- Poslovne sekcije, potkrijepljeni tekstualni projekti, izravni kontakt i PDF kontrolna lista dostupni su neovisno o animaciji.
+- Interna navigacija prenosi fokus u odabranu sekciju. Mobilni izbornik podržava Escape, izlaz fokusa i skrol na niskim ekranima.
+- Upit provjerava polja i priprema poruku za pregled. Posjetitelj otvara svoju aplikaciju za e-poštu ili kopira tekst; zabrana kopiranja nudi označivo polje. Stranica ne šalje niti pohranjuje upit i ne tvrdi da je poruka dostavljena.
+- Reduced motion, Data Saver i no-JS ostavljaju sliku i poslovni sadržaj. Bez JavaScripta ostaju izravni e-mail, telefon i PDF, a interaktivni obrazac je skriven.
+
+## Lokalni rad i provjera
 
 ```sh
-git clone https://github.com/mglavinic86/adduco-3d-website.git
-cd adduco-3d-website
 npm ci
-npm run dev -- --port 5184 --strictPort
-```
-
-Open [localhost:5184](http://127.0.0.1:5184). No API key, `.env`, database, Higgsfield account or Git LFS is needed to run the website. Runtime media are included in Git; `npm ci` installs dependencies and bundled fonts from `package-lock.json`.
-
-Production preview:
-
-```sh
-npm run build
-npm run preview -- --port 5184 --strictPort
-```
-
-The build creates `dist/`, including pre-rendered HTML and static media. Serve it over HTTP at a domain root; asset paths start with `/`. Stop an existing development server before starting a preview on the same port.
-
-## Checks
-
-```sh
+npm run dev -- --port 5278 --strictPort
 npm test
 npm run typecheck
 npm run lint
 npm run build
+npm run preview -- --port 5277 --strictPort
+npm run test:e2e
 ```
 
-GitHub Actions runs these checks on pushes to `main` and pull requests. It does not deploy the website.
+React/TypeScript/Vite; verzije i naredbe u `package.json` su mjerodavne. Build unaprijed ispisuje osnovni HTML u `dist/`. Browser testovi očekuju taj produkcijski pregled na 5277; `ADDUCO_BASE_URL` mijenja adresu. Testovi stvarnih kadrova zahtijevaju lokalni ffmpeg, Chrome i instalirani Playwright WebKit.
 
-For browser tests, install Playwright's Chrome and WebKit browsers:
+## Aktualni filmski prikaz
+
+`SceneJourney.tsx` mapira 4,5 visina aktivnog skrola na 481 kadar; omotač zajedno sa sticky pozornicom zauzima 5,5 visina. Natpisi prate prikazani kadar. Nema autonomnog autoplayja ili reda gesti. Rotacija zadržava prethodni canvas dok odgovarajući kadar novog kadriranja nije spreman.
+
+`ScrollFilm.ts` odabire `StreamFilm.ts` s jednim trajnim MediaSource/ManagedMediaSource dekoderom, ili `NativeScrollFilm.ts` za preglednike bez podrške. HEVC se bira samo ako je podržan; AVC je alternativa. HEVC ima kratke GOP12/GOP6 fragmente, a AVC postojeći HD izvoz bez ponovnog kodiranja. Najviše dva preuzimanja i prioritet aktualnog cilja; izbačeni buffer može se obnoviti iz ograničenog komprimiranog cachea.
+
+Izvorni 1080p i fotografija ostaju očuvani. Medijski payload prema mjerenju od 20.9.: HEVC približno 13,5 MB portret / 20,3 MB vodoravno; AVC 19,8 / 24,5 MB. Početni cilj 2 MB i puni 26 MB vode se odvojeno. Stari ukupni 5 MB cilj nije ispunjen. QA.md sadrži uvjete, vjernost kompresije i granice tih mjerenja. Hladna veza može kratko zadržati sliku; desktop emulacija nije jamstvo rada svakog telefona.
+
+## Materijali za dovršetak
+
+Za svaki projekt dovoljno je poslati jednu mapu s izvornim fotografijama i kratkim opisom:
+
+1. Naziv projekta, mjesto i što je točno radio Adduco.
+2. Godina i status radova, ako su potvrđeni; naručitelj samo ako se smije javno navesti.
+3. Nekoliko kvalitetnih fotografija: širi kadar, detalji i završeno stanje, ako postoje. Koristiti originalne datoteke kad god je moguće.
+4. Potvrda prava na javnu objavu; navesti autora i eventualna ograničenja prikaza ljudi, registracija ili naručitelja.
+
+Dodatno potvrditi javni e-mail, telefon, adresu i primatelja budućih upita. Trenutačni kontakti imaju zabilježene izvore u [CONTENT-SOURCES.md](CONTENT-SOURCES.md), ali konačna korisnička potvrda i dalje je otvorena. Službeni vektorski logo je koristan ako postoji; postojeći originalni logo ostaje u uporabi.
+
+Fotografije i nove činjenice ulaze tek nakon potvrde. Konceptualni film ne zamjenjuje fotografije izvedenih projekata. Automatsko slanje, konačni pravni tekst i konačna domena traže zasebne ulaze/odobrenja. Prikaz pri dijeljenju već je pripremljen za preview; `noindex` i postojeći robots ostaju do odluke o lansiranju.
+
+## Izvori i evidencija
+
+- [DESIGN.md](DESIGN.md) — jedini vizualni ugovor.
+- [PRD.md](PRD.md) — aktualni zahtjevi ispred povijesti.
+- [IMPLEMENTATION.md](IMPLEMENTATION.md) — cjeline i tehničke odluke.
+- [QA.md](QA.md) — testovi, mjerenja i ograničenja.
+- [CONTENT-SOURCES.md](CONTENT-SOURCES.md) — izvori poslovnih podataka i medija.
+- `deliverables/adduco-story/higgsfield/` — lokalni masteri i evidencija generiranja, izvan Gita.
+- `deliverables/adduco-story/web-encodes/` — četiri referentna MP4 izvoza u Gitu, potrebna za ponovljive pixel testove.
+- `assets-source/monument/` — editabilna Blender referenca.
+
+Dodatna ponovljiva mjerenja, odvojeno od ostalih browser testova:
 
 ```sh
-npx playwright install --with-deps chrome webkit
+ADDUCO_BASE_URL=http://127.0.0.1:5277 node scripts/monument/continuous_scroll.mjs
+ADDUCO_BASE_URL=http://127.0.0.1:5277 node scripts/monument/measure_full_transfer.mjs
 ```
 
-Keep the production preview running on port 5184, then run in another terminal:
-
-```sh
-npm run test:e2e -- --workers=1
-```
-
-The suite covers navigation, contact, PDF download, stationary opening, full native forward/reverse playback, gesture bursts, both scroll directions, rotation, autoplay/media failures, reduced motion, data saving and transfer budgets. Run sequentially for media-timing checks. Browser emulation does not establish physical-phone smoothness; see `QA.md` for results and limitations.
-
-## Files and assets
-
-- `DESIGN.md`: unchanged visual contract; dark contemporary construction and original artwork/captions. The dated amendment in `PRD.md` governs the new interaction.
-- `CONTENT-SOURCES.md`: business claims and pending owner material.
-- `QA.md`: completed checks, local performance measurements and delivery limitations.
-- `src/scenes.ts`: the four approved captions, hash anchors and canonical stills.
-- `src/SceneJourney.tsx`: stationary scenes, complete native transitions, held endpoints and matching still fallbacks. No scroll-driven media clock.
-- `src/sceneGestures.ts`: film-scoped wheel/touch/keyboard input; one transition per gesture, no queued input. Business sections scroll natively.
-- `src/BusinessContent.tsx`: ordinary business sections, native hash targets and sourced copy.
-- `src/InquiryForm.tsx`: validated, reviewable mailto draft. It never sends or stores data.
-- `public/assets/`: production films, stills and logo derivatives.
-- `public/assets/transition-{1,2,3}/`: three-second portrait/landscape films in both directions and exact endpoint stills. The rejected opening trims, all sequence packets and the old scrubber are deleted.
-- `public/kontrolna-lista-adduco.pdf`: ready-to-serve investor checklist.
-- `tests/` and `src/App.test.tsx`: browser and component behavior tests.
-- `scripts/cinema.json`: exact Higgsfield generation prompts, references and web encoding settings. Use Higgsfield ffmpeg/Pillow to produce the videos and responsive chapter frames; keep working material outside the repository.
-- `scripts/checklist.py`: regenerate the Croatian preparation PDF with ReportLab and a Unicode Arial font.
-
-The construction environment is conceptual artwork, not project photography. The supplied original logo is preserved in `adduco logo/`; the public horizontal logo is a faithful crop/resizing of the supplied image, processed through Higgsfield. Movies and stills are served locally from the Site; no third-party generation service is contacted by visitors.
-
-The complete journey connects Vizija, Betonski radovi, Visokogradnja and Vaš projekt: H.264 at 720×1280 portrait and 1920×1080 landscape, 24fps, three seconds, muted and inline. Initial display is stationary. A deliberate downward scroll/swipe plays the complete forward film; a fresh upward gesture plays its separately encoded reverse. The destination caption fades in after about 1.5 seconds of actual playback, remains readable while the film finishes, then stays above the held last frame. Additional input during playback is ignored, including the remainder of that wheel/touch gesture. Header links and scene navigation remain accessible. After the last implemented scene, a fresh downward gesture enters the ordinary business content.
-
-The opening forward film loads eagerly in the selected orientation. IntersectionObserver prepares only adjacent forward/reverse films at each newly active scene; loading never starts playback. Direct scene links can jump to a chosen still without chaining movies. Reduced motion/Data Saver use matching stills without movie requests. Rejected/failed playback falls back to the requested destination still; a 6.5-second deadline also releases stalled transitions. Visibility changes, rotation and direct business navigation cancel pending playback. There is no currentTime assignment, Blob recovery, frame store or animation loop. The owner explicitly approved film-scoped vertical gesture capture, superseding the earlier no-wheel-interception rule only there. Horizontal/zoom gestures and normal business scrolling stay native. Full cold-page transfer measurements are recorded in QA.md.
-
-Regenerating the optional PDF script requires Python, ReportLab, Pillow and the local Arial font paths referenced in that script; the existing PDF needs no Python dependency.
-
-## Publishing and maintenance
-
-The website is public on Sites. GitHub hosts its source and collaboration history; pushing to GitHub does not update the live website. `.openai/hosting.json` identifies the existing Sites project and static build directory. The owner accepted the interaction and authorized completion of the existing public release. Publish a verified `dist/` build through the Sites workflow using that existing project and preserve its public audience. Keep credentials outside the repository; the hosting manifest contains configuration only.
-
-Before changes, read `AGENTS.md`, `PRD.md`, `DESIGN.md`, `CONTENT-SOURCES.md` and `IMPLEMENTATION.md`. `DESIGN.md` is the only visual contract. `QA.md` records completed verification and remaining limits.
-
-## Current limitations
-
-- The inquiry form prepares a reviewable `mailto:` draft; it does not send messages automatically.
-- Owner-approved project photography, final copy and recipient confirmation remain outstanding.
-- The public website intentionally retains `noindex, nofollow`; public access and search indexing are separate settings.
-- No analytics, database or automatic inquiry delivery is configured.
-- Smoothness on the owner's physical phone still needs confirmation.
-
-`node_modules/`, `dist/`, test results, local environment files and logs are generated locally and excluded from Git.
+Filmska građevina je konceptualna vizualizacija brenda, ne portfolio dokaz ili statički proračun.

@@ -1,3 +1,32 @@
+# Fotografska produkcija i integracija — 20.9.2026.
+
+Desktop: prihvaćeni Seedance 2.5 fotografski master eeb11e42-b3a9-4584-b617-e02023e4b18f, s novom drugom polovicom 9fee00d0-acfa-4430-99a1-7a13e5dd4a4a. Dorada je uklonila višak visećeg panela u završnici i obogatila gradilište. Portretna kompozicija izrađena je builtin imagegen alatom prema stvarnom završnom kadru; Seedance 2.5 posao e1e24848-62d4-4081-9faa-439841809c7f koristi prihvaćeni film kao referencu, 20 s, nativno 9:16, 1080p. Procjena/odobreni trošak portreta: 240 kredita. Puni zapisi u deliverables/adduco-story/higgsfield.
+
+Svi filmski prizori su konceptualne ilustracije brenda, ne portfolio ili dokaz izvedenih radova. Poslovni tekst i izvori niže ostaju nepromijenjeni. Novi filmovi ne potvrđuju statiku ili strogu vjernost geometrije u svakom kadru.
+
+# Puna Blender referenca — 20.9.2026.
+
+Cijela priča izgrađena je lokalno iz istih 13 trasiranih ploha, istih CC0 tekstura/HDRI i novih vlastitih objekata oplate, armature, nosača i opreme. Nema novih vanjskih asseta ni AI generiranja. Paket sadrži originalni logo za geometrijsku usporedbu. Filmovi su konceptualni render, ne portfolio fotografija.
+
+# Lokalni Blender materijali — 20.9.2026.
+
+Novi model trasira dostavljeni original; sve animirane pozicije su determinističke. Nije korišten AI image/video generator.
+
+- Concrete Layers 02, Rob Tuytel: https://polyhaven.com/a/concrete_layers_02 — 1K Diffuse/Displacement/Rough, skalirano na približno 2 m.
+- Evening Road 01 (Pure Sky), Sergej Majboroda / Jarod Guest: https://polyhaven.com/a/evening_road_01_puresky — 1K HDRI.
+- Oba izvora CC0: https://polyhaven.com/license (provjereno 20.9.2026.). Preuzete teksture/HDRI, ne tuđi primjeri rendera ili portfolio fotografije.
+- Točni URL-ovi, veličine i izvorni MD5 zapisi nalaze se u assets-source/monument/sources.json. To su produkcijski ulazi lokalnog rendera; preglednik preuzima samo završne WebP kadrove.
+
+# Nova verzija — 20. rujna 2026.
+
+Postojeće poslovne tvrdnje i niže navedeni izvori ostaju neizmijenjeni; ovo nije nova neovisna provjera svake tvrdnje. Nisu dodane fotografije, projekti, reference, kontakti niti sposobnosti. Izvorni PNG vizualno je pregledan i ostaje jedina geometrijska referenca znaka. Novi simbol mora biti vjeran obliku, za razliku od povijesne približne skulpturalne interpretacije opisane niže.
+
+Nova filmska gradnja izričito je konceptualna prezentacija brenda, ne dokaz izvedenog Adduco projekta. Nema novog generiranja, renderiranih kadrova ni izmjena postojećih medija u prvoj isporuci. Read-only cijene i izvori alata dokumentirani su u IMPLEMENTATION.md. Povijesne dozvole za produkciju i objavu niže ne autoriziraju novu verziju.
+
+## Povijesni izvori i produkcijska evidencija
+
+---
+
 # Content provenance
 
 ## Current delivery amendment — 18 September 2026

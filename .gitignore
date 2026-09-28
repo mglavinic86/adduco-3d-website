@@ -10,3 +10,21 @@ playwright-report/
 !.env.example
 *.log
 coverage/
+
+__pycache__/
+*.blend1
+
+.herenow/
+
+# Local production archives and QA captures; retain reproducible pixel-test fixtures.
+deliverables/*
+!deliverables/adduco-story/
+deliverables/adduco-story/*
+!deliverables/adduco-story/web-encodes/
+deliverables/adduco-story/web-encodes/*
+!deliverables/adduco-story/web-encodes/landscape.mp4
+!deliverables/adduco-story/web-encodes/portrait.mp4
+!deliverables/adduco-story/web-encodes/hevc/
+deliverables/adduco-story/web-encodes/hevc/*
+!deliverables/adduco-story/web-encodes/hevc/landscape.mp4
+!deliverables/adduco-story/web-encodes/hevc/portrait.mp4

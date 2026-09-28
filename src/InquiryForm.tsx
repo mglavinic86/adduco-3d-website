@@ -1,11 +1,89 @@
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 type Field = "name" | "email" | "location" | "message";
+type Draft = { body: string; href: string };
+
+function fieldError(name: Field, value: string) {
+  const trimmed = value.trim();
+  if (name === "name" && !trimmed) return "Unesite svoje ime.";
+  if (name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+    return "Unesite ispravnu adresu e-pošte.";
+  }
+  if (name === "message" && trimmed.length < 10) {
+    return "Opišite projekt u najmanje 10 znakova.";
+  }
+}
+
+function PreparedInquiry({ draft }: { draft: Draft }) {
+  const [copyState, setCopyState] = useState<
+    "idle" | "copying" | "copied" | "manual"
+  >("idle");
+  const manualText = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (copyState === "manual") {
+      manualText.current?.focus();
+      manualText.current?.select();
+    }
+  }, [copyState]);
+  async function copy() {
+    setCopyState("copying");
+    try {
+      await navigator.clipboard.writeText(draft.body);
+      setCopyState("copied");
+    } catch {
+      setCopyState("manual");
+    }
+  }
+  return (
+    <>
+      <h3 id="inquiry-result-title">Vaš upit je pripremljen.</h3>
+      <p>
+        Upit još nije poslan. Pregledajte ga i pošaljite iz svoje aplikacije za
+        e-poštu.
+      </p>
+      {copyState === "manual" ? (
+        <div className="field manual-copy">
+          <label htmlFor="manual-inquiry">Tekst upita za ručno kopiranje</label>
+          <textarea
+            id="manual-inquiry"
+            ref={manualText}
+            readOnly
+            value={draft.body}
+            aria-describedby="copy-status"
+            rows={10}
+          />
+        </div>
+      ) : (
+        <pre>{draft.body}</pre>
+      )}
+      <div className="draft-actions">
+        <a href={draft.href}>
+          Otvorite e-poštu <span aria-hidden="true">↗</span>
+        </a>
+        <button type="button" onClick={copy} disabled={copyState === "copying"}>
+          {copyState === "copying" ? "Kopiranje…" : "Kopirajte tekst upita"}
+        </button>
+      </div>
+      <p role="status" className="copy-status" id="copy-status">
+        {copyState === "copied" &&
+          "Tekst upita je kopiran. Upit još nije poslan."}
+        {copyState === "manual" &&
+          "Automatsko kopiranje nije dostupno. Označite i kopirajte tekst upita."}
+      </p>
+      <p>
+        Ako koristite e-poštu u pregledniku, kopirajte tekst u novu poruku za
+        adduco@adduco.hr.
+      </p>
+    </>
+  );
+}
+
 export default function InquiryForm() {
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
-  const [draft, setDraft] = useState<{ body: string; href: string } | null>(
-    null,
-  );
+  const [draft, setDraft] = useState<Draft | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (draft) resultRef.current?.focus();
+  }, [draft]);
   function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
@@ -17,11 +95,10 @@ export default function InquiryForm() {
       ]),
     ) as Record<Field, string>;
     const next: Partial<Record<Field, string>> = {};
-    if (!values.name) next.name = "Unesite svoje ime.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
-      next.email = "Unesite ispravnu adresu e-pošte.";
-    if (values.message.length < 10)
-      next.message = "Opišite projekt u najmanje 10 znakova.";
+    for (const name of ["name", "email", "message"] as const) {
+      const error = fieldError(name, values[name]);
+      if (error) next[name] = error;
+    }
     setErrors(next);
     if (Object.keys(next).length) {
       setDraft(null);
@@ -35,7 +112,6 @@ export default function InquiryForm() {
       body,
       href: `mailto:adduco@adduco.hr?subject=${encodeURIComponent("Upit o građevinskom projektu")}&body=${encodeURIComponent(body)}`,
     });
-    requestAnimationFrame(() => resultRef.current?.focus());
   }
   const field = (
     name: Field,
@@ -82,8 +158,18 @@ export default function InquiryForm() {
     <form
       className="inquiry-form"
       onSubmit={submit}
-      onChange={() => {
+      onChange={(event) => {
         if (draft) setDraft(null);
+        const input = event.target;
+        if (!(
+          input instanceof HTMLInputElement ||
+          input instanceof HTMLTextAreaElement
+        ))
+          return;
+        const name = input.name as Field;
+        if (errors[name]) {
+          setErrors({ ...errors, [name]: fieldError(name, input.value) });
+        }
       }}
       noValidate
     >
@@ -110,21 +196,10 @@ export default function InquiryForm() {
           className="form-result"
           ref={resultRef}
           tabIndex={-1}
-          role="status"
+          role="region"
+          aria-labelledby="inquiry-result-title"
         >
-          <h3>Vaš upit je pripremljen.</h3>
-          <p>
-            Upit još nije poslan. Pregledajte ga i pošaljite iz svoje aplikacije
-            za e-poštu.
-          </p>
-          <pre>{draft.body}</pre>
-          <a href={draft.href}>
-            Otvorite e-poštu <span aria-hidden="true">↗</span>
-          </a>
-          <p>
-            Ako nemate aplikaciju za e-poštu, kopirajte tekst i pošaljite ga na
-            adduco@adduco.hr.
-          </p>
+          <PreparedInquiry key={draft.href} draft={draft} />
         </div>
       )}
     </form>

@@ -1,3 +1,67 @@
+# Završna lokalna dorada — 21.9.2026.
+
+Korisnik nastavlja s monumentalnom verzijom, kaže da prikaz na njegovu mobitelu nije loš i odobrava doradu svega što ne ovisi o materijalima koje tek pribavlja. To je praktična povratna informacija, ne uređajski benchmark. Zadržati prihvaćeni film, identitet i poslovne činjenice.
+
+- Posjetitelj tipkovnicom nakon odabira interne poveznice nastavlja iz odabrane sekcije; mobilni izbornik ne ostaje otvoren kad fokus izađe iz zaglavlja. Izbornik mora ostati dostupan na niskom ekranu.
+- Upit se može pregledati, otvoriti u aplikaciji za e-poštu ili kopirati. Ako preglednik zabrani kopiranje, ponuditi označiv tekst i jasnu uputu, bez lažne potvrde uspjeha. Izmjena polja uklanja prethodni nacrt i njegove obavijesti.
+- Ispravljena polja više ne prikazuju zastarjele pogreške; obavezna polja i status slanja ostaju jasni. Tekst nacrta i pomoćne upute moraju biti čitljivi na mobitelu.
+- Provjeriti postojeće metapodatke, PDF, no-JS, reduced motion, glavne sekcije, tri širine i obje orijentacije. Evidenciju voditi u QA.md.
+- Fotografije, dodatne poslovne tvrdnje, konačna potvrda kontakata, pravni tekst, integracija slanja, konačna domena i indeksiranje čekaju potrebne ulaze. Ovaj nastavak ne objavljuje izmjene niti mijenja produkciju.
+
+# Ispravak kontinuiranog skrola — 20.9.2026.
+
+Aktualna implementacija zamjenjuje ponovno otvaranje svakog MP4 dijela jednim trajnim MediaSource/ManagedMediaSource prikazom. Jedan video/dekoder i canvas ostaju otvoreni kroz cijelu priču. HEVC 1080p (libx265 CRF23, zatvoreni GOP12 u portretu / GOP6 vodoravno, B2) odabire se provjerom podrške; H.264 koristi postojeće HD kadrove bez ponovnog kodiranja, samo drugi spremnik. Preglednici bez MediaSource zadržavaju prethodni native način kao kompatibilni fallback. Poslovni sadržaj, originalni logo, kompozicija, 4,5H i izvorni filmovi ostaju isti.
+
+Najviše dva preuzimanja; prioritet se računa iz aktualnog položaja i smjera, bez reda starih gesti. Pripremljeni dijelovi ostaju u istom dekoderu. Tijekom aktivnog skrola smije se pokazati dovršen kadar koji napreduje prema najnovijem cilju; pri promjeni smjera zastarjeli rezultat ne smije pomaknuti sliku u krivom smjeru. Nakon prestanka skrola nema odigravanja međukadrova: završava se na posljednjem cilju. Native buffer nakon izbacivanja obnavlja se iz ograničenog komprimiranog cachea. Kontinuirani test sada mjeri promjene slike bez čekanja svakog kadra, odvojeno za cold i warm.
+
+HEVC zadržava 1080×1920 / 1920×1080 i 481 kadar; SSIM prema produkcijskom masteru 0,986533 / 0,983539 (prag ≥0,98). Komprimirani fragmenti 13.512.036 B / 20.269.040 B. AVC fragmenti 19.812.347 B / 24.532.435 B, pikselno identični prethodnom HD izvozu. Početni 2 MB i puni 26 MB cilj i dalje se provjeravaju odvojeno. Stari 5 MB cilj nije vraćen kao navodni prolaz. Nema nove AI produkcije ni troška kredita. Testovi i status objave nalaze se na vrhu QA.md; stare brojke niže su povijesne.
+
+# Ispravak kvalitete slike — 20.9.2026.
+
+Korisnik je nakon objave odbacio kvalitetu prikaza. Usporedba istih izvornih i web kadrova pokazala je jak gubitak zakovica, bridova i teksture kroz 720p kodiranje ograničeno na 1,5–1,7 Mb/s. Nije pokrenuto novo plaćeno generiranje. Izvoz sada čuva nativnih 1920×1080 i 1080×1920 piksela: H.264 CRF20, GOP24, B2. Obje kompozicije imaju 20 samostalnih dijelova po jednu sekundu (zadnji 25 kadrova), jedan dekoder i canvas.
+
+Odluka implementacije, javno objašnjena korisniku: nakon njegova odbijanja kvalitete, prednost ima očuvanje detalja. Potpuni mediji sada imaju približno 20 MB za portret i 25 MB za desktop. **Prethodni ukupni cilj 5 MB više ne prolazi i nije prikazan kao prolaz.** Početni cilj 2 MB ostaje zasebno mjeren; susjedni dio priprema se tek kada korisnik počne skrolati. Granica zaštite od ponovljenih preuzimanja za ovu HD izvedbu je 26 MB po orijentaciji. Ovo nije korisnikova zasebna potvrda brojke 26 MB, nego transparentno dokumentirana tehnička odluka unutar odobrenog ispravka kvalitete.
+
+Izvornici i filmska režija ostaju isti. Bolji izvoz ispravlja gubitak detalja; ne predstavlja novo jamstvo fizičkog realizma AI gradnje. Stara štedljiva izvedba sačuvana je izvan public direktorija. Ranija mjerenja niže pripadaju toj izvedbi i više nisu aktualne brojke HD runtimea.
+
+# Cijela fotografska priča u web iskustvu — aktivna isporuka 20.9.2026.
+
+Odabrani smjer i šest faza storyboarda ostaju važeći. Puna produkcija i nastavak autonomno odobreni su u razgovoru. Obvezno: odvojena nova stranica; 4,5H prirodnog skrola; trenutni cilj u oba smjera; statičan kadar pri mirovanju; puni posebno komponirani portretni film; čitljivi hrvatski natpisi; izravni poslovni fragmenti/kontakt; reduced-motion, Data Saver i medijski fallback. Izvorna Sites stranica ostaje usporedna osnova.
+
+Desktop fotografski master odobren i dorađen: završnica bez viška crvenog panela, aktivnije gradilište. Nativni portret generira se kao druga kamera iste priče. Stroga pikselna vjernost originalnom logu i fizička simulacija nisu dokazane AI filmom; ne predstavljati ih kao dovršene činjenice.
+
+# Odobrenje cijele lokalne Blender priče — 20.9.2026.
+
+Korisnik: „super izgleda. nastavi. možda da u Blenderu generiraš cijelu priču pa to koristimo poslije kao referencu za Higgsfield”. Lokalna puna produkcija i priprema referenci odobrene su. Plaćeni jobovi, upload i objava nisu dio ovog koraka. Prihvat izgleda zabilježen je, ali model fizičkog telefona nije dostavljen niti se pretpostavlja uređajski QA.
+
+# Odobrenje probe — 20.9.2026.
+
+Korisnik: „odobravam sve” na predloženu jednu lokalnu Blender probu i provjeru. P1 odobren; P2/P3 u izvedbi. Nova procjena korisnika na fizičkom telefonu i dalje prethodi punoj produkciji. Nema plaćenog generiranja niti objave u odabranom lokalnom putu.
+
+# Aktivni zahtjev — monumentalna gradnja, 20. rujna 2026.
+
+## Cilj i opseg prve isporuke
+Privatnim i poslovnim investitorima pokazati prepoznatljiv Adduco simbol kroz uvjerljivu gradnju; glavna radnja ostaje razgovor o projektu. Filmska scena je konceptualna prezentacija brenda. Ne mijenja dokazni standard poslovnih tvrdnji i portfolija.
+
+Prva isporuka završava procjenom, storyboardom u DESIGN.md, usporedbom tehnologija i proračunom u IMPLEMENTATION.md te predloženim kriterijima u QA.md. Slijedi izričito odobrenje samo jedne reprezentativne probe. Poslije lokalnog previewa obvezno drugo odobrenje izgleda i osjećaja na fizičkom telefonu prije pune produkcije.
+
+## Već donesene odluke
+Originalni logo; provjeren poslovni sadržaj; armatura → oplata i beton → crvena metalna obloga → cijeli simbol. Jedan objekt, gradilište nakon kiše predvečer, mokar beton, tamnije nebo, topli reflektori. Kamera od detalja unatrag i gore. Ista cijela priča na mobitelu uz zasebno kadriranje. Priča približno 4–5 visina skrola, potom običan poslovni sadržaj. Izlaz prema sadržaju i kontaktu dostupan odmah.
+
+Skrol upravlja napretkom, uključujući povratak; prestanak promjene položaja znači prestanak promjene cilja. Nema autonomnog odigravanja, odbacivanja novih pokreta ni naknadnog odigravanja propuštenih kadrova. Ograničenja dekodiranja moraju biti izmjerena i prijavljena.
+
+## Što je zamijenjeno
+Trosekundni film po gesti, zaključavanje ulaza, zasebni reverse filmovi kao obvezna arhitektura, zabrana seekinga, autoplay/snap poglavlja, putovanje kroz već gotovu zgradu, približna skulpturalna interpretacija loga, zabrana prikaza sastavljanja, poslovni modali i sva stara odobrenja objave. Stara pravila o točnom redoslijedu preloada šest filmova ne određuju novi engine.
+
+Stare brojke 2 MB početnog / 5 MB ukupnog prijenosa ostaju početna ograničenja za usporedbu; nisu automatski ukinute. Ako nova kvaliteta ne stane, prikazati rezultat i tražiti odluku o promjeni budžeta, bez tihog povećanja.
+
+## Otvoreno samo za odluku o probi
+Predloženi postupak i kompozicijska razrada u DESIGN.md; tehnologija dostave nakon usporedbe. Model fizičkog telefona/OS zabilježiti na uređaju prije prihvatne provjere, ne pretpostaviti da emulacija zamjenjuje uređaj. Nema potrebe ponovno otvarati kreativne odluke navedene iznad.
+
+## Povijesni PRD referentne verzije
+
+---
+
 # Adduco — local website
 
 ## Native media preparation approved — 18 September 2026

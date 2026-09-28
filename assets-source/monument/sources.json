@@ -1,0 +1,26 @@
+{
+  "license": "CC0",
+  "retrieved": "2026-09-20",
+  "assets": {
+    "evening.hdr": {
+      "size": 1309268,
+      "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/evening_road_01_puresky_1k.hdr",
+      "md5": "fc099ad084dd53e4716be9a99b20cd80"
+    },
+    "Diffuse.jpg": {
+      "size": 598800,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_layers_02/concrete_layers_02_diff_1k.jpg",
+      "md5": "d308cd7bb23bcf1208d37d4ba670c2e6"
+    },
+    "Displacement.jpg": {
+      "size": 260248,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_layers_02/concrete_layers_02_disp_1k.jpg",
+      "md5": "5362148ca8041793b652d72b86b94f17"
+    },
+    "Rough.jpg": {
+      "size": 445997,
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_layers_02/concrete_layers_02_rough_1k.jpg",
+      "md5": "73c4b3f5628ed29bf6c813f7978e185a"
+    }
+  }
+}

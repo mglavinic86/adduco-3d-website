@@ -17,14 +17,16 @@ export default function App() {
         menuButton.current?.focus();
       }
     };
-    const outside = (event: PointerEvent) => {
+    const outside = (event: Event) => {
       if (!headerRef.current?.contains(event.target as Node)) setMenu(false);
     };
     document.addEventListener("keydown", dismiss);
     document.addEventListener("pointerdown", outside);
+    document.addEventListener("focusin", outside);
     return () => {
       document.removeEventListener("keydown", dismiss);
       document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("focusin", outside);
     };
   }, [menu]);
   return (

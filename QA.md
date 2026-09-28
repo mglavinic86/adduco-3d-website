@@ -1,3 +1,417 @@
+# Sites izdanje — 28.9.2026.
+
+Korisnik je izričito zatražio javnu objavu monumentalne v2 putem Sites i push na GitHub. Koristi se postojeći javni Sites projekt iz `.openai/hosting.json`, s adresom https://adduco-crveni-monolit.mglavinic.chatgpt.site/. Povijesna ograničenja objave niže ne vrijede za ovaj zahtjev. Izvorni filmski checkout ostaje odvojen.
+
+Priprema izdanja:
+- Metapodaci dijeljenja i canonical koriste Sites. Browser test najprije je pao na staroj here.now adresi, zatim prošao nakon promjene.
+- `npm test`: 7 prolaza; lint, typecheck i build prolaze.
+- Puni lokalni Playwright: **62 prolaza, 4 očekivana preskakanja** (Chrome i WebKit; 320/390/768/1440 px, navigacija, obrazac, PDF, no-JS, pristupačnost, filmski kadrovi, mreža i fallbackovi).
+- Python produkcijski testovi: 4 prolaza.
+- Git paket sadrži runtime medije, izvorni kod, Blender reference i četiri MP4 testne reference. Veliki produkcijski arhivi, privremeni izlazi i evidencije generiranja ostaju ignorirani. Pregled kandidata nije našao obrasce privatnih ključeva, tokena ili potpisanih URL-ova; nema novih datoteka iznad GitHub limita od 100 MiB.
+- Javno stanje i završne provjere bit će evidentirani nakon Sites odgovora. `noindex`, kontakti i ponašanje obrasca ostaju isti; obrazac priprema poruku i ne šalje je automatski.
+
+---
+
+# Završna dorada navigacije i upita — 21.9.2026.
+
+**Opseg:** lokalna monumentalna v2. Korisnik je potvrdio nastavak na ovoj verziji i rekao da nije loša na njegovu mobitelu; model uređaja i uvjeti nisu poznati. Izvorni filmovi, renderer, poslovne tvrdnje, kontakti, javna verzija, domena i noindex ostaju nepromijenjeni. Novi podaci i fotografije čekaju korisnika.
+
+## Ispravci i red → green dokazi
+
+- Interna navigacija: browser test najprije nije mogao potvrditi fokus u `#o-nama`. Semantički imenovane sekcije sada su odredišta fokusa (`tabIndex=-1`), a idući Tab nastavlja kroz njih. Sekcija Usluge ima stvarni naslov razine 2.
+- Zatvaranje izbornika: fokus izvan zaglavlja zatvara izbornik bez blokiranja Tab tipke. Prvi pokušaj preko blur događaja otkrio je Safari regresiju: pointer klik zatvorio je stavku prije navigacije. Zamijenjen je provjerom stvarnog `focusin` odredišta; postojeća provjera klika na Kontakt sada ponovno prolazi. Safari test koristi Option-Tab za navigaciju kroz poveznice, u skladu s ponašanjem preglednika.
+- Niski ekran 640×360: posljednja stavka Kontakt bila je samo 57,8% u viewportu. Izbornik sada ima ograničenu visinu, unutarnji skrol i podršku za safe area.
+- Uski ekran 320 px: vizualni pregled otkrio je odrezani gumb izbornika unatoč nultom document overflowu; dodatni test potvrdio je samo 71,4% vidljivog gumba. Ispod 360 px smanjena je širina logotipa i razmak kontrola, uz očuvanje 44 px dodirnih meta.
+- Kopiranje upita: novi test prvo pada jer gumb ne postoji. Gumb sada kopira točan prikazani tekst, prikazuje uspjeh tek nakon dovršenog API poziva i ne tvrdi da je poruka poslana. Izmjena izvornog polja uklanja prethodni nacrt i obavijesti.
+- Zabrana/nedostupnost clipboard API-ja: test prvo nije našao polje za ručni prijenos. Sada dobiva označen read-only tekst, fokus i jasnu uputu; mailto ostaje dostupan. Zamjena odgođenog RAF fokusa efektom uklanja otkriveno naknadno preuzimanje fokusa s ručnog polja.
+- Validacija: test prvo zadržava `aria-invalid=true` nakon ispravka imena. Pogreške se sada ponovno provjeravaju tijekom ispravljanja; još nevaljana e-pošta ostaje označena. Pomoćni tekst, oznake i nacrt su povećani radi čitljivosti.
+
+## Provjere
+
+- `npm test`: **7 prolaza** kroz javno ponašanje App/InquiryForm; clipboard je izolirana browser granica.
+- `npm run lint`, `npm run typecheck`, `npm run build`: prolaze. Produkcijski HTML unaprijed ispisan; nema novih ovisnosti.
+- Završni `npm run test:e2e` na produkcijskom lokalnom buildu: **62 prolaza, 4 očekivana preskakanja** u Chromeu i WebKitu. Preskakanja: tri CDP mrežna mjerenja nisu dostupna u WebKitu; ManagedMediaSource nije dostupan u Chromeu. Puni paket ponovljen je nakon ispravka Safari klika i 320 px zaglavlja.
+- Funkcionalni obuhvat: 320/390/768/1440 px, dugi nacrt, potpuno vidljiv mobilni gumb, 640×360 izbornik, direktni fragmenti i Back, Escape, fokus, PDF, no-JS, metapodaci dijeljenja, reduced motion/Data Saver, stvarni filmski kadrovi, obrat skrola, rotacija, hladna veza, medijske pogreške i dekoderski fallbackovi.
+- Axe provjere pripremljenog upita i oba stanja ručnog kopiranja nemaju prijavljenih povreda. To nije zamjena za ručni pregled čitačem zaslona.
+- Ručni in-app browser pregled: početna, mobilne usluge i nacrt na 390 px, priprema na 768 px, kontakt na 1440 px. Pregled konzole bez error/warn zapisa. Naknadni 320 px pregled pokrenuo je dodatni popravak gumba; završni pregled potvrđuje cijelu 44×44 px kontrolu unutar ekrana (desni rub 296,6 px). Na 640×360 fokusirani Kontakt u izborniku također je u cijelosti vidljiv.
+- `audit_web_repo.py --strict`: prolazi; jedini postojeći neobvezni warning je nedostatak CLAUDE.md. Jedini vizualni ugovor ostaje DESIGN.md. Nisu dodane prototipne rute, slike, mediji ili produkcijski servisi.
+
+## Predaja i preostali ulazi
+
+Aktualni README razlikuje lokalne dorade od zadnje javne objave i sadrži kratak popis potrebnih fotografija, opisa projekta, prava objave i potvrda kontakata. U glavnom CONTEXT.md i pregledu web verzija monumentalna v2 označena je kao odabrana za nastavak.
+
+Izmjene ovog nastavka obuhvaćaju App, BusinessContent, InquiryForm, samo fokusabilnost SceneJourney sekcije, CSS, novi InquiryForm.test.tsx, prošireni page.spec.ts te postojeću dokumentaciju. Zatečene promjene mastera, renderera, medija i arhivskih testova očuvane su; prikaz Git statusa uključuje i njih. Build/test izlazi su ignorirani. Nema commita, pusha ili objave.
+
+Ograničenja: nema novog fizičkog telefonskog benchmarka, slanja stvarnog upita ni provjere dostave u poštanski sandučić. Odabrana medijska kvaliteta i ranije dokumentirana hladna mrežna ograničenja ostaju. Fotografije, potvrde sadržaja, konačni pravni tekst, integracija slanja i odluka o produkcijskoj objavi još su otvoreni.
+
+---
+
+# Ispravak zastajkivanja — završna provjera 20.9.2026.
+
+Aktualna izvedba zamjenjuje ponovno otvaranje MP4 izvora jednim trajnim MediaSource/ManagedMediaSource prikazom. Jedan video/dekoder i jedan canvas ostaju otvoreni kroz cijelu priču. Najviše dva preuzimanja; cilj ima prednost, a susjedni fragment priprema se tek kad je cilj spreman. Nema reda starih gesti. Dovršeni kadar smije napredovati prema aktualnom cilju tijekom ulaza; nakon prestanka skrola prikazuje se posljednji cilj. Promjena smjera odbacuje rezultat koji bi krenuo u pogrešnom smjeru.
+
+Manji zatvoreni GOP-ovi (HEVC: portret 12, landscape 6 kadrova) smanjuju količinu podataka potrebnu za novi položaj. `endOfStream()` isprazni odgođene B-kadrove na granici; idući append ponovno otvara isti MediaSource, bez zamjene izvora. Native buffer izbačen pod memorijskim pritiskom obnavlja se iz komprimiranog cachea. HEVC se bira provjerom podrške; AVC koristi postojeće HD kadrove remuxane bez rekompresije. Preglednici bez MediaSource zadržavaju prethodni native fallback: njegova dostupnost je provjerena, ali se poboljšane MSE brojke na njega ne prenose.
+
+## Kvaliteta i trošak
+
+Nativnih 1080×1920 / 1920×1080, 481 kadar i 24 fps ostaju očuvani. HEVC CRF23 SSIM prema produkcijskom masteru: portret **0,986533**, landscape **0,983539**, iznad praga 0,98. Svih 481 dekodiranih kadrova iz fragmenata identični su odgovarajućem cijelom web izvozu. Fragmenti s initom: 13.512.036 / 20.269.040 B. AVC alternativa: 19.812.347 / 24.532.435 B. Nema nove AI produkcije niti potrošnje Higgsfield kredita. Izvorni filmovi i prihvaćena režija ostaju isti; vjernost kompresije nije dokaz fizičke prirodnosti AI pokreta.
+
+Jedan puni RGBA canvas zauzima 8.294.400 B. Komprimirani cache za obje orijentacije odabranog formata ima konačno najviše 33.781.076 B HEVC ili 44.344.782 B AVC. To nije ukupna potrošnja memorije: browser buffer, decoder i GPU imaju dodatnu memoriju koja ovdje nije izmjerena.
+
+## Lokalni dokazi i regresije
+
+- Završni Playwright: **46 prolazi, 4 namjerno preskočena**; Chrome i WebKit, portret i landscape. WebKit nema korištenu CDP simulaciju hladne mreže (tri preskakanja); Chrome nema ManagedMediaSource (jedno). Detalji: `deliverables/adduco-story/web-qa/streaming/local-tests.log`.
+- Kontinuirani skrol bez čekanja pojedinačnog kadra: 8 s naprijed, 4 s natrag, 2 s naprijed, 1 s do polovice; zatim mirovanje. Topli regresijski prag p95 razmaka ≤50 ms, maksimum ≤100 ms, >400 promjena slike. Hladni prag ≤1000 ms služi samo zaštiti od velikog zamrzavanja, ne certifikatu savršene glatkoće.
+- Neovisne provjere piksela, nagli obrat, zaustavljanje, rotacija, gubitak native buffera, AVC fallback, native fallback bez MSE, ManagedMediaSource bez play geste, nedostupan medij, reduced motion, Data Saver, no-JS, kontakt, dokumenti i tipkovnica prolaze.
+- Red dokazi sačuvani: prethodni WebKit p95 70 ms; izbacivanje buffera bez oporavka; landscape hladni GOP12 zastoj 1196,5 ms. Završni manji GOP6 landscape u lokalnoj dijagnostici: 668,9 ms; portret: 721,7 ms. Izvorni javni zastoji bili su oko 11 sekundi.
+- Ograničenje na samo jedno preuzimanje odbačeno je: smanjilo je broj prikazanih kadrova i pogoršalo p95 razmak. Raniji GOP12 landscape i drugi kandidati arhivirani su u `streaming/candidate-g12-local`, nisu završni rezultati.
+- Završni lint, typecheck, četiri unit testa i produkcijski build prolaze. Strogi audit premium-web-design prolazi uz neobvezni CLAUDE.md upozoravajući zapis.
+
+## Objavljena verzija i javna mjerenja
+
+**Objavljeno i provjereno:** https://mossy-nutmeg-r9v6.here.now/ (`continuous-stream-2026-09-20`). Javni Playwright paket: **46 prolazi, 4 očekivana preskakanja**, 3,5 minute. Dokazi: `deliverables/adduco-story/web-qa/streaming/public/`. Finalni vizualni pregled javnog prikaza u in-app browseru potvrđuje otvaranje, HEVC renderer, povratak na početak, završni znak bez dodatnog visećeg panela i dostupan kontakt.
+
+| Preglednik / kadriranje | Uvjet | Najdulji razmak slike | Promjene kroz 15 s | Konačni kadar |
+| --- | --- | ---: | ---: | ---: |
+| chrome / portrait | warm | 53.4 ms | 896 | 240 |
+| chrome / landscape | warm | 52.8 ms | 896 | 240 |
+| webkit / portrait | warm | 55.0 ms | 898 | 240 |
+| webkit / landscape | warm | 52.0 ms | 897 | 240 |
+| chrome / portrait | cold-4g | 763.5 ms | 290 | 240 |
+| chrome / landscape | cold-4g | 989.7 ms | 120 | 240 |
+
+Topli prolazi imaju p95 odstupanja od cilja četiri filmska kadra, bez pageerror događaja; konačni cilj 240 dosegnut je bez višesekundnog sustizanja. Hladni prolazi imaju najviše dva paralelna zahtjeva. Hladni landscape 989,7 ms blizu je zaštitnog praga 1000 ms: ovo je dokaz uklanjanja ranijeg velikog zamrzavanja na tom profilu, ne jamstvo svih mreža i uređaja.
+
+Prvi landscape warm pokušaj pogrešno je pripremio samo svaki drugi GOP6 dio (priprema svakih 12 kadrova). Takvo mjerenje zabilježilo je 185,2 ms Chrome / 116 ms WebKit i arhivirano je u `public/incomplete-g6-preparation/`. Test je ispravljen na pripremu svakih šest kadrova, za svih 81 dijelova. Ponovljena oba landscape mjerenja gore koriste potpunu pripremu; hladni test nije mijenjan. Javni puni paket također koristi ispravljenu pripremu.
+
+Puni prolaz svih 481 kadrova naprijed i natrag, s čekanjem radi mjerenja potpunosti i prometa (odvojeno od kontinuiranog testa):
+
+- landscape: početni promet 622,609 B; prvi draw 1871 ms; ukupno 20,673,255 B; nedostajući kadrovi 0; horizontalno prelijevanje 0 px.
+- portrait: početni promet 492,916 B; prvi draw 1900 ms; ukupno 13,836,502 B; nedostajući kadrovi 0; horizontalno prelijevanje 0 px.
+
+Početni cilj ≤2 MB i puni cilj ≤26 MB prolaze. Stari cilj 5 MB nije ispunjen i nije prikazan kao prolaz. Public datoteke imaju ispravnu dostupnost; svi kodni fallbackovi i stvarni pikseli provjereni su paketom testova.
+
+## Granice provjere
+
+Mjeri se canvas draw submission, ne fizički zaslon telefona. Pikseli su zasebno uspoređeni s neovisno dekodiranim referencama. Desktop Chrome/WebKit i mobilne dimenzije nisu test na fizičkom telefonu; GPU memorija, termalno ponašanje i mobilni decoder nisu certificirani. Hladna ograničena mreža još može kratko zadržati kadar. WebKit Long Tasks podatak je `null`, ne nula. Native fallback na preglednicima bez MSE nema isto jamstvo glatkoće.
+
+ManagedMediaSource koristi provjeru dostupnosti i `disableRemotePlayback`, prema [WebKit dokumentaciji za Safari 17.1](https://webkit.org/blog/14735/webkit-features-in-safari-17-1/). Podrška na stvarnom uređaju nije zaključena samo iz desktop emulacije. Izvorni checkout ostao je čist, originalna Sites stranica nije mijenjana. Objavljuje se isključivo dist nove odvojene here.now verzije. Raniji izvještaji ispod povijesni su i ne predstavljaju završni runtime.
+
+---
+
+# Dijagnoza zastajkivanja pri kontinuiranom skrolu — 20.9.2026.
+
+**Status: problem je reproduciran; glatkoća aktualne javne HD izvedbe ne prolazi. Ovo je dijagnostika prije sljedećeg ispravka, a ne objavljen popravak.** Za ovaj pregled nisu mijenjani runtime, prihvaćeni filmovi ni javna stranica. Nema novog generiranja ili potrošnje Higgsfield kredita. Izvorni projekt ostaje čist.
+
+## Metoda koja je nedostajala ranijim testovima
+
+`scripts/monument/continuous_scroll.mjs` mijenja prirodan položaj dokumenta na svakom animation frameu, bez čekanja da se prethodni traženi filmski kadar prikaže. Prolaz: 0→480 u 8 s, 480→0 u 4 s, 0→480 u 2 s, 480→240 u 1 s; zatim provjera zaustavljanja. To predstavlja običan kontinuirani skrol, brži prolazak i promjene smjera. Raniji pojedinačni seek testovi čekali su svaki draw i zato nisu mogli otkriti ovaj obrazac zamrzavanja.
+
+Javni URL: https://mossy-nutmeg-r9v6.here.now/ . Chrome 153.0.8010.48 i desktop WebKit 26.6; 390×844 i 1440×900. Hladni profil: novi context, 165 ms latencije, 1.012.500 B/s down, 168.750 B/s up; počinje nakon početnog kadra, bez pripreme ostalih dijelova. Topli profil: svi dijelovi prethodno preuzeti kroz isti javni prikaz. Pokretni testovi izvršeni su zasebno, bez drugog browser benchmarka ili renderiranja u pozadini.
+
+Mjeri se promjena canvas draw submissiona/data-frame atributa, **ne fizička prezentacija panela telefona**. Ne rade se GPU readbackovi tijekom mjerenja jer bi mijenjali rezultat. Neovisna provjera stvarnih piksela obavljena je zasebnim postojećim testovima. WebKit ne podržava korišteni Long Tasks observer: njegova vrijednost je `null`, nikad dokaz nula dugih zadataka. Desktop CPU ×4 ne emulira sporiji mobilni hardverski video dekoder.
+
+## Rezultati kontinuiranog skrola
+
+| Engine / kadriranje | Uvjet | Najdulje bez novog kadra | Maks. istodobnih MP4 zahtjeva | Dosegnut zadnji cilj |
+| --- | --- | ---: | ---: | --- |
+| Chrome / portret | hladni 4G, prvi prolaz | 11.055 ms | nije mjeren u prvom pokusu | Da |
+| Chrome / portret | hladni 4G, ponavljanje | 11.102 ms | 17 | Da |
+| Chrome / landscape | hladni 4G | 11.499 ms | 19 | Da, tek 2.383 ms nakon prestanka skrola |
+| Chrome / portret | toplo | 125,5 ms | bez novih dijelova tijekom mjerenog skrola | Da |
+| WebKit / portret | toplo | 110 ms | bez novih dijelova tijekom mjerenog skrola | Da |
+| Chrome / landscape | toplo | 155,5 ms | bez novih dijelova tijekom mjerenog skrola | Da |
+| WebKit / landscape | toplo | 230 ms | bez novih dijelova tijekom mjerenog skrola | Da |
+| Chrome / portret | toplo, CPU ×4 | 145,1 ms | bez novih dijelova tijekom mjerenog skrola | Da |
+
+Chrome RAF p95 ostaje oko 16,7 ms, a zabilježenih long taskova >50 ms nema. Stranica se pomiče dok filmska slika stoji. Nula pageerror događaja nije dokaz ispravnog rada animacije. Postizanje konačnog cilja nakon testa također nije prolaz glatkoće.
+
+## Provjera uzroka, redoslijedom hipoteza
+
+1. **Dostava ne prati kontinuirani položaj — potvrđeno.** Runtime preuzima cijeli MP4 dio, zadržava stare fetch pozive i odbacuje dovršeni dio ako se cilj već pomaknuo u drugi. Istodobno je bilo 17–19 zahtjeva. Prvi hladni prolazak gotovo potpuno preskače prikaz ostatka priče. Na 8-sekundnom prolasku novi dio zatreba svakih 0,4 s, dok dijelovi imaju približno 0,7–2 MB i zadana veza daje oko 1 MB/s. Cijelih 19,8/24,5 MB medija ne može stići unutar 8 s na toj vezi. To je problem kombinacije veličine jedinice dostave, pripreme i odbacivanja zakašnjelih rezultata, a ne samo broj zahtjeva.
+2. **Odbacivanje već dekodiranih kadrova — rizik potvrđen kodom, dominantnost nije dokazana.** Uvjet `pending === target` u `ScrollFilm.ts` može odbaciti dovršeni seek čim se scroll promijeni. Na toplom Mac testu promjene su ipak uglavnom redovite; nije dokazano da taj uvjet sam uzrokuje višesekundni zastoj. Potreban je izdvojen pokus uz očuvanje točnog obrata i zaustavljanja prije promjene te semantike.
+3. **Ponovno otvaranje dekodera na granicama — potvrđeno vremenskim tragom.** Sve četiri tople kombinacije imaju 66 promjena `video.src`/loadstart tijekom istog prolaza. P95 razmaka između drawova unutar dijela je 18,3–23 ms, a preko granice 84–140,5 ms; najgori prelazak je 230 ms. Prethodno učitan Blob stoga nije isto što i unaprijed pripremljen dekoder.
+4. **Zagušenje React/JS iscrtavanja — nije podržano ovim mjerenjem.** RAF ostaje redovit, Chrome nema long taskova, a CPU ×4 ne stvara višesekundni topli zastoj. Ovo ne isključuje GPU/termalne probleme na stvarnom telefonu.
+
+## Kontrolirani pokus: samo ograničenje mreže nije popravak
+
+Opcija `ADDUCO_FETCH_PROBE=latest-two` djeluje samo u testnom browser contextu: najviše dva potpuna MP4 preuzimanja, noviji čekajući zahtjev dobiva prednost. Prihvaćeni asseti i runtime na serveru ostaju isti. Najdulji portretni hladni zastoj smanjen je s 11.102 na **8.717 ms**, uz dva istodobna zahtjeva. **Pokus je odbačen kao nedovoljan.** Ne objavljuje se kao ispravak niti kao dokaz glatkog učitavanja. Ovaj omotač ne otkazuje stare aktivne preuzimanja, ne priprema dekoder i ne rješava postojeće cache prioritete; njegovi rezultati ne predstavljaju završni scheduler.
+
+## Kontrola samih medija i dostupnosti
+
+Oba web filma: 481 kadar, 24 fps, trajanje 20,041667 s; vremenski razmaci kadrova 41,666–41,667 ms. Nema identičnih susjednih kadrova u usporedbi dekodiranih 160×90 uzoraka. To isključuje duge doslovno ponovljene zamrznute slike i neuredne timestampove kao objašnjenje izmjerenih web zastoja; nije dokaz savršene prirodnosti AI pokreta.
+
+Javni server za `Range: bytes=0-63` vraća ispravnih **206**, `Content-Range: bytes 0-63/656046`, 64 B. Postojeći runtime svjesno koristi cijele Blob dijelove. Sam povratak na monolitni native Range video bez nove provjere nije odabran: raniji pokus imao je ponavljane preklopljene prijenose.
+
+Ponovljeno je **16 ciljanih javnih browser provjera: svih 16 prolazi** (Chrome + WebKit, 47,9 s). Pokrivaju točne piksele u oba kadriranja i oba smjera, nagli obrat, zaustavljanje, rotaciju, reduced motion, Data Saver, nedostupni medij, tipkovnički izlaz i kontakt bez učitavanja filma. Zapis je `functional-regressions.log`. Ovi prolazi izričito ne poništavaju izmjereni kvar kontinuiranog skrola. ESLint novog dijagnostičkog alata prolazi. Product build/typecheck nisu ponovno pokretani jer aplikacijski izvor i mediji nisu mijenjani u ovom pregledu.
+
+## Kriterij i slijed sljedećeg ispravka
+
+Potrebna je lokalna usporedba pripreme dekodera i pristupa ciljnim kadrovima koja ne zahtijeva stalno ponovno otvaranje izvora i preuzimanje cijelog nepotrebnog dijela. Ograničenje mreže i prioritet prema smjeru dio su rješenja, ali prethodni izolirani pokus dokazuje da nisu dovoljni. Sačuvati nativnu kvalitetu i SSIM ≥0,98; ne vraćati odbačenu mutnu 720p kompresiju kao navodni popravak. Provjeriti cold/warm kontinuirani prolaz, obrat, mirovanje, točne piksele i veličinu prijenosa prije iduće objave. Kontakt i poslovni sadržaj ostaju dostupni tijekom pripreme.
+
+Dodan je ponovljiv dijagnostički guard `ADDUCO_ASSERT_CONTINUITY=1`: izlazi kodom 1 kod zamrzavanja >1 s ili nedosegnutog završnog cilja. To je minimalna zaštita od reproduciranog višesekundnog kvara, **ne novi kriterij za tvrdnju da je animacija glatka**. Potpuni tragovi čuvaju i daleko kraće stanke. Nisu podignuti raniji kriteriji odziva radi dobivanja zelenog testa. Novi guard izvršen je na javnoj verziji i očekivano pao (exit 1): 11136.4 ms bez novog kadra; zapis `red-regression.log`. Nema zelenog rezultata ni tvrdnje o popravku.
+
+Dokazi i JSON tragovi: `deliverables/adduco-story/web-qa/continuous-scroll/`; reprodukcija:
+
+```sh
+ADDUCO_BASE_URL=https://mossy-nutmeg-r9v6.here.now ADDUCO_PROFILE=cold-4g ADDUCO_ASSERT_CONTINUITY=1 node scripts/monument/continuous_scroll.mjs
+```
+
+Fizički iPhone/Android, GPU peak i fizička glatkoća zaslona ostaju neprovjereni. Ovaj nalaz zamjenjuje svako ranije tumačenje prolaska izoliranih seek testova kao potvrde glatkog kontinuiranog skrola.
+
+---
+
+# Korekcija mutne web slike — aktualno 20.9.2026.
+
+Javni URL ostaje https://mossy-nutmeg-r9v6.here.now/ . Korisnik je odbacio kvalitetu prethodne objave. Stara 720p kompresija gubila je vidljive zakovice, rubove skela, kamenje i teksturu mokrog tla. Usporedba je rađena na istim stvarnim kadrovima, a ne samo na veličini datoteke ili prolazu funkcionalnih testova.
+
+## Izmjena i dokaz kvalitete
+
+Sada se koriste nativni 1920×1080 / 1080×1920 izvorni filmovi kodirani H.264 CRF20, GOP24, B2. Nema umjetnog povećavanja rezolucije, izoštravanja ili novog AI generiranja. Trošak ove korekcije: **0 kredita**. Svaka kompozicija ima dvadeset jednosekundnih MP4 dijelova; završni ima 25 kadrova, ukupno 481.
+
+| Kompozicija | SSIM starog web izvoza prema masteru | SSIM novog izvoza prema masteru | Native 1080p |
+| --- | ---: | ---: | --- |
+| Landscape | 0,908449 | 0,987884 | Da |
+| Portrait | 0,934814 | 0,988869 | Da |
+
+Ovo mjeri očuvanje detalja izvornog filma, **ne fizički realizam generiranog gradilišta**. Izvornik i njegova ograničenja ostaju isti. Novi provjerljivi prag je SSIM ≥0,98 uz nativnu rezoluciju i 481 kadar: `python3 scripts/monument/check_web_quality.py`. Isti alat eksplicitno odbacuje staru 720p izvedbu. I izvozi s duljim GOP-om, ali zadržanim približno 4 MB, vizualno su pregledani i odbačeni: portretni SSIM 0,955000 (1080p) / 0,961998 (720p).
+
+Hash svih 481 dekodiranih kadrova kroz 20 dijelova identičan je novom cijelom web filmu za obje orijentacije. Prvi dio kopira se izravno iz mastera kako bi njegov MP4 edit list ostao na vremenu nula; ostali koriste reset timestamps. Stvarni browser pikseli provjeravaju se i naprijed i natrag. Referentni PNG prvo se crta na canvas pune rezolucije, zatim se obje grane smanjuju istim canvas→canvas postupkom: Chromeov Image→mali canvas put davao je drukčiji resampling i lažnu razliku. RMS prag <4 nije podignut.
+
+## Transparentan kompromis s veličinom
+
+Na korisnikovo odbijanje mutnoće primijenjena je kvaliteta izvornog filma umjesto prethodnog strogog ukupnog 5 MB cilja; povećanje je objašnjeno u razgovoru prije objave. **Stari ukupni 5 MB cilj sada ne prolazi.** Nije zabilježena zasebna korisnikova potvrda konkretne brojke 26 MB: to je zaštitna tehnička granica nove izvedbe, ne tvrdnja o starom prihvatu.
+
+Mediji sami: landscape **24.547.918 B**, portrait **19.827.790 B**. Initial target ostaje 2 MB: učitava se samo početni dio, a priprema susjednog započinje tek pri skrolanju. Nova putanja `/assets/story-hd/` odvaja datoteke od već spremljene mutne verzije.
+
+**35 javnih browser testova prolazi**, jedan WebKit CDP byte-counter slučaj opravdano je preskočen. Četiri unit testa, typecheck, lint, build i audit artefakata prolaze. Vizualno pregledan desktop i uspravni prikaz u stvarnom pregledniku; fizički telefon nije testiran.
+
+| Engine | Kompozicija | Topli p95 draw submission | Maksimum | Zabilježeni ciljevi |
+| --- | --- | ---: | ---: | --- |
+| chrome | landscape | 43.5 ms | 52.3 ms | Svi |
+| chrome | portrait | 43.7 ms | 52.3 ms | Svi |
+| webkit | landscape | 77.0 ms | 119.0 ms | Svi |
+| webkit | portrait | 88.0 ms | 94.0 ms | Svi |
+
+Topli cilj p95 ≤80 ms **ne prolazi u jednom širem portretnom WebKit uzorku (88 ms)**; ostali p95 rezultati prolaze. Svi maksimumi ostaju ≤150 ms. Nema JS grešaka ili overflowa. Ne tvrdi se puni prolaz svih starih performansnih ciljeva.
+
+Vrijeme se sada bilježi MutationObserverom odmah nakon canvas drawa/data-frame promjene; odvojeno je zadržano `observedNextRafMs`, koje uključuje čekanje sljedećeg animation framea. Ranije RAF-only opažanje može dodati do jednog prikaznog intervala. Ovo je točniji događaj draw submissiona, ne dokaz fizičkog prikaza piksela na telefonu. P95 prag nije podignut.
+
+| Kompozicija | Do prvog drawa | Cijela stranica i svi kadrovi oba smjera | MP4 zahtjevi | Nedostajući ciljevi |
+| --- | ---: | ---: | ---: | ---: |
+| landscape | 1,973,038 B | 24,934,520 B | 20 | 0 |
+| portrait | 950,572 B | 20,150,397 B | 20 | 0 |
+
+Javni Chrome, svježi contexti, 4G 165 ms / 1.012.500 B/s. Početni 2 MB cilj prolazi u oba kadriranja. Svaki od 20 dijelova preuzet je jednom; raniji 5 MB ukupni cilj ne prolazi, novi javno objašnjeni maksimum 26 MB prolazi. Puna sekvenca naprijed i natrag nema nedostajućih ciljeva ili overflowa. Hladna latencija skoka na neučitani HD dio na sporoj vezi nije predstavljena kao prolaz toplog kriterija; fizički telefon i ukupan GPU peak ostaju neprovjereni.
+
+
+
+Komprimirani cache nakon kompletnog obilaska obje orijentacije ima najviše **44.375.708 B** (40 poznatih dijelova). Aktivni canvas ima **8.294.400 B** piksela. Jedan dekoder/object URL ostaje aktivan. To nisu mjerenja ukupne GPU/native memorije i nema tvrdnje da je fizički telefon testiran.
+
+Dokazi su u `deliverables/adduco-story/web-qa/quality-correction/`. Stari izvozi sačuvani su u `web-encodes/budget-720` i `budget-720-parts`, izvan public direktorija. Povijesne brojke za štedljivu izvedbu slijede niže i **ne opisuju aktualnu HD stranicu**.
+
+---
+
+# Aktualna fotografska web isporuka — 20.9.2026.
+
+Objavljeno odvojeno: https://mossy-nutmeg-r9v6.here.now/ . Ovo je važeći status; svi Blender/pilot zapisi niže su povijesni. Izvorni projekt i Sites stranica sačuvani su.
+
+## Opseg i prihvat
+
+- Prirodan dokumentni skrol kroz 4,5H upravlja 481 kadrom (20,041667 s pri 24 fps), zaustavljanjem i povratkom. Nema autoplayja ni zaključavanja gesti. Šest hrvatskih poruka prati nacrtani kadar.
+- Fotografski desktop master s ispravljenim viškom panela i aktivnijim gradilištem; posebno generirana uspravna 9:16 priča. Web dekodiranje 1280×720 / 720×1280. Blender ostaje referenca koreografije.
+- Originalni logo u navigaciji, poslovni izvori, PDF i mailto nacrt sačuvani. Film je označen kao konceptualna vizualizacija. Nisu dodane nepotvrđene portfolio tvrdnje.
+- Lokalno i na javnom URL-u: **35 browser testova prolazi**, jedan WebKit test preskočen jer koristi Chromium CDP brojač bajtova. Četiri unit testa, typecheck, lint i build prolaze. Nema novog slanja upita, backend integracije ili tajni.
+- Provjereni su stvarni canvas pikseli prema neovisnom ffmpeg dekodu, oba smjera i nagli obrat; reduced motion, Data Saver, no-JS, nedostupni mediji, tipkovnica, kontakt, Back, metapodaci, PDF i rotacija bez bljeska početnog kadra. Axe provjera poslovnog sadržaja prolazi.
+- Vizualno pregledani 390×844, 768×1024, 1440×900 i 844×390. Završni znak vidljiv je cijeli; za niski vodoravni ekran koristi se contain ispod zaglavlja. Ovo su desktop Chrome/WebKit i emulirani viewporti, **ne fizički telefon**.
+
+## Dostava i regresija prometa
+
+Monolitni video na javnom hostingu pri hladnim obratima ponavljao je preklopljene HTTP raspon zahtjeve. Dodani regresijski test prvo je pao s **10.572.855 B**, zatim prošao s istim pragom **5.000.000 B** nakon ispravka. Odbačeni javni izvještaj sačuvan je kao `deliverables/adduco-story/web-qa/rejected-monolithic-public-report.json`.
+
+Sada se svaka kompozicija dostavlja kroz deset približno dvosekundnih samostalnih MP4 dijelova. Svaki se dohvaća jednom u Blob cache; priprema se samo jedan susjedni dio. Dijelovi su izdvojeni bez ponovnog kodiranja: hash svakog od svih **481 dekodiranih kadrova jednak je cijelom web masteru**, u obje orijentacije. Dokaz: `web-qa/segment-integrity.json`.
+
+Komprimirani dijelovi: landscape **4.254.891 B**, portrait **3.774.555 B**. Maksimum cachea nakon obilaska obje orijentacije je **8.029.446 B** komprimiranih podataka; jedna orijentacija ne preuzima automatski drugu. Canvas je **3.686.400 B** sirovih piksela, jedan aktivan video/dekoder i jedan object URL. To nije tvrdnja o ukupnoj memoriji GPU-a ili native dekodera.
+
+## Završna mjerenja javnog URL-a
+
+Desktop Chrome 153 / WebKit 26.6, 1440×900 i 390×844, bez istodobnog renderiranja. Topli prolaz: tri ponavljanja po dvadeset ciljeva nakon pripreme. Mjera je zahtjev skrola → opažen canvas draw submission, ne fizički panel uređaja.
+
+| Engine | Kompozicija | Topli p95 | Maksimum | Točni kadrovi |
+| --- | --- | ---: | ---: | --- |
+| chrome | landscape | 33.4 ms | 33.5 ms | Svi |
+| chrome | portrait | 34.9 ms | 50.1 ms | Svi |
+| webkit | landscape | 68.0 ms | 68.0 ms | Svi |
+| webkit | portrait | 68.0 ms | 84.0 ms | Svi |
+
+Topli p95 ≤80 ms i maksimum ≤150 ms prolaze u obje kompozicije i oba enginea. Nema JS pogrešaka ili horizontalnog overflowa; jedan video/dekoder i jedan canvas u svakoj izmjerenoj kombinaciji.
+
+Mreža 4G: 165 ms latency, 1.012.500 B/s down, 168.750 B/s up. Sporija 4G: 250 ms, 400.000 B/s down i CPU ×4. Svaka kombinacija ima zaseban hladni context i jednu ponovljenu navigaciju; ovo nije statistička garancija za sve posjete.
+
+| Kompozicija / veza | Hladni poster | Prvi nacrtani kadar | Hladni skok na neučitani kadar 432 |
+| --- | ---: | ---: | ---: |
+| landscape / 4G | 1140 ms | 2052 ms | 1122 ms |
+| landscape / slow-4G-CPU4 | 1244 ms | 3245 ms | 2592 ms |
+| portrait / 4G | 604 ms | 1231 ms | 779 ms |
+| portrait / slow-4G-CPU4 | 1048 ms | 2302 ms | 2469 ms |
+
+**Otvoreni ciljevi:** puni hladni poster ≤1 s nije dosljedno postignut (desktop 4G 1,14 s; sporija veza 1,05–1,24 s). Skok na neučitani dio nije trenutačan: 0,78–1,12 s na 4G, 2,47–2,59 s na sporijem profilu. Prethodni kadar ostaje vidljiv, a kontakt i poslovni sadržaj dostupni. Topli rezultat ne prikazuje se kao dokaz hladnog odziva. Nakon ponovljene navigacije prvi draw je 241–382 ms, a izmjereni skok 29–41 ms.
+
+CLS najviše 0,001775; zabilježeno nula long taskova >50 ms u ovim profilima. `report.json` sadrži uzorke skokova, a `full-transfer.json` zasebno mjeri svih 481 kadar naprijed i natrag; ne zamjenjujemo puni prijenos veličinom datoteke ili nepotpunim prolazom.
+
+| Kompozicija | Bajtovi do prvog drawa | Cijela stranica + svi kadrovi oba smjera | MP4 zahtjevi | Propušteni kadrovi |
+| --- | ---: | ---: | ---: | ---: |
+| landscape | 866,057 B | 4,543,681 B | 10 | 0 |
+| portrait | 578,292 B | 4,031,657 B | 10 | 0 |
+
+Početni 2 MB i potpuni 5 MB prag prolaze. Svaki MP4 dio zatražen je jednom po orijentaciji, bez Range ponavljanja. Početni brojač je opažen pri prvom drawu; naknadna priprema susjednog dijela ograničena je na dodatni komprimirani dio. Obilazak cijele priče s rotacijom namjerno može preuzeti obje kompozicije, što je odvojeno od budžeta jednog kadriranja.
+
+
+
+WebKit regresija: traženje položaja već pri `loadedmetadata` povremeno je odgađalo `seeked` oko jedne sekunde. Runtime sada čeka `loadeddata`, a zatim crta odmah nakon `seeked`. Novi test unaprijed učitanih dijelova zadržava izvorne pragove p95 ≤80 ms / maksimum ≤150 ms; pragovi nisu podignuti radi prolaza. Crveni/zeleni zapis nalazi se u `web-qa/latency-*.log`.
+
+## Trošak i granice dokaza
+
+U ovom nastavku generiran je jedan portretni **Seedance 2.5** film: job `e1e24848-62d4-4081-9faa-439841809c7f`, **240 kredita**, provjereno preostalo **156**. Desktop master ponovno je iskorišten. Nije bilo dodatnog plaćenog generiranja radi optimizacije web dostave. Evidencija modela, parametara, odgovora, mastera i izvedenica: `scripts/monument/web-film-manifest.json` i `deliverables/adduco-story/higgsfield/portrait-film-*.json`.
+
+Realizam je vizualni cilj i predmet korisničke procjene, ne mjerljiva garancija. Fotografski AI master nije fizikalna simulacija: sažeta montaža grupa panela i geometrija nisu dokazano bez svih kolizija/deformacija. Nije postignut novi dokaz odstupanja siluete ≤1 px od izvornog loga. Fizički iPhone/Android, termalno opterećenje i stvarni GPU peak nisu provjereni. Navedeni nedostaci nisu sakriveni kao puni prolaz izvornog strogog fizičkog ugovora.
+
+---
+
+# Puna Blender priča — rezultati 20.9.2026.
+
+Korisnik je prihvatio izgled lokalne probe i odobrio cijelu Blender priču kao referencu za kasniju Higgsfield obradu. Ova faza je dovršena lokalno: dva puna filma, dva editabilna pakirana mastera, deset referentnih segmenata, dvanaest ključnih kadrova u PNG/WebP, frontalni prikaz/maska, podaci o kamerama i ZIP. Nema AI jobova, uploada, plaćenih kredita, pusha, PR-a ili objave.
+
+## Dokazi produkcije
+
+- Obje kompozicije imaju **480 valjanih PNG kadrova**, odnosno **20,000 s pri 24 fps** u MP4. Desktop 960×540, portret 540×960. Puni referentni render: Blender 5.2.1 Eevee, ray tracing, 32 samples. Cycles kontrolni kadrovi i masteri sačuvani su; razliku enginea i privremenu rezoluciju ne skrivamo.
+- Izvoz landscape: **11,607,527 B**; portrait: **12,046,914 B**. ZIP: **69,599,823 B**, 55 zapisa; provjera CRC prolazi. To su produkcijske reference izvan web payload-a, **ne prolaz 5 MB budžeta pune web animacije**. Postojeća skrol proba nije promijenjena.
+- Svih 13 završnih ploha u oba baked mastera imaju nultu razliku vrhova prema trasiranim koordinatama. To potvrđuje vjernost trasiranom masteru, ne novi dokaz 1 px razlike prema izvornom rasteru; prethodni mask IoU 0,981378 ostaje zaseban podatak.
+- Finalni znak u portretu zauzima x=0,080–0,920; obje noge i vrh su unutar kadra. Desktop x=0,371–0,839 i y=0,145–0,913. Četiri Python provjere prolaze: redoslijed radova, skrivena pojava betona, konačno stanje svih ploha, monotono povlačenje/podizanje te postojeći test geometrije (ukupno četiri test metode).
+- Beton se uključuje tek iza zatvorene dvodijelne oplate. Oplata se prvo odvaja normalno od površine; kladding se približava normalno na nosače nakon prijevoza. To je sažeta kinematička prezentacija; nije fizikalna simulacija ili statički projekt.
+- Pregledani ključni i susjedni kadrovi oko najvećih promjena slike. Najveće promjene nastaju pri prijevozu oplate u 4.–5. sekundi, a ne pri rezu kamere. Nije provedena iscrpna validacija sudara svih strojeva/dijelova. Kamera i topologija su determinističke, geometrija se ne generira nanovo po kadru.
+- H.264 CRF18 / GOP8, bez B-frameova i zvuka, faststart. Landscape PSNR prema izvornoj PNG sekvenci: prosjek **44,42 dB**, minimum 40,50 dB; ovo mjeri kompresiju, ne realizam. Susjedni referentni segmenti dijele jedan identičan **izvorni PNG**, ali odvojene H.264 kompresije nisu pikselno identične.
+
+## Preglednik i isporuka
+
+Chrome 153 i desktop WebKit 26.6: oba filma validiraju trajanje/dimenzije i **44 ukupna seek uzorka** naprijed/natrag (11 po engineu/orijentaciji). Svi rVFC mediaTime indeksi odgovaraju cilju, bez JS pogrešaka i bez horizontalnog overflowa na 1440 i 390 px. To je compositor potvrda, ne fizički telefon.
+
+Prvi QA pokušaj prerano je zahtijevao readyState≥2 uz preload=metadata. WebKit ispravno ostaje na readyState=1 do pokretanja. Dijagnostika je potvrdila metapodatke bez media greške; test je ispravljen da pokrene reprodukciju i pričeka predstavljeni kadar prije seeka. Runtime nije mijenjan radi tog lažnog alarma. Ponovljena provjera prolazi u oba enginea.
+
+MP4, ZIP, upute i maske dostupni su lokalno; Range/206 potvrđen. Referentni viewer ima obične native video kontrole i statične postere, bez autoplay animacije. Pregledani desktop i mobilni raspored; u zaglavlju je ista bijela izvedenica originalnog loga kao na odobrenoj tamnoj stranici. ESLint i audit artefakata prolaze. Poslovni web kod nije mijenjan u ovoj fazi pa se prethodni testovi stranice ne prikazuju kao nov uređajski prihvat.
+
+- Mac: http://127.0.0.1:5276/
+- Telefon na istoj mreži: http://192.168.10.2:5276/
+- Paket: `deliverables/adduco-story/adduco-higgsfield-reference.zip`
+- Dokazi: `/Users/mato/.codex/visualizations/2026/09/20/01a0bdf5-f386-74e3-837a-9e6933ef3442/full-blender-story`
+
+Sljedeći mogući korak je zaseban preflight modela i točne cijene za jedan Higgsfield segment. Paket već sadrži upute za očuvanje geometrije i fallback s izvornim Blender slojem ako AI deformira znak. Nije pokrenuto plaćeno generiranje.
+
+---
+
+# Rezultati lokalne probe — 20. rujna 2026.
+
+**Tehnička proba je spremna za pregled; nije prihvaćena puna animacija ni završni realizam.** Izvorni checkout ostaje čist, javna stranica nije mijenjana. Nema pusha, PR-a ni objave. Vanjski trošak 0 € / 0 kredita.
+
+## Što je stvarno provjereno
+
+Apple M4, macOS 26.5.2; Chrome 153.0.8010.48 i desktop WebKit 26.6. Viewporti 1440×900 i 390×844, dodatni Chrome pregled 360×640 i 768×1024. To nisu fizički telefoni. Blender je završen prije mjerenja. Render: 144 kadra po kompoziciji, 24 fps / 6 s, 960×540 i 540×960, Cycles 32 samples. Nema interpolacije ni crossfadea.
+
+32 browser slučaja prolaze: puni suite 28 + 4 dodatna ciljano izvršena slučaja za Data Saver i neispravan decode. Četiri unit testa, Python test geometrije, TypeScript, ESLint i produkcijski/SSR build prolaze. Artifact audit prolazi s neobaveznim upozorenjem za CLAUDE.md. Postojeći izvori sadržaja, PDF i mailto nacrt ostaju sačuvani.
+
+TDD dokazi: stara implementacija nije pomicala dokument na wheel; novi ugovor ga pomiče. Povratak na prethodno neuspjeli kadar nije ponavljao zahtjev, a rotacija je pomicala napredak 72→76; oba su propusta reproducirana pa ispravljena. Kašnjenje starog kadra provjereno je različitim stvarnim pikselima testnih slika. Korumpirani medij ne proizvodi beskonačno ponavljanje zahtjeva.
+
+## Odziv sekvence
+
+Pet toplih prolaza, po 105 uzoraka/engine/orijentacija, uključuju skokove i više od 20 obrata. Mjeri se scroll → canvas draw submission, **ne fizički panel**. Provjera piksela završnog kadra 24 u oba stanja i svim kombinacijama ima nula različitih kanala; nakon dvije sekunde mirovanja kadar ostaje isti.
+
+| Engine | Kompozicija | Topli p95 | Topli maksimum |
+| --- | --- | ---: | ---: |
+| Chrome | landscape | 32,2 ms | 63,5 ms |
+| Chrome | portrait | 31,6 ms | 31,9 ms |
+| WebKit | landscape | 43 ms | 114 ms |
+| WebKit | portrait | 33 ms | 43 ms |
+
+Gate p95≤80 / max≤150 prolazi na ovoj razini mjerenja. Stroži settle≤100 ms **ne prolazi u jednom toplom WebKit landscape uzorku (114 ms, kadar 120)**. Prvi hladni lokalni WebKit landscape prolaz ima maksimum 301 ms. Ne prikazivati ove iznimke kao trenutačan odziv.
+
+## Učitavanje i prijenos
+
+Chrome CDP 4G: 1.012.500 B/s down, 168.750 B/s up, 165 ms latency, bez CPU throttlea. Pet svježih contexta po orijentaciji i pet ponovnih navigacija s cacheom. ElementTiming mjeri prvi puni poster; dekodiranje prvih pet kadrova je zasebna metrika.
+
+| Kompozicija | Hladni poster raspon | Prvih 5 dekodirano | Hladni početni bytes | Cijela proba oba smjera + sadržaj |
+| --- | ---: | ---: | ---: | ---: |
+| landscape | 464–488 ms | 1109–1118 ms | 299.421 B | 3.419.384 B |
+| portrait | 468–488 ms | 1104–1116 ms | 295.509 B | 3.231.346 B |
+
+Topli poster 364–380 ms; prvih pet dekodirano 879–900 ms; CDP prijenos 1.859 B po ponovnoj navigaciji. Lokalni server šalje no-cache pa su mrežne revalidacije uključene. Početni i ukupni byte gate prolaze za ovu probu. Cijeli prijenos provjeren kroz svih 144 kadra naprijed i natrag: nula nedostajućih ciljeva, nula JS grešaka, nula zahtjeva za pogrešnu orijentaciju. PDF i usporedni MP4 nisu dio automatskog prijenosa.
+
+Hladni skok na nepripremljeni kadar 108 na 4G trajao je **227,8 ms landscape / 236,7 ms portrait**. Prethodna slika ostaje vidljiva, ali to je zamjetan zastoj i nije prolaz toplog kriterija. Puna priča s višom rezolucijom još nema dokaz 5 MB budžeta.
+
+## Video usporedba iz identičnih mastera
+
+| Kompozicija | WebP 144 slike | H.264 GOP1 | GOP4 | GOP8 |
+| --- | ---: | ---: | ---: | ---: |
+| landscape | 3.169.118 B | 3.760.525 B | 2.026.522 B | 1.524.541 B |
+| portrait | 2.981.080 B | 3.585.616 B | 1.867.595 B | 1.400.480 B |
+
+Svi video kandidati: 12 skokova po engine/orijentaciji/GOP-u, rVFC mediaTime daje traženi indeks bez odstupanja. Najveće opaženo seek→compositor callback kašnjenje 32 ms. Ovo nije kompletan scroll video engine niti pixel-ID dokaz/fizički iOS test. Lokalni server vraća Range/206; budući CDN nije provjeren. GOP8 je obećavajući zbog približno upola manjeg medija, ali konačan format ostaje otvoren do uređajskog dokaza. Lokalna stranica sada prikazuje ograničenu WebP sekvencu.
+
+## Memorija, vizualni gate i otvorene provjere
+
+Instrumentirani vrh živih ImageBitmap objekata 18.662.400 B u svim kombinacijama. S jednim canvas backing storeom to je 20.736.000 B (~19,8 MiB); raster poster, GPU kopije i browser cache nisu uključeni. To nije ukupna memorija procesa. Limit 64 MiB prolazi za izmjereni app-managed inventar pri ovoj rezoluciji. Ukupni dodatni RAM/GPU≤150 MiB, 10 punih memorijskih ciklusa i 5 rotacija nisu izmjereni.
+
+Logo: 13 trasiranih ploha, mask IoU **0,981378**. To nije dokaz strogog 1 px finalnog kriterija. Frontalna kontrola tog kriterija ostaje otvorena. Determinističke plohe ne mijenjaju topologiju, ali vizualni realizam **nije prošao**: prejednostavna okolina, slaba čitljivost armature, nedovoljno mjerila i djelomično odsječena početna putanja ploče na mobitelu. Veća rezolucija sama to neće popraviti. Sljedeći korak je dorada istih kontrolnih kadrova nakon korisnikove procjene, ne proizvodnja pune priče.
+
+Bez horizontalnog overflowa na dodatnim 360/768 pregledima. Reduced motion, Data Saver, media failure, keyboard, kontakt, izbornik, Back/direct hashes i rotacija imaju prolazne funkcionalne provjere. Nisu dovršeni uređajski frame-gap/long-task/CLS gate, 4× CPU/Fast3G, 200% zoom i fizički Safari/Android pregled. Ne tvrditi puni mobilni prihvat na temelju desktop emulacije.
+
+Lokalno: http://127.0.0.1:5275/ ; telefon na istoj mreži: http://192.168.10.2:5275/ . Proces previewa mora ostati pokrenut. Korisnička procjena na telefonu je namjerna sljedeća faza prema izvornom zahtjevu.
+
+Dokazi: `/Users/mato/.codex/visualizations/2026/09/20/01a0bdf5-f386-74e3-837a-9e6933ef3442/monument-pilot` (benchmark.json, cold-load.json, transfer.json, slike, logovi i SHA256 inventar). Pakirani Blender masteri su u `assets-source/monument/`.
+
+---
+
+# Izvorni plan prihvata prije odobrenja — 20. rujna 2026.
+
+## Dokaz ove isporuke
+- Izvorni Git checkout bio je čist na b263a1e; novi worktree na codex/monumental-scroll izolira promjene. Runtime kod i mediji nisu mijenjani.
+- Aktualna javna stranica otvorena u Codex pregledniku, pregledani početni kadar, pokret prema detalju i mobilni početni kadar na 390×844. Vidljivi originalni identitet, viseći gotovi znak, tamno gradilište, trajni kontakt i odvojene poslovne sekcije. Ovo je pregled osnove, ne prihvat novog enginea.
+- Pregled izvornog PNG-a potvrđuje zasebni donji unutarnji trokut i različite crvene plohe. To postaje kontrola geometrije novog modela.
+- Read-only katalog i procjene: GPT Image 2.5 4K/high 4,5 kredita po slici; Seedance 2.5 6s/1080p/silent 72 po filmu, za obje orijentacije. Stanje 1.064 kredita. Nije pokrenut job.
+- Proba nije renderirana, engine nije implementiran, fizički telefon nije testiran. Sve brojke u tablici niže su **predloženi ciljevi**, ne ostvareni rezultati. Stari izvještaji niže pripadaju prethodnim verzijama.
+
+## Predloženi mjerljivi ciljevi
+
+| Područje | Kriterij probe |
+| --- | --- |
+| Geometrija | Jedan master objekta. Frontalni preklop s trasiranim originalom: obris i razdjelnice unutar 1 px pri usporedbi širine znaka 1000 px, uz dokumentiranu raster-antialias toleranciju. Pregled svih kadrova za promjenu broja ploha, negativnog prostora i oslonaca; svaki takav drift je pad. Perspektivni render ne uspoređivati direktno s ravnim logom. |
+| Realizam | Svih 6 s u oba smjera: nema rastezanja, lebdenja, nestanka potpore, klizanja teksture, titranja sjena/denoisea. Ploča ima jasan prihvat i konačan nosač. Nema crossfadea kao popravka pogrešne geometrije. Vizualno odobrenje korisnika obvezno. |
+| Topli odziv | Za pripremljeni raspon: promjena scroll cilja → predstavljeni odgovarajući kadar p95 ≤80 ms, maksimum ≤150 ms; barem 5 prolaza naprijed/natrag i 20 naglih obrata po engineu/orijentaciji. Ne mjeriti samo promjenu varijable ili currentTime. |
+| Mirovanje i obrat | Nakon zadnjeg scroll događaja najnoviji cilj stigne unutar 100 ms ako su podaci spremni, potom 2 s bez promjene kadra. Nakon obrata nema zastarjelog pomicanja u ranijem smjeru nakon najviše jednog osvježavanja zaslona. Nema reda starih zahtjeva. Svaki propust prijaviti. |
+| Točnost prikaza | Nakon smirivanja odabrani indeks točan. Video provjeriti prema mediaTime i stvarnoj slici, tolerancija najviše ±1 izvorni kadar ako codec to zahtijeva; prijaviti odstupanje. Caption odgovara prikazanom, ne zatraženom kadru. |
+| Hladni početak | Osnovni sadržaj i kontakt bez čekanja medija; puni početni poster cilj ≤1 s, prvi upravljivi raspon ≤2,5 s na dolje definiranom 4G profilu. Inline blur nije puni poster. Ako HTML kasni, zasebno prijaviti TTFB i promašaj ukupnog cilja. |
+| Prijenos | Početni portret ≤2.000.000 B do prvog upravljivog raspona; jedna proba + postojeći sadržaj ≤5.000.000 B po orijentaciji uz oba smjera. PDF zasebno. Za punu priču zadržati 5 MB kao početni gate dok korisnik ne odobri drugačije; prolaz probe nije dokaz prolaza pune animacije. |
+| Bitmap memorija | Mobilni app-managed sirovi bitmap/canvas inventar cilj ≤64 MiB; eksplicitno brojati i zatvarati resurse. To nije ukupni RAM. Ukupni dodatni procesni/GPU vrh cilj ≤150 MiB prema static baselineu gdje ga alat pouzdano mjeri; inače označiti neizmjereno. Bez monotone akumulacije nakon 10 povratnih prolaza i 5 rotacija. |
+| Dekodiranje/render | Tijekom pripremljenog aktivnog skrola p95 razmaka promijenjenih kadrova ≤33,3 ms pri uzorkovanju koje traži novi kadar; duge taskove >50 ms i propuštene kadrove izvijestiti. Mirovanje ne ulazi u frame-gap metriku. 24 fps source ne znači zajamčenih 60 fps animacije. |
+| Stabilnost i dostupnost | Nema praznog/crnog flasha; CLS ≤0,1, overflow ≤1 CSS px. Tipkovnica, skip link i kontakt dostupni odmah, focus vidljiv, AA kontrast i dodirne mete ≥44 px. |
+
+## Protokol mjerenja i neugodni slučajevi
+
+1. Chrome i WebKit na 390×844, 768×1024 i 1440×900; dodatno 360×640 za kratak ekran i portret↔landscape. Zabilježiti engine/verziju, OS, ekran, uređaj, DPR, throttle i rezoluciju dostavljenog medija. Desktop WebKit i touch emulacija odvojeno od fizičkog iPhone Safari / Android Chrome. Za konačan uređaj zabilježiti točan korisnikov telefon; drugi OS označiti netestiranim ako nije dostupan.
+2. Najmanje 5 hladnih i 5 toplih navigacija/orijentacija. Hladno: svježi context/cache, caching dopušten nakon navigacije. Toplo: isti kontekst nakon punog prolaza. 4G usporedba s povijesnim profilom: 1.012.500 B/s down, 168.750 B/s up, 165 ms latency; dodatni 4× CPU lab stres označiti zasebno. Fast3G: 180.000 B/s down, 84.375 B/s up, 562,5 ms. Ne odbacivati najsporiji uzorak; izvijestiti p50/p95/max i svaki promašaj.
+3. Network waterfall broji stvarni prijenos, ponovljene zahtjeve i odabranu orijentaciju. Odvojiti bytes na disku, response body i HTTP overhead. Provjeriti Range/206/seekable na stvarnom budućem hostu read-only, tek kad bude predmet odobrene objave; lokalni preview ne dokazuje CDN ponašanje. Ne uvoditi Blob download automatski.
+4. U probnom harnessu bilježiti ciljni indeks, generaciju zahtjeva, decode završetak, draw submission, rVFC mediaTime/presentationTime/expectedDisplayTime. Za dokaz vizualnog indeksa koristiti identifikator kadra u zasebnoj QA izvedenici i screenshot/snimku. Canvas draw i rVFC sami ne dokazuju fizičko osvježavanje panela; na telefonu provjeriti ekran usporenom snimkom gdje je dostupno. Bez tog dokaza ograničiti tvrdnju na compositor/browser.
+5. Spori skrol, brz fling preko čitave probe, 20 brzih promjena smjera, stop usred svake radnje, naprijed-natrag preko granica segmenata. Ako cold cilj nedostaje, zadržati zadnji kadar, ne glumiti prolaz hot latency kriterija; odvojeno izmjeriti cold zastoj i oporavak do najnovijeg cilja. Navigation/CTA mora ostati upotrebljiv cijelo vrijeme.
+6. Blokirati jedan budući kadar/segment, 404, offline nakon pripreme, slab bandwidth, odbijen decode, promjena orijentacije usred učitavanja, background/return. Ne smije se kasno nacrtati rezultat stare orijentacije ili starog scroll cilja.
+7. Reduced motion, Data Saver i JS failure: statičan prizor, nema video/sequence preloada, običan sadržaj i kontakt, bez dugog praznog sticky prostora. Tipkovnica Tab/Shift+Tab/PageUp/PageDown/Space/Home/End, 200% zoom, hash link direktno na kontakt, browser Back i mobilni menu.
+8. Provjeriti postojeći mailto nacrt i PDF bez slanja upita. Unit/behavior testovi, typecheck, lint, build i ciljani browser suite nakon promjene koda. Prva dokumentacijska isporuka ne tvrdi novo izvršavanje povijesnih testova.
+
+## Pravilo odluke nakon probe
+Ako sekvenca pada na bytes/memoriji, a video prođe točnost i odziv na telefonu, izabrati video uz dokaz. Ako video kasni ili zadržava prethodni smjer, ostati na sekvenci samo ako prođe budžet. Ako oba padaju, prilagoditi broj kadrova/rezoluciju/render ili predložiti promjenu budžeta korisniku prije daljnje produkcije. Realizam i prepoznatljivost znaka ne proglašavati riješenima prolazom performansi.
+
+## Povijesni QA referentne verzije
+
+---
+
 # QA — mobile scroll smoothness
 
 ## Native video preparation — 18 September 2026
