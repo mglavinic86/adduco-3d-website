@@ -8,7 +8,11 @@ Priprema izdanja:
 - Puni lokalni Playwright: **62 prolaza, 4 očekivana preskakanja** (Chrome i WebKit; 320/390/768/1440 px, navigacija, obrazac, PDF, no-JS, pristupačnost, filmski kadrovi, mreža i fallbackovi).
 - Python produkcijski testovi: 4 prolaza.
 - Git paket sadrži runtime medije, izvorni kod, Blender reference i četiri MP4 testne reference. Veliki produkcijski arhivi, privremeni izlazi i evidencije generiranja ostaju ignorirani. Pregled kandidata nije našao obrasce privatnih ključeva, tokena ili potpisanih URL-ova; nema novih datoteka iznad GitHub limita od 100 MiB.
-- Javno stanje i završne provjere bit će evidentirani nakon Sites odgovora. `noindex`, kontakti i ponašanje obrasca ostaju isti; obrazac priprema poruku i ne šalje je automatski.
+- Sites je potvrdio uspješnu javnu objavu verzije **26**; izvorni commit `f3766698bc3b5cbf1a662288e0d55480a80f4722`. Verzija: `appgprj_6aa8d35f4b888191a5865d590e7da70b~appgver_8c9e59ac25b48191acdce71c78f6e5ab`; deployment: `appgdep_6aba9fa32b3c81918d6d434f53093c45`. Neautentificirani HTTP zahtjev vraća 200; javni HTML sadrži ovaj build uz Sites/Cloudflare dodani skript. `noindex`, kontakti i ponašanje obrasca ostaju isti; obrazac priprema poruku i ne šalje je automatski.
+
+- Puni završni javni Playwright na Sites adresi: **62 prolaza, 4 očekivana preskakanja** (2,9 min). Sva funkcionalna i medijska ponašanja potvrđena su i na javnom hostu.
+- Vizualni in-app pregled potvrđuje novu monumentalnu početnu; konzola bez error/warn zapisa. Stranica je ostavljena otvorena kao javni pregled. Mobilni raspored provjeren je automatizirano na 320/390/768 px, desktop na 1440 px; ovo nije novo mjerenje fizičkog mobitela.
+- GitHub grana `codex/monumental-scroll` sadrži objavljeni izvorni commit; naknadni commit mijenja samo README/QA zapis. Sites izvorna grana zadržava točan commit verzije 26.
 
 ---
 

@@ -2,7 +2,7 @@
 
 Aktivna verzija: `web/monumentalni-v2/adduco`, grana `codex/monumental-scroll`. Korisnik je 21.9.2026. odabrao nastavak na ovoj verziji i dao pozitivnu povratnu informaciju nakon pregleda na mobitelu. Stariji filmski i korporativni web ostaju odvojeni.
 
-Sites adresa ovog izdanja: https://adduco-crveni-monolit.mglavinic.chatgpt.site/ — monumentalna verzija s doradama navigacije i upita od 21.9.2026., pripremljena za objavu 28.9.2026. Rezultati i granice provjere vode se u [QA.md](QA.md).
+Javna Sites objava: https://adduco-crveni-monolit.mglavinic.chatgpt.site/ — monumentalna verzija s doradama navigacije i upita od 21.9.2026., objavljena 28.9.2026. (Sites verzija 26). Kod je na GitHub grani `codex/monumental-scroll`. Rezultati i granice provjere vode se u [QA.md](QA.md).
 
 ## Što je spremno
 
